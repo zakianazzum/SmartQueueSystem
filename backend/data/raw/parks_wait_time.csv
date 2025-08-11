@@ -1,0 +1,1001 @@
+place_name,day_of_week,arrival_time,season,weather,school_holiday,queue_length,wait_time_min
+National Zoo,Tuesday,11:56,Summer,Clear,No,28,33.7
+National Zoo,Saturday,12:07,Summer,Clear,Yes,40,52.17
+Liberation War Museum,Thursday,10:31,Summer,Clear,No,21,26.48
+National Zoo,Monday,15:00,Summer,Clear,No,6,9.92
+National Museum,Tuesday,16:14,Monsoon,Clear,No,3,4.97
+National Zoo,Sunday,17:08,Monsoon,Clear,No,33,32.3
+National Zoo,Monday,18:34,Winter,Clear,No,50,59.61
+Liberation War Museum,Tuesday,18:41,Summer,Clear,No,32,35.59
+Lalbagh Fort,Tuesday,13:28,Monsoon,Clear,No,30,28.02
+Ahsan Manzil,Sunday,15:43,Monsoon,Rainy,No,34,32.18
+National Museum,Monday,09:54,Monsoon,Clear,No,2,4.58
+Lalbagh Fort,Tuesday,09:32,Monsoon,Clear,No,7,10.14
+National Museum,Thursday,18:15,Monsoon,Clear,No,7,10.47
+Lalbagh Fort,Thursday,10:45,Summer,Clear,No,46,52.44
+Ahsan Manzil,Thursday,11:35,Summer,Rainy,No,23,24.28
+Liberation War Museum,Friday,10:36,Summer,Clear,Yes,33,65.56
+Lalbagh Fort,Monday,16:20,Summer,Clear,No,19,19.21
+National Museum,Monday,18:05,Summer,Clear,No,20,26.94
+Lalbagh Fort,Monday,11:32,Monsoon,Clear,No,12,14.6
+Lalbagh Fort,Wednesday,08:11,Summer,Clear,No,31,34.68
+Ahsan Manzil,Tuesday,10:02,Monsoon,Clear,No,23,26.06
+National Zoo,Saturday,16:51,Summer,Clear,Yes,14,27.57
+National Museum,Tuesday,11:25,Summer,Clear,No,17,24.16
+National Zoo,Friday,09:35,Winter,Rainy,Yes,20,27.82
+National Zoo,Friday,15:37,Monsoon,Clear,Yes,24,34.09
+National Zoo,Wednesday,14:13,Monsoon,Rainy,No,7,9.74
+Liberation War Museum,Saturday,13:13,Summer,Rainy,Yes,9,17.79
+National Museum,Tuesday,14:14,Summer,Clear,No,11,13.44
+Lalbagh Fort,Sunday,09:59,Monsoon,Clear,No,31,30.59
+Liberation War Museum,Wednesday,12:35,Summer,Clear,No,1,2.87
+National Zoo,Saturday,11:05,Summer,Clear,Yes,20,42.47
+Liberation War Museum,Monday,17:03,Monsoon,Rainy,No,20,25.95
+Lalbagh Fort,Tuesday,12:17,Winter,Clear,No,0,2.24
+Lalbagh Fort,Monday,11:00,Summer,Clear,No,9,13.96
+Lalbagh Fort,Monday,12:23,Summer,Rainy,No,11,13.67
+Ahsan Manzil,Wednesday,11:32,Winter,Clear,No,19,24.17
+National Museum,Tuesday,09:21,Summer,Clear,No,0,2.64
+Ahsan Manzil,Friday,11:00,Winter,Clear,Yes,47,88.39
+National Museum,Friday,11:28,Monsoon,Clear,Yes,1,6.36
+Ahsan Manzil,Friday,12:51,Summer,Clear,Yes,6,11.45
+Lalbagh Fort,Thursday,10:15,Winter,Rainy,No,19,24.92
+Lalbagh Fort,Tuesday,17:46,Summer,Clear,No,8,13.8
+Lalbagh Fort,Saturday,17:16,Winter,Clear,Yes,35,82.2
+Lalbagh Fort,Tuesday,15:14,Monsoon,Clear,No,16,17.17
+Ahsan Manzil,Sunday,16:39,Monsoon,Clear,No,18,19.24
+Lalbagh Fort,Tuesday,10:21,Winter,Clear,No,19,21.09
+Ahsan Manzil,Wednesday,08:41,Monsoon,Clear,No,38,44.02
+National Zoo,Friday,16:54,Monsoon,Rainy,Yes,17,30.51
+National Zoo,Saturday,12:41,Summer,Clear,Yes,27,46.6
+Liberation War Museum,Tuesday,17:34,Summer,Clear,No,34,30.52
+Lalbagh Fort,Friday,18:27,Monsoon,Clear,Yes,35,66.17
+Liberation War Museum,Monday,15:28,Winter,Rainy,No,32,40.63
+National Zoo,Tuesday,18:16,Summer,Clear,No,35,30.89
+Ahsan Manzil,Friday,16:14,Summer,Rainy,Yes,28,49.58
+National Museum,Wednesday,08:52,Winter,Clear,No,11,14.27
+National Museum,Sunday,15:42,Winter,Clear,No,35,47.24
+National Zoo,Tuesday,11:11,Monsoon,Clear,No,8,8.28
+National Museum,Monday,12:20,Summer,Clear,No,15,19.08
+Liberation War Museum,Friday,09:14,Monsoon,Clear,Yes,43,81.14
+Ahsan Manzil,Monday,18:55,Summer,Clear,No,47,49.36
+National Museum,Sunday,17:03,Winter,Clear,No,10,10.05
+Liberation War Museum,Wednesday,11:29,Monsoon,Clear,No,12,14.52
+Lalbagh Fort,Friday,14:10,Winter,Clear,Yes,48,84.31
+National Zoo,Wednesday,17:01,Summer,Clear,No,16,21.8
+Liberation War Museum,Tuesday,09:21,Monsoon,Clear,No,32,42.21
+Lalbagh Fort,Monday,14:57,Monsoon,Clear,No,0,2.38
+National Zoo,Monday,10:57,Winter,Clear,No,28,39.48
+National Zoo,Monday,13:46,Winter,Clear,No,13,17.88
+National Museum,Tuesday,14:14,Summer,Clear,No,34,31.54
+National Museum,Monday,09:52,Monsoon,Clear,No,27,25.45
+National Zoo,Monday,09:21,Monsoon,Rainy,No,29,31.47
+Lalbagh Fort,Wednesday,12:45,Monsoon,Clear,No,34,32.42
+Ahsan Manzil,Wednesday,14:47,Summer,Clear,No,12,15.73
+National Museum,Friday,13:33,Summer,Rainy,Yes,8,16.62
+National Zoo,Friday,16:22,Summer,Rainy,Yes,19,43.15
+National Museum,Monday,16:55,Summer,Clear,No,29,25.77
+Liberation War Museum,Thursday,15:08,Monsoon,Rainy,No,42,51.54
+Ahsan Manzil,Thursday,11:02,Monsoon,Rainy,No,42,47.05
+Ahsan Manzil,Friday,14:10,Winter,Clear,Yes,5,13.26
+Ahsan Manzil,Thursday,13:07,Monsoon,Clear,No,0,0.35
+Ahsan Manzil,Tuesday,08:50,Summer,Clear,No,24,26.78
+Lalbagh Fort,Wednesday,08:16,Monsoon,Clear,No,45,52.74
+National Museum,Tuesday,14:24,Monsoon,Clear,No,34,32.22
+Ahsan Manzil,Sunday,18:20,Summer,Clear,No,47,44.25
+Ahsan Manzil,Monday,10:03,Monsoon,Rainy,No,12,13.63
+National Museum,Friday,12:57,Winter,Rainy,Yes,7,14.08
+National Museum,Saturday,10:02,Summer,Clear,Yes,4,7.25
+National Museum,Monday,12:33,Summer,Rainy,No,24,30.27
+Lalbagh Fort,Wednesday,08:32,Summer,Clear,No,28,35.43
+National Museum,Monday,12:12,Summer,Clear,No,27,26.78
+Liberation War Museum,Friday,11:45,Winter,Clear,Yes,12,20.47
+National Museum,Thursday,12:04,Monsoon,Clear,No,17,25.0
+Lalbagh Fort,Sunday,17:04,Monsoon,Clear,No,46,46.77
+National Zoo,Thursday,08:54,Summer,Clear,No,16,24.02
+Ahsan Manzil,Wednesday,10:43,Monsoon,Rainy,No,11,14.37
+Lalbagh Fort,Saturday,10:07,Monsoon,Clear,Yes,38,53.16
+National Zoo,Wednesday,10:58,Monsoon,Rainy,No,37,31.87
+Liberation War Museum,Saturday,16:05,Summer,Clear,Yes,49,94.38
+Lalbagh Fort,Saturday,17:31,Monsoon,Clear,Yes,6,10.98
+Ahsan Manzil,Saturday,16:14,Summer,Clear,Yes,21,38.7
+National Zoo,Sunday,08:49,Summer,Rainy,No,44,42.48
+National Museum,Saturday,18:06,Summer,Clear,Yes,6,14.81
+Ahsan Manzil,Friday,13:54,Monsoon,Clear,Yes,40,71.55
+National Museum,Thursday,15:23,Monsoon,Rainy,No,24,25.8
+Lalbagh Fort,Monday,09:38,Monsoon,Clear,No,12,11.42
+Ahsan Manzil,Saturday,09:28,Winter,Clear,Yes,26,41.94
+National Museum,Monday,15:24,Summer,Clear,No,0,2.44
+Lalbagh Fort,Saturday,09:00,Winter,Clear,Yes,16,30.08
+Lalbagh Fort,Wednesday,08:50,Monsoon,Clear,No,40,38.05
+National Museum,Wednesday,17:19,Monsoon,Rainy,No,8,10.86
+National Museum,Sunday,12:13,Summer,Rainy,No,40,46.71
+National Museum,Friday,14:20,Monsoon,Rainy,Yes,30,41.03
+National Museum,Thursday,10:39,Monsoon,Clear,No,17,20.24
+National Zoo,Tuesday,13:12,Monsoon,Clear,No,34,42.31
+National Museum,Sunday,11:24,Summer,Clear,No,8,10.62
+National Museum,Tuesday,12:27,Winter,Clear,No,21,28.07
+Liberation War Museum,Tuesday,13:27,Winter,Clear,No,12,15.0
+National Museum,Sunday,14:53,Winter,Clear,No,20,24.61
+Liberation War Museum,Tuesday,14:53,Summer,Clear,No,18,19.5
+Ahsan Manzil,Friday,12:31,Winter,Rainy,Yes,22,31.34
+National Zoo,Friday,18:01,Summer,Clear,Yes,42,83.72
+Lalbagh Fort,Sunday,10:48,Monsoon,Rainy,No,34,37.27
+Ahsan Manzil,Wednesday,14:02,Summer,Clear,No,43,39.6
+Ahsan Manzil,Thursday,17:12,Summer,Clear,No,12,13.76
+National Museum,Wednesday,16:59,Summer,Rainy,No,27,30.17
+Lalbagh Fort,Sunday,11:47,Summer,Clear,No,29,31.37
+Lalbagh Fort,Sunday,14:00,Winter,Clear,No,27,33.66
+National Museum,Sunday,16:17,Winter,Clear,No,50,55.54
+National Zoo,Sunday,17:53,Summer,Clear,No,24,21.2
+National Museum,Sunday,15:07,Summer,Clear,No,43,43.18
+National Zoo,Tuesday,16:07,Summer,Clear,No,0,0.04
+Ahsan Manzil,Friday,11:23,Summer,Clear,Yes,16,33.34
+National Museum,Tuesday,15:46,Monsoon,Clear,No,4,5.52
+Lalbagh Fort,Wednesday,11:11,Winter,Clear,No,21,20.82
+Ahsan Manzil,Saturday,16:16,Winter,Clear,Yes,43,98.81
+Ahsan Manzil,Monday,15:32,Winter,Clear,No,0,4.2
+Lalbagh Fort,Wednesday,15:02,Summer,Rainy,No,10,17.16
+Liberation War Museum,Saturday,11:42,Monsoon,Clear,Yes,43,72.25
+Liberation War Museum,Saturday,17:39,Summer,Rainy,Yes,9,19.66
+Liberation War Museum,Monday,17:35,Monsoon,Clear,No,38,35.34
+National Zoo,Wednesday,10:28,Winter,Clear,No,18,23.25
+National Zoo,Friday,17:56,Winter,Clear,Yes,36,90.16
+Ahsan Manzil,Thursday,09:08,Summer,Rainy,No,30,31.13
+Ahsan Manzil,Wednesday,10:53,Summer,Clear,No,12,15.21
+Lalbagh Fort,Monday,10:34,Summer,Clear,No,31,34.16
+National Museum,Friday,16:09,Monsoon,Clear,Yes,47,103.56
+Lalbagh Fort,Thursday,17:39,Winter,Clear,No,26,30.67
+Liberation War Museum,Tuesday,10:59,Summer,Rainy,No,21,27.86
+National Museum,Friday,10:49,Monsoon,Clear,Yes,21,32.86
+Liberation War Museum,Sunday,18:18,Winter,Rainy,No,13,14.1
+Lalbagh Fort,Friday,09:14,Summer,Clear,Yes,15,21.43
+National Zoo,Friday,15:49,Summer,Clear,Yes,8,13.77
+Liberation War Museum,Thursday,10:40,Winter,Clear,No,31,39.07
+Lalbagh Fort,Friday,09:55,Winter,Clear,Yes,17,30.09
+National Museum,Saturday,12:27,Winter,Clear,Yes,24,36.49
+National Museum,Monday,18:41,Monsoon,Clear,No,20,25.54
+Liberation War Museum,Monday,16:04,Winter,Rainy,No,28,35.52
+National Museum,Monday,13:42,Summer,Clear,No,25,22.95
+Liberation War Museum,Saturday,09:34,Summer,Rainy,Yes,27,45.08
+Lalbagh Fort,Thursday,08:08,Summer,Clear,No,16,18.0
+Liberation War Museum,Monday,08:18,Winter,Clear,No,35,44.44
+Lalbagh Fort,Tuesday,11:42,Summer,Clear,No,30,36.84
+National Museum,Tuesday,15:09,Winter,Clear,No,45,44.74
+Liberation War Museum,Friday,09:08,Summer,Clear,Yes,10,19.0
+Liberation War Museum,Wednesday,17:23,Monsoon,Clear,No,8,10.41
+Liberation War Museum,Thursday,18:06,Winter,Clear,No,28,26.56
+National Zoo,Friday,15:44,Summer,Clear,Yes,50,91.02
+Lalbagh Fort,Tuesday,12:03,Summer,Clear,No,25,25.25
+National Museum,Friday,18:56,Monsoon,Rainy,Yes,49,103.69
+National Museum,Monday,08:54,Summer,Clear,No,16,15.09
+Ahsan Manzil,Tuesday,14:15,Summer,Rainy,No,48,50.94
+National Zoo,Wednesday,12:23,Summer,Clear,No,10,9.38
+Ahsan Manzil,Friday,15:53,Winter,Clear,Yes,1,3.75
+Ahsan Manzil,Wednesday,14:26,Monsoon,Clear,No,32,33.7
+National Museum,Sunday,12:22,Summer,Rainy,No,8,11.24
+Lalbagh Fort,Saturday,08:34,Summer,Clear,Yes,10,16.38
+Ahsan Manzil,Monday,13:04,Winter,Rainy,No,36,39.27
+Lalbagh Fort,Friday,09:17,Summer,Rainy,Yes,6,10.72
+Ahsan Manzil,Tuesday,10:00,Monsoon,Clear,No,22,28.26
+Liberation War Museum,Tuesday,12:15,Summer,Clear,No,26,34.01
+Lalbagh Fort,Wednesday,09:26,Summer,Clear,No,47,45.51
+Ahsan Manzil,Monday,11:49,Summer,Clear,No,43,52.91
+National Museum,Thursday,18:01,Summer,Rainy,No,17,16.09
+Liberation War Museum,Saturday,18:06,Monsoon,Rainy,Yes,36,76.07
+Liberation War Museum,Thursday,18:00,Summer,Clear,No,39,36.48
+Lalbagh Fort,Thursday,08:40,Summer,Clear,No,0,0.77
+National Museum,Sunday,17:54,Summer,Clear,No,45,43.0
+Liberation War Museum,Wednesday,18:44,Summer,Clear,No,49,47.62
+National Museum,Friday,15:02,Summer,Clear,Yes,28,41.93
+National Zoo,Thursday,14:16,Monsoon,Clear,No,27,38.04
+Ahsan Manzil,Tuesday,16:11,Summer,Rainy,No,18,21.12
+Lalbagh Fort,Wednesday,08:33,Summer,Clear,No,30,36.7
+National Zoo,Friday,10:10,Monsoon,Clear,Yes,21,36.14
+Liberation War Museum,Sunday,13:16,Winter,Rainy,No,11,11.62
+Lalbagh Fort,Wednesday,14:20,Summer,Clear,No,15,19.47
+Lalbagh Fort,Friday,12:46,Monsoon,Rainy,Yes,37,56.82
+National Zoo,Tuesday,18:32,Summer,Clear,No,41,49.2
+National Zoo,Sunday,12:36,Summer,Clear,No,13,18.17
+Liberation War Museum,Saturday,13:49,Winter,Clear,Yes,46,71.03
+Liberation War Museum,Thursday,16:26,Summer,Clear,No,43,41.81
+Lalbagh Fort,Friday,09:06,Summer,Clear,Yes,20,38.01
+Lalbagh Fort,Saturday,14:55,Summer,Clear,Yes,4,10.95
+Ahsan Manzil,Friday,12:46,Winter,Clear,Yes,35,68.57
+Lalbagh Fort,Thursday,09:58,Winter,Clear,No,44,58.79
+Liberation War Museum,Friday,08:27,Summer,Clear,Yes,28,47.54
+Lalbagh Fort,Thursday,13:42,Monsoon,Rainy,No,13,14.53
+Lalbagh Fort,Tuesday,08:20,Summer,Rainy,No,21,27.75
+National Zoo,Wednesday,16:05,Monsoon,Clear,No,27,25.51
+Lalbagh Fort,Sunday,15:27,Summer,Rainy,No,4,7.06
+Lalbagh Fort,Tuesday,08:47,Summer,Clear,No,23,25.3
+Lalbagh Fort,Tuesday,08:44,Summer,Clear,No,6,9.94
+Ahsan Manzil,Friday,13:25,Summer,Clear,Yes,2,5.54
+Liberation War Museum,Monday,08:02,Summer,Clear,No,32,42.33
+Lalbagh Fort,Friday,16:43,Summer,Rainy,Yes,9,19.43
+Ahsan Manzil,Monday,16:46,Monsoon,Clear,No,31,28.74
+National Zoo,Friday,11:07,Summer,Clear,Yes,32,47.57
+Lalbagh Fort,Sunday,17:54,Summer,Clear,No,12,12.43
+National Zoo,Friday,11:22,Monsoon,Rainy,Yes,11,17.7
+Ahsan Manzil,Friday,13:39,Winter,Rainy,Yes,22,41.79
+Liberation War Museum,Saturday,17:39,Summer,Clear,Yes,30,68.48
+National Zoo,Saturday,18:15,Winter,Clear,Yes,26,48.46
+Ahsan Manzil,Tuesday,11:12,Summer,Rainy,No,16,15.48
+Lalbagh Fort,Sunday,09:12,Monsoon,Clear,No,44,47.26
+Liberation War Museum,Sunday,13:17,Summer,Clear,No,11,19.0
+Liberation War Museum,Thursday,11:54,Summer,Clear,No,16,22.37
+National Museum,Saturday,11:54,Summer,Rainy,Yes,23,31.88
+National Museum,Wednesday,12:09,Summer,Clear,No,43,56.95
+Lalbagh Fort,Saturday,14:46,Monsoon,Clear,Yes,18,35.39
+National Museum,Friday,13:33,Winter,Rainy,Yes,46,68.5
+Lalbagh Fort,Sunday,09:18,Summer,Rainy,No,40,45.52
+Ahsan Manzil,Thursday,15:24,Summer,Clear,No,45,50.52
+National Zoo,Sunday,18:05,Summer,Clear,No,33,41.02
+National Zoo,Thursday,11:40,Winter,Clear,No,10,14.6
+Liberation War Museum,Wednesday,09:06,Summer,Clear,No,29,39.45
+National Museum,Saturday,15:59,Monsoon,Clear,Yes,7,13.12
+Liberation War Museum,Monday,16:42,Winter,Clear,No,42,40.16
+National Zoo,Sunday,13:40,Summer,Clear,No,4,3.86
+Liberation War Museum,Thursday,10:00,Monsoon,Clear,No,8,15.11
+Ahsan Manzil,Tuesday,11:45,Monsoon,Clear,No,9,14.71
+National Zoo,Saturday,18:54,Summer,Clear,Yes,29,72.3
+Ahsan Manzil,Monday,16:51,Monsoon,Clear,No,45,41.5
+National Museum,Wednesday,14:32,Monsoon,Clear,No,30,29.34
+Ahsan Manzil,Thursday,17:44,Winter,Rainy,No,26,37.41
+National Museum,Thursday,11:17,Summer,Clear,No,42,40.34
+Lalbagh Fort,Wednesday,16:53,Summer,Rainy,No,9,15.74
+Ahsan Manzil,Saturday,14:33,Winter,Clear,Yes,42,60.41
+National Zoo,Thursday,14:20,Monsoon,Clear,No,26,33.35
+National Museum,Tuesday,14:08,Summer,Rainy,No,11,10.38
+Ahsan Manzil,Sunday,12:31,Winter,Clear,No,17,20.4
+Ahsan Manzil,Tuesday,09:57,Summer,Clear,No,4,4.67
+National Museum,Friday,09:04,Monsoon,Clear,Yes,37,64.4
+National Museum,Friday,15:38,Summer,Clear,Yes,29,47.3
+National Zoo,Monday,17:13,Summer,Clear,No,8,9.06
+National Zoo,Friday,12:06,Summer,Clear,Yes,22,44.34
+Liberation War Museum,Thursday,18:47,Monsoon,Clear,No,28,28.32
+National Museum,Sunday,13:01,Summer,Clear,No,30,35.49
+Liberation War Museum,Friday,14:41,Monsoon,Clear,Yes,31,46.64
+Ahsan Manzil,Saturday,12:14,Monsoon,Clear,Yes,41,79.43
+Lalbagh Fort,Sunday,14:29,Summer,Clear,No,3,5.98
+Ahsan Manzil,Tuesday,17:40,Monsoon,Clear,No,1,5.17
+Lalbagh Fort,Tuesday,09:18,Summer,Rainy,No,12,13.89
+Lalbagh Fort,Thursday,16:16,Summer,Clear,No,45,51.45
+Liberation War Museum,Tuesday,15:08,Monsoon,Clear,No,8,8.61
+National Museum,Sunday,12:42,Winter,Clear,No,28,28.51
+National Museum,Saturday,12:04,Summer,Clear,Yes,4,7.51
+National Zoo,Monday,16:29,Summer,Clear,No,7,10.21
+Lalbagh Fort,Friday,13:37,Monsoon,Clear,Yes,27,37.01
+Liberation War Museum,Thursday,17:10,Monsoon,Rainy,No,26,21.97
+National Zoo,Thursday,17:39,Monsoon,Clear,No,38,41.62
+Liberation War Museum,Saturday,18:46,Winter,Clear,Yes,48,86.41
+National Museum,Monday,08:13,Winter,Clear,No,6,7.96
+Lalbagh Fort,Tuesday,14:11,Summer,Clear,No,34,40.94
+National Museum,Sunday,08:36,Monsoon,Clear,No,26,28.09
+Liberation War Museum,Tuesday,10:37,Monsoon,Clear,No,15,15.7
+National Museum,Friday,12:02,Winter,Clear,Yes,6,10.89
+Liberation War Museum,Monday,12:43,Winter,Clear,No,48,52.76
+Lalbagh Fort,Tuesday,17:32,Winter,Clear,No,17,18.51
+Liberation War Museum,Saturday,09:52,Summer,Clear,Yes,50,72.52
+National Zoo,Monday,13:57,Winter,Rainy,No,35,32.28
+National Museum,Thursday,12:05,Monsoon,Clear,No,43,41.29
+Ahsan Manzil,Monday,08:24,Winter,Clear,No,48,43.52
+Liberation War Museum,Sunday,15:41,Monsoon,Clear,No,49,51.46
+Liberation War Museum,Wednesday,10:10,Summer,Clear,No,45,56.95
+Ahsan Manzil,Tuesday,18:29,Summer,Rainy,No,9,12.27
+Liberation War Museum,Wednesday,10:09,Summer,Rainy,No,40,33.94
+Ahsan Manzil,Tuesday,14:03,Monsoon,Rainy,No,8,9.62
+Liberation War Museum,Wednesday,11:31,Winter,Clear,No,37,35.22
+National Museum,Saturday,08:48,Summer,Clear,Yes,28,54.94
+Liberation War Museum,Sunday,17:59,Monsoon,Clear,No,44,44.5
+National Zoo,Monday,15:17,Monsoon,Clear,No,43,39.62
+National Museum,Friday,12:19,Winter,Clear,Yes,20,34.65
+Ahsan Manzil,Tuesday,11:34,Summer,Rainy,No,6,8.61
+National Museum,Sunday,16:13,Monsoon,Clear,No,15,19.0
+National Museum,Wednesday,15:57,Monsoon,Clear,No,32,27.65
+Ahsan Manzil,Tuesday,12:53,Winter,Rainy,No,11,14.87
+Liberation War Museum,Monday,18:47,Summer,Clear,No,8,7.02
+National Zoo,Friday,17:32,Monsoon,Clear,Yes,11,19.34
+Liberation War Museum,Friday,08:41,Monsoon,Rainy,Yes,3,3.49
+Lalbagh Fort,Wednesday,10:36,Winter,Rainy,No,46,63.23
+Lalbagh Fort,Wednesday,08:36,Winter,Rainy,No,34,40.16
+National Museum,Thursday,18:25,Summer,Clear,No,43,56.44
+Lalbagh Fort,Wednesday,14:33,Monsoon,Clear,No,20,25.28
+National Museum,Thursday,15:50,Winter,Clear,No,48,57.24
+National Museum,Wednesday,17:13,Monsoon,Clear,No,38,41.47
+Ahsan Manzil,Thursday,11:55,Winter,Rainy,No,19,18.88
+Ahsan Manzil,Monday,17:59,Winter,Rainy,No,9,10.69
+Lalbagh Fort,Saturday,11:49,Monsoon,Clear,Yes,27,33.14
+National Museum,Monday,15:52,Summer,Clear,No,38,45.13
+Lalbagh Fort,Tuesday,15:02,Winter,Clear,No,17,24.25
+National Museum,Sunday,13:28,Monsoon,Clear,No,22,22.76
+Lalbagh Fort,Wednesday,15:49,Monsoon,Clear,No,29,25.78
+National Zoo,Sunday,18:21,Winter,Clear,No,11,14.2
+National Museum,Wednesday,10:34,Monsoon,Clear,No,28,32.74
+National Museum,Saturday,14:24,Monsoon,Rainy,Yes,19,25.0
+National Zoo,Monday,11:23,Summer,Clear,No,16,20.82
+Ahsan Manzil,Friday,08:12,Summer,Clear,Yes,38,57.64
+National Museum,Thursday,08:57,Summer,Rainy,No,3,4.7
+Lalbagh Fort,Thursday,09:00,Monsoon,Clear,No,23,19.67
+Liberation War Museum,Tuesday,10:52,Summer,Clear,No,26,33.29
+Lalbagh Fort,Thursday,12:36,Summer,Clear,No,21,26.06
+Lalbagh Fort,Monday,17:35,Monsoon,Rainy,No,5,7.69
+National Museum,Sunday,13:07,Summer,Clear,No,42,40.16
+Lalbagh Fort,Thursday,18:53,Summer,Clear,No,30,31.94
+Lalbagh Fort,Tuesday,09:56,Monsoon,Clear,No,40,52.68
+Ahsan Manzil,Monday,14:34,Monsoon,Rainy,No,29,33.43
+Ahsan Manzil,Wednesday,09:15,Monsoon,Clear,No,37,33.27
+Ahsan Manzil,Thursday,08:23,Summer,Rainy,No,30,35.02
+Ahsan Manzil,Sunday,10:33,Winter,Clear,No,41,46.32
+National Zoo,Tuesday,13:08,Summer,Clear,No,5,9.21
+Liberation War Museum,Friday,14:08,Summer,Rainy,Yes,45,87.45
+Lalbagh Fort,Sunday,16:59,Winter,Rainy,No,50,58.5
+Ahsan Manzil,Friday,18:09,Winter,Clear,Yes,47,83.32
+Ahsan Manzil,Tuesday,09:38,Monsoon,Rainy,No,11,14.58
+Lalbagh Fort,Tuesday,15:53,Summer,Clear,No,8,11.11
+Lalbagh Fort,Wednesday,14:32,Summer,Clear,No,41,54.29
+National Museum,Tuesday,13:49,Winter,Rainy,No,35,28.91
+Ahsan Manzil,Tuesday,11:22,Monsoon,Clear,No,36,34.02
+National Zoo,Saturday,08:58,Summer,Rainy,Yes,15,26.82
+Lalbagh Fort,Thursday,09:33,Monsoon,Rainy,No,7,10.47
+Lalbagh Fort,Wednesday,14:50,Summer,Clear,No,9,10.39
+Ahsan Manzil,Tuesday,09:48,Winter,Rainy,No,33,37.69
+National Zoo,Tuesday,13:52,Monsoon,Rainy,No,30,35.33
+National Zoo,Friday,08:09,Winter,Clear,Yes,32,44.56
+Liberation War Museum,Thursday,09:17,Winter,Clear,No,28,25.56
+Lalbagh Fort,Thursday,12:38,Winter,Clear,No,12,14.49
+Ahsan Manzil,Monday,14:20,Winter,Clear,No,0,3.89
+Liberation War Museum,Saturday,18:41,Summer,Clear,Yes,27,64.66
+Ahsan Manzil,Tuesday,08:29,Monsoon,Clear,No,47,50.79
+Lalbagh Fort,Sunday,16:27,Monsoon,Rainy,No,29,25.98
+Liberation War Museum,Saturday,14:26,Summer,Clear,Yes,24,36.89
+Liberation War Museum,Saturday,18:25,Summer,Rainy,Yes,28,58.89
+Ahsan Manzil,Thursday,11:21,Winter,Clear,No,12,12.1
+Lalbagh Fort,Wednesday,08:36,Summer,Clear,No,30,29.48
+National Zoo,Friday,10:28,Summer,Clear,Yes,31,52.8
+Lalbagh Fort,Friday,13:35,Summer,Clear,Yes,36,57.29
+Lalbagh Fort,Wednesday,18:49,Winter,Clear,No,19,28.88
+Liberation War Museum,Sunday,17:02,Summer,Clear,No,3,6.41
+National Museum,Wednesday,14:17,Summer,Clear,No,19,24.38
+Ahsan Manzil,Monday,09:13,Monsoon,Clear,No,36,48.65
+Lalbagh Fort,Wednesday,15:07,Winter,Clear,No,38,49.26
+National Museum,Sunday,12:46,Monsoon,Clear,No,18,19.97
+National Zoo,Friday,18:10,Summer,Clear,Yes,11,27.5
+Liberation War Museum,Friday,16:06,Winter,Rainy,Yes,13,28.42
+Lalbagh Fort,Sunday,17:59,Summer,Clear,No,0,1.67
+Lalbagh Fort,Wednesday,14:41,Summer,Clear,No,30,41.84
+Ahsan Manzil,Saturday,17:39,Monsoon,Clear,Yes,21,51.26
+Liberation War Museum,Tuesday,15:47,Winter,Clear,No,28,37.38
+Liberation War Museum,Tuesday,15:42,Summer,Clear,No,35,39.81
+National Zoo,Friday,10:32,Monsoon,Clear,Yes,45,65.61
+Liberation War Museum,Tuesday,12:01,Winter,Clear,No,46,48.7
+Ahsan Manzil,Sunday,15:15,Monsoon,Clear,No,10,15.81
+National Zoo,Sunday,17:36,Monsoon,Rainy,No,29,24.67
+Ahsan Manzil,Thursday,15:53,Summer,Clear,No,29,29.4
+Lalbagh Fort,Wednesday,10:04,Monsoon,Rainy,No,2,6.36
+National Zoo,Saturday,09:56,Summer,Rainy,Yes,41,60.76
+National Zoo,Sunday,13:23,Winter,Clear,No,35,38.37
+National Museum,Monday,15:02,Winter,Rainy,No,28,37.97
+Lalbagh Fort,Sunday,10:11,Winter,Clear,No,0,1.9
+Lalbagh Fort,Tuesday,13:23,Monsoon,Clear,No,19,24.7
+National Museum,Saturday,10:35,Monsoon,Clear,Yes,16,33.12
+National Museum,Thursday,11:33,Winter,Rainy,No,13,15.96
+National Museum,Wednesday,15:39,Summer,Rainy,No,8,12.16
+National Zoo,Saturday,14:49,Winter,Rainy,Yes,32,54.5
+National Zoo,Wednesday,15:49,Winter,Clear,No,12,13.34
+National Zoo,Tuesday,15:06,Monsoon,Rainy,No,4,4.87
+National Zoo,Thursday,14:37,Winter,Clear,No,34,47.84
+National Museum,Friday,12:42,Winter,Clear,Yes,20,36.27
+Lalbagh Fort,Sunday,09:09,Monsoon,Clear,No,49,44.12
+National Zoo,Wednesday,09:14,Monsoon,Clear,No,29,39.23
+National Zoo,Wednesday,10:12,Winter,Clear,No,41,46.56
+Lalbagh Fort,Sunday,10:34,Summer,Clear,No,12,18.83
+Lalbagh Fort,Tuesday,14:13,Summer,Clear,No,8,9.03
+National Museum,Saturday,18:30,Winter,Clear,Yes,21,45.08
+National Zoo,Sunday,14:28,Summer,Clear,No,39,37.05
+National Museum,Saturday,11:36,Monsoon,Clear,Yes,38,70.45
+National Museum,Tuesday,15:57,Winter,Rainy,No,36,31.13
+Lalbagh Fort,Monday,16:23,Winter,Clear,No,48,51.97
+National Zoo,Tuesday,11:31,Monsoon,Clear,No,8,9.59
+National Zoo,Wednesday,15:18,Winter,Rainy,No,4,5.39
+Liberation War Museum,Monday,18:04,Summer,Clear,No,13,12.36
+Liberation War Museum,Tuesday,11:32,Summer,Clear,No,8,11.81
+National Museum,Thursday,15:29,Summer,Clear,No,0,2.05
+Lalbagh Fort,Saturday,16:30,Summer,Rainy,Yes,12,26.36
+National Zoo,Monday,12:09,Winter,Rainy,No,3,7.33
+Lalbagh Fort,Monday,10:07,Winter,Clear,No,13,15.02
+Ahsan Manzil,Friday,09:18,Winter,Rainy,Yes,2,4.9
+National Museum,Thursday,15:55,Summer,Rainy,No,28,32.23
+Liberation War Museum,Wednesday,11:26,Summer,Clear,No,27,31.15
+Liberation War Museum,Thursday,12:51,Monsoon,Clear,No,49,46.43
+Liberation War Museum,Thursday,15:10,Winter,Clear,No,3,3.46
+Lalbagh Fort,Tuesday,08:43,Summer,Rainy,No,0,1.76
+Ahsan Manzil,Thursday,13:38,Winter,Rainy,No,14,18.55
+National Zoo,Friday,14:15,Summer,Rainy,Yes,24,36.42
+National Zoo,Saturday,13:47,Monsoon,Clear,Yes,1,4.35
+National Zoo,Wednesday,12:43,Summer,Rainy,No,46,59.62
+National Zoo,Monday,10:20,Winter,Rainy,No,9,11.2
+Lalbagh Fort,Thursday,15:18,Winter,Clear,No,45,56.5
+Liberation War Museum,Thursday,12:18,Winter,Clear,No,21,27.09
+National Zoo,Friday,16:31,Monsoon,Clear,Yes,36,83.0
+Lalbagh Fort,Thursday,16:41,Summer,Clear,No,25,23.91
+Ahsan Manzil,Sunday,14:37,Winter,Rainy,No,0,1.75
+National Museum,Monday,11:29,Winter,Clear,No,38,46.76
+Lalbagh Fort,Friday,08:24,Monsoon,Clear,Yes,0,4.06
+Liberation War Museum,Monday,12:35,Summer,Rainy,No,9,16.04
+National Museum,Wednesday,14:31,Monsoon,Clear,No,34,44.41
+National Zoo,Sunday,14:48,Winter,Clear,No,7,11.67
+Liberation War Museum,Wednesday,18:40,Winter,Clear,No,49,59.25
+Lalbagh Fort,Sunday,18:35,Monsoon,Clear,No,7,12.24
+Ahsan Manzil,Saturday,13:32,Summer,Clear,Yes,27,39.2
+Ahsan Manzil,Thursday,18:12,Winter,Clear,No,44,58.21
+Liberation War Museum,Sunday,15:01,Winter,Clear,No,35,44.37
+National Zoo,Wednesday,13:39,Monsoon,Clear,No,44,58.17
+National Zoo,Wednesday,11:39,Summer,Clear,No,20,27.31
+Lalbagh Fort,Thursday,10:53,Monsoon,Clear,No,32,38.65
+Liberation War Museum,Monday,09:59,Summer,Clear,No,23,32.23
+Lalbagh Fort,Thursday,13:05,Winter,Rainy,No,3,4.92
+Liberation War Museum,Sunday,16:09,Summer,Clear,No,11,15.67
+National Zoo,Monday,17:03,Winter,Clear,No,11,17.07
+Liberation War Museum,Thursday,12:40,Monsoon,Clear,No,32,34.62
+National Zoo,Tuesday,08:24,Monsoon,Rainy,No,2,3.59
+Ahsan Manzil,Tuesday,13:36,Summer,Rainy,No,2,4.45
+Liberation War Museum,Tuesday,10:04,Winter,Rainy,No,20,24.08
+National Zoo,Tuesday,15:59,Summer,Rainy,No,45,42.25
+National Zoo,Saturday,11:01,Summer,Rainy,Yes,27,44.53
+National Zoo,Wednesday,17:17,Summer,Rainy,No,6,9.24
+Liberation War Museum,Thursday,08:49,Monsoon,Clear,No,4,8.78
+Ahsan Manzil,Tuesday,12:56,Monsoon,Rainy,No,20,19.37
+National Zoo,Monday,16:14,Summer,Clear,No,26,28.12
+National Zoo,Thursday,14:47,Summer,Rainy,No,37,47.07
+National Museum,Sunday,16:44,Summer,Clear,No,20,21.68
+Liberation War Museum,Tuesday,15:44,Summer,Clear,No,40,36.21
+Lalbagh Fort,Tuesday,18:13,Winter,Clear,No,5,9.18
+Liberation War Museum,Saturday,13:28,Summer,Clear,Yes,39,73.17
+National Museum,Tuesday,13:07,Monsoon,Clear,No,50,50.55
+Liberation War Museum,Wednesday,13:01,Summer,Clear,No,44,41.03
+National Zoo,Monday,10:50,Winter,Clear,No,9,12.24
+Lalbagh Fort,Monday,14:24,Winter,Clear,No,20,28.99
+Lalbagh Fort,Thursday,12:48,Winter,Clear,No,20,24.8
+Ahsan Manzil,Sunday,11:54,Monsoon,Clear,No,5,6.72
+Liberation War Museum,Saturday,09:20,Monsoon,Rainy,Yes,35,51.57
+Liberation War Museum,Tuesday,10:50,Monsoon,Rainy,No,17,17.66
+Ahsan Manzil,Thursday,15:06,Winter,Clear,No,44,47.01
+National Museum,Monday,17:55,Summer,Clear,No,39,52.08
+Liberation War Museum,Sunday,18:03,Monsoon,Clear,No,18,21.18
+Ahsan Manzil,Wednesday,18:31,Monsoon,Rainy,No,46,43.84
+Liberation War Museum,Monday,16:11,Monsoon,Clear,No,16,19.56
+Lalbagh Fort,Monday,12:53,Monsoon,Clear,No,43,38.7
+Liberation War Museum,Thursday,15:32,Monsoon,Clear,No,49,58.1
+Lalbagh Fort,Wednesday,08:30,Summer,Clear,No,34,40.92
+Liberation War Museum,Monday,15:32,Winter,Clear,No,41,36.36
+National Zoo,Monday,12:28,Monsoon,Clear,No,29,32.08
+Lalbagh Fort,Monday,12:47,Summer,Clear,No,41,54.78
+National Museum,Tuesday,11:03,Winter,Rainy,No,2,3.63
+National Museum,Wednesday,18:56,Winter,Clear,No,16,20.98
+Ahsan Manzil,Sunday,10:44,Monsoon,Rainy,No,24,28.81
+Ahsan Manzil,Tuesday,11:39,Winter,Rainy,No,7,11.18
+National Zoo,Thursday,15:12,Monsoon,Clear,No,49,45.78
+National Museum,Thursday,18:09,Summer,Clear,No,45,62.43
+Liberation War Museum,Wednesday,08:18,Winter,Clear,No,35,48.66
+Lalbagh Fort,Sunday,16:51,Summer,Rainy,No,24,27.83
+National Museum,Monday,15:20,Monsoon,Clear,No,24,28.22
+Liberation War Museum,Sunday,10:36,Winter,Rainy,No,44,56.75
+National Museum,Thursday,11:40,Winter,Clear,No,22,28.76
+Liberation War Museum,Saturday,13:40,Summer,Clear,Yes,7,10.2
+National Museum,Monday,16:59,Monsoon,Clear,No,19,25.3
+Ahsan Manzil,Saturday,16:55,Monsoon,Rainy,Yes,34,61.79
+Lalbagh Fort,Friday,13:37,Monsoon,Clear,Yes,29,47.65
+National Zoo,Sunday,17:08,Monsoon,Clear,No,50,53.11
+Ahsan Manzil,Sunday,18:52,Summer,Clear,No,11,16.64
+Ahsan Manzil,Tuesday,16:00,Monsoon,Clear,No,13,17.76
+Liberation War Museum,Tuesday,08:20,Summer,Clear,No,33,28.33
+National Museum,Tuesday,10:37,Summer,Clear,No,10,13.62
+National Zoo,Monday,14:21,Summer,Rainy,No,48,54.81
+National Zoo,Tuesday,13:34,Winter,Clear,No,45,58.05
+National Zoo,Tuesday,14:52,Monsoon,Clear,No,23,23.86
+Liberation War Museum,Sunday,16:44,Winter,Clear,No,43,52.06
+Lalbagh Fort,Friday,11:02,Summer,Clear,Yes,7,14.96
+Lalbagh Fort,Wednesday,08:19,Monsoon,Rainy,No,43,49.65
+National Zoo,Thursday,10:39,Summer,Clear,No,8,12.01
+Liberation War Museum,Monday,08:38,Winter,Rainy,No,49,56.51
+Lalbagh Fort,Friday,11:26,Monsoon,Clear,Yes,36,58.8
+Liberation War Museum,Tuesday,09:07,Summer,Rainy,No,9,14.85
+National Zoo,Sunday,13:58,Winter,Rainy,No,32,33.84
+National Zoo,Monday,09:43,Summer,Clear,No,46,40.61
+National Zoo,Friday,16:26,Winter,Clear,Yes,17,29.12
+National Museum,Sunday,08:35,Summer,Clear,No,4,4.67
+Lalbagh Fort,Friday,17:08,Winter,Clear,Yes,44,83.42
+National Zoo,Friday,16:18,Summer,Clear,Yes,50,118.09
+Ahsan Manzil,Wednesday,14:02,Summer,Clear,No,45,45.92
+National Zoo,Tuesday,12:22,Monsoon,Clear,No,48,48.34
+Liberation War Museum,Monday,18:29,Winter,Clear,No,4,5.46
+Liberation War Museum,Tuesday,10:16,Summer,Clear,No,26,33.9
+Lalbagh Fort,Wednesday,13:45,Winter,Rainy,No,14,20.9
+National Museum,Tuesday,09:12,Winter,Clear,No,29,41.33
+National Museum,Wednesday,11:00,Winter,Clear,No,47,54.87
+Ahsan Manzil,Tuesday,10:34,Winter,Rainy,No,4,5.97
+Ahsan Manzil,Tuesday,12:04,Winter,Clear,No,12,11.79
+National Museum,Tuesday,12:43,Winter,Clear,No,29,37.6
+Liberation War Museum,Thursday,12:01,Summer,Clear,No,8,11.76
+National Museum,Sunday,10:00,Monsoon,Rainy,No,18,19.07
+Lalbagh Fort,Thursday,12:34,Monsoon,Clear,No,35,39.03
+Ahsan Manzil,Wednesday,08:17,Winter,Clear,No,0,0.8
+Lalbagh Fort,Wednesday,15:26,Summer,Rainy,No,41,47.94
+National Zoo,Wednesday,18:18,Summer,Rainy,No,35,44.59
+Lalbagh Fort,Sunday,15:57,Summer,Clear,No,9,11.89
+Lalbagh Fort,Saturday,10:28,Monsoon,Clear,Yes,40,64.54
+National Museum,Tuesday,08:13,Summer,Rainy,No,48,55.71
+Lalbagh Fort,Sunday,10:19,Monsoon,Clear,No,0,0.74
+Liberation War Museum,Tuesday,08:45,Summer,Clear,No,43,58.79
+Liberation War Museum,Thursday,18:12,Winter,Clear,No,39,43.19
+Lalbagh Fort,Thursday,17:47,Monsoon,Rainy,No,17,14.72
+Liberation War Museum,Tuesday,18:05,Monsoon,Clear,No,22,28.18
+National Museum,Friday,16:49,Monsoon,Rainy,Yes,1,5.67
+Liberation War Museum,Friday,10:38,Summer,Clear,Yes,33,63.25
+National Museum,Sunday,16:32,Summer,Clear,No,11,10.46
+Lalbagh Fort,Friday,12:58,Winter,Rainy,Yes,9,18.77
+Liberation War Museum,Thursday,11:16,Monsoon,Clear,No,6,7.37
+Liberation War Museum,Tuesday,10:10,Summer,Clear,No,14,21.99
+Liberation War Museum,Sunday,10:58,Summer,Clear,No,35,37.74
+Ahsan Manzil,Wednesday,08:58,Monsoon,Clear,No,34,41.41
+Lalbagh Fort,Friday,11:15,Winter,Clear,Yes,14,28.67
+Liberation War Museum,Saturday,15:23,Winter,Rainy,Yes,17,26.52
+Lalbagh Fort,Wednesday,14:12,Winter,Clear,No,8,7.94
+Liberation War Museum,Friday,18:37,Summer,Clear,Yes,46,110.56
+Ahsan Manzil,Tuesday,18:50,Summer,Clear,No,20,19.28
+Ahsan Manzil,Wednesday,15:41,Winter,Clear,No,24,26.21
+National Museum,Monday,16:54,Winter,Clear,No,11,13.8
+Lalbagh Fort,Saturday,10:32,Summer,Rainy,Yes,29,51.43
+Liberation War Museum,Saturday,17:03,Summer,Clear,Yes,1,2.77
+Liberation War Museum,Thursday,18:20,Summer,Clear,No,27,29.9
+Liberation War Museum,Thursday,11:43,Summer,Clear,No,40,39.56
+National Museum,Friday,11:50,Summer,Rainy,Yes,14,26.16
+Liberation War Museum,Sunday,14:18,Summer,Clear,No,46,54.92
+National Zoo,Tuesday,12:57,Monsoon,Clear,No,47,49.93
+Liberation War Museum,Friday,18:43,Summer,Clear,Yes,33,54.06
+National Museum,Wednesday,15:20,Monsoon,Clear,No,22,26.27
+Ahsan Manzil,Thursday,11:23,Monsoon,Clear,No,23,32.11
+Ahsan Manzil,Wednesday,10:36,Winter,Clear,No,50,43.77
+National Zoo,Thursday,09:40,Summer,Clear,No,25,25.99
+National Museum,Saturday,16:13,Winter,Clear,Yes,26,65.84
+National Zoo,Saturday,12:24,Winter,Clear,Yes,47,60.54
+Liberation War Museum,Tuesday,09:36,Monsoon,Clear,No,8,9.98
+Lalbagh Fort,Tuesday,10:37,Winter,Rainy,No,11,16.1
+Liberation War Museum,Sunday,13:03,Summer,Clear,No,35,40.42
+Lalbagh Fort,Wednesday,12:31,Winter,Rainy,No,20,26.77
+Lalbagh Fort,Sunday,16:13,Monsoon,Clear,No,48,44.3
+National Museum,Monday,14:23,Summer,Rainy,No,17,18.85
+Ahsan Manzil,Tuesday,11:24,Winter,Rainy,No,39,50.4
+National Zoo,Sunday,08:47,Summer,Clear,No,15,20.32
+Liberation War Museum,Thursday,08:52,Winter,Rainy,No,18,17.88
+Lalbagh Fort,Friday,14:50,Monsoon,Rainy,Yes,18,34.33
+Liberation War Museum,Friday,14:51,Summer,Clear,Yes,31,43.14
+National Museum,Sunday,08:08,Monsoon,Rainy,No,49,54.94
+Liberation War Museum,Saturday,16:37,Winter,Clear,Yes,20,36.74
+Lalbagh Fort,Friday,09:37,Summer,Clear,Yes,19,23.95
+Lalbagh Fort,Sunday,13:22,Summer,Clear,No,20,24.4
+National Museum,Tuesday,15:32,Summer,Rainy,No,22,32.9
+National Museum,Monday,12:14,Summer,Clear,No,37,50.04
+Liberation War Museum,Thursday,09:57,Monsoon,Clear,No,45,54.32
+Liberation War Museum,Thursday,17:46,Winter,Clear,No,36,47.14
+National Zoo,Tuesday,08:42,Summer,Clear,No,15,20.35
+Lalbagh Fort,Friday,14:59,Summer,Clear,Yes,2,4.94
+Ahsan Manzil,Tuesday,15:27,Summer,Rainy,No,36,46.42
+National Museum,Wednesday,09:11,Monsoon,Rainy,No,32,39.22
+Liberation War Museum,Sunday,09:46,Summer,Clear,No,32,44.82
+Ahsan Manzil,Tuesday,16:57,Monsoon,Clear,No,37,43.69
+National Zoo,Sunday,17:56,Summer,Rainy,No,24,25.44
+Liberation War Museum,Friday,08:02,Monsoon,Clear,Yes,10,13.84
+Liberation War Museum,Monday,17:17,Monsoon,Clear,No,9,14.28
+Liberation War Museum,Wednesday,17:52,Monsoon,Clear,No,18,21.96
+Liberation War Museum,Thursday,13:28,Winter,Rainy,No,32,31.61
+Lalbagh Fort,Saturday,17:38,Winter,Clear,Yes,8,16.39
+Lalbagh Fort,Tuesday,10:05,Summer,Rainy,No,1,4.22
+Lalbagh Fort,Friday,11:41,Summer,Clear,Yes,14,19.66
+Lalbagh Fort,Wednesday,12:36,Winter,Rainy,No,44,55.14
+National Museum,Wednesday,10:22,Summer,Clear,No,27,24.8
+Lalbagh Fort,Saturday,14:32,Monsoon,Rainy,Yes,17,32.11
+Ahsan Manzil,Wednesday,12:25,Monsoon,Rainy,No,29,24.2
+National Zoo,Friday,15:19,Summer,Clear,Yes,23,36.94
+National Zoo,Wednesday,16:46,Monsoon,Clear,No,10,11.71
+Ahsan Manzil,Sunday,08:42,Winter,Clear,No,0,3.44
+National Zoo,Friday,13:36,Monsoon,Clear,Yes,11,15.02
+National Zoo,Monday,09:21,Monsoon,Clear,No,16,20.64
+Ahsan Manzil,Monday,16:50,Summer,Rainy,No,45,46.27
+Lalbagh Fort,Saturday,15:58,Summer,Rainy,Yes,3,6.61
+Liberation War Museum,Wednesday,08:53,Winter,Rainy,No,10,11.86
+Liberation War Museum,Friday,09:38,Summer,Rainy,Yes,6,13.51
+National Museum,Thursday,16:40,Summer,Clear,No,14,15.46
+Liberation War Museum,Monday,09:28,Summer,Rainy,No,5,6.76
+National Museum,Sunday,09:17,Monsoon,Clear,No,42,38.9
+Liberation War Museum,Monday,13:33,Winter,Rainy,No,7,9.26
+National Museum,Sunday,18:33,Monsoon,Clear,No,22,26.59
+National Museum,Wednesday,09:53,Monsoon,Rainy,No,15,13.78
+Lalbagh Fort,Thursday,17:31,Summer,Clear,No,18,19.64
+National Zoo,Tuesday,18:06,Monsoon,Clear,No,26,34.62
+National Museum,Tuesday,18:22,Monsoon,Clear,No,38,39.83
+Ahsan Manzil,Thursday,12:25,Summer,Clear,No,45,47.89
+Ahsan Manzil,Tuesday,15:23,Summer,Clear,No,38,43.93
+National Museum,Tuesday,11:58,Summer,Clear,No,32,39.41
+Liberation War Museum,Monday,09:20,Summer,Clear,No,23,27.2
+Ahsan Manzil,Wednesday,09:39,Monsoon,Rainy,No,18,20.56
+Ahsan Manzil,Sunday,18:15,Summer,Clear,No,48,64.44
+Liberation War Museum,Saturday,16:51,Monsoon,Rainy,Yes,50,114.89
+Ahsan Manzil,Wednesday,14:23,Winter,Clear,No,50,44.53
+Lalbagh Fort,Monday,14:57,Summer,Clear,No,22,18.84
+National Museum,Saturday,15:31,Monsoon,Rainy,Yes,15,23.2
+Lalbagh Fort,Friday,11:06,Monsoon,Rainy,Yes,25,44.07
+National Zoo,Sunday,11:54,Monsoon,Clear,No,19,20.96
+Ahsan Manzil,Thursday,15:36,Winter,Rainy,No,5,5.79
+Liberation War Museum,Sunday,11:35,Summer,Rainy,No,0,4.73
+Lalbagh Fort,Tuesday,13:47,Summer,Clear,No,39,39.97
+Lalbagh Fort,Thursday,10:07,Winter,Rainy,No,45,47.06
+Ahsan Manzil,Saturday,10:29,Summer,Clear,Yes,30,53.17
+National Museum,Tuesday,12:52,Winter,Clear,No,47,58.27
+Ahsan Manzil,Saturday,13:14,Winter,Clear,Yes,35,52.59
+Ahsan Manzil,Sunday,14:27,Monsoon,Rainy,No,14,13.66
+Ahsan Manzil,Monday,12:58,Monsoon,Rainy,No,24,23.24
+Lalbagh Fort,Sunday,14:32,Summer,Clear,No,45,47.46
+National Museum,Friday,14:06,Winter,Clear,Yes,44,81.85
+National Zoo,Friday,15:09,Winter,Clear,Yes,5,11.78
+National Zoo,Tuesday,14:46,Winter,Clear,No,1,2.95
+Lalbagh Fort,Wednesday,14:57,Winter,Clear,No,5,6.59
+National Zoo,Sunday,14:02,Summer,Rainy,No,44,47.77
+National Museum,Wednesday,17:22,Winter,Clear,No,28,36.28
+Liberation War Museum,Saturday,11:30,Summer,Clear,Yes,34,68.68
+Liberation War Museum,Friday,12:24,Winter,Clear,Yes,42,73.61
+Liberation War Museum,Thursday,08:25,Monsoon,Clear,No,19,15.99
+Ahsan Manzil,Monday,13:05,Monsoon,Clear,No,15,14.35
+National Zoo,Tuesday,13:57,Summer,Clear,No,41,52.4
+Ahsan Manzil,Tuesday,11:39,Summer,Clear,No,29,35.66
+Liberation War Museum,Friday,08:29,Monsoon,Clear,Yes,49,76.45
+National Museum,Saturday,09:52,Winter,Clear,Yes,19,38.21
+Lalbagh Fort,Friday,10:44,Monsoon,Clear,Yes,4,11.03
+National Museum,Thursday,12:43,Winter,Clear,No,0,0.77
+Lalbagh Fort,Sunday,09:35,Summer,Rainy,No,13,11.31
+Lalbagh Fort,Tuesday,08:04,Winter,Clear,No,37,36.15
+National Zoo,Tuesday,15:37,Summer,Rainy,No,32,39.19
+Ahsan Manzil,Tuesday,16:44,Winter,Clear,No,37,43.46
+Lalbagh Fort,Wednesday,10:47,Monsoon,Clear,No,35,33.98
+National Museum,Friday,16:53,Summer,Rainy,Yes,4,9.83
+Ahsan Manzil,Saturday,15:14,Winter,Clear,Yes,28,43.49
+National Zoo,Thursday,12:13,Summer,Clear,No,28,32.4
+National Museum,Monday,11:24,Monsoon,Clear,No,11,15.07
+Liberation War Museum,Sunday,15:17,Summer,Clear,No,31,38.49
+Liberation War Museum,Tuesday,13:12,Winter,Clear,No,34,40.52
+Lalbagh Fort,Tuesday,13:37,Monsoon,Clear,No,24,29.3
+National Zoo,Sunday,13:22,Winter,Clear,No,11,14.2
+Ahsan Manzil,Saturday,15:12,Monsoon,Clear,Yes,38,69.32
+National Museum,Monday,08:01,Summer,Clear,No,12,11.27
+National Museum,Tuesday,10:34,Monsoon,Rainy,No,19,21.36
+National Zoo,Saturday,16:53,Monsoon,Clear,Yes,23,50.73
+National Zoo,Wednesday,16:29,Monsoon,Clear,No,8,9.09
+Lalbagh Fort,Thursday,10:47,Summer,Rainy,No,9,12.0
+Ahsan Manzil,Monday,17:05,Summer,Clear,No,6,7.71
+Ahsan Manzil,Friday,12:36,Monsoon,Rainy,Yes,17,25.69
+Ahsan Manzil,Tuesday,12:37,Summer,Rainy,No,6,9.8
+Ahsan Manzil,Tuesday,17:08,Summer,Clear,No,11,15.73
+National Museum,Wednesday,10:11,Monsoon,Rainy,No,17,14.54
+National Zoo,Saturday,16:29,Monsoon,Clear,Yes,47,115.28
+Lalbagh Fort,Friday,09:42,Winter,Rainy,Yes,38,70.5
+Liberation War Museum,Friday,18:57,Summer,Clear,Yes,22,45.89
+Lalbagh Fort,Thursday,16:55,Winter,Rainy,No,36,46.2
+Liberation War Museum,Sunday,18:20,Monsoon,Rainy,No,25,25.26
+Liberation War Museum,Monday,15:40,Monsoon,Rainy,No,46,42.87
+Liberation War Museum,Sunday,16:18,Monsoon,Clear,No,30,39.57
+National Zoo,Saturday,12:40,Monsoon,Clear,Yes,27,39.66
+Ahsan Manzil,Friday,09:32,Monsoon,Clear,Yes,33,51.84
+Lalbagh Fort,Monday,12:13,Monsoon,Clear,No,35,41.96
+National Museum,Monday,13:13,Winter,Rainy,No,11,11.32
+National Zoo,Sunday,14:37,Winter,Clear,No,13,16.54
+National Zoo,Wednesday,17:13,Summer,Rainy,No,6,8.35
+National Zoo,Saturday,17:49,Summer,Clear,Yes,28,49.67
+National Museum,Friday,10:21,Summer,Rainy,Yes,32,43.4
+National Zoo,Monday,09:17,Winter,Clear,No,16,16.88
+Ahsan Manzil,Tuesday,09:04,Winter,Rainy,No,45,45.44
+Lalbagh Fort,Tuesday,15:21,Summer,Clear,No,12,13.36
+Liberation War Museum,Wednesday,12:54,Summer,Clear,No,14,14.23
+Ahsan Manzil,Monday,12:54,Winter,Rainy,No,16,21.97
+National Zoo,Sunday,09:18,Summer,Rainy,No,45,43.37
+Liberation War Museum,Thursday,09:19,Summer,Rainy,No,43,46.04
+Lalbagh Fort,Tuesday,17:14,Summer,Clear,No,49,47.86
+National Zoo,Saturday,11:39,Monsoon,Clear,Yes,46,87.41
+National Zoo,Tuesday,09:34,Monsoon,Clear,No,35,38.56
+National Zoo,Friday,08:48,Winter,Rainy,Yes,37,62.56
+Ahsan Manzil,Tuesday,14:26,Winter,Clear,No,19,18.47
+Ahsan Manzil,Wednesday,16:45,Summer,Clear,No,5,8.85
+Ahsan Manzil,Wednesday,09:11,Summer,Clear,No,30,33.76
+National Museum,Sunday,09:24,Winter,Clear,No,9,11.0
+National Museum,Tuesday,11:45,Summer,Clear,No,25,30.49
+National Museum,Tuesday,18:53,Winter,Clear,No,7,11.91
+National Museum,Tuesday,13:46,Summer,Clear,No,0,4.72
+National Zoo,Saturday,10:31,Monsoon,Clear,Yes,49,87.99
+Liberation War Museum,Monday,08:09,Summer,Clear,No,35,41.74
+Lalbagh Fort,Thursday,10:01,Monsoon,Clear,No,31,39.86
+National Zoo,Saturday,14:53,Monsoon,Clear,Yes,33,67.15
+National Museum,Thursday,09:02,Monsoon,Clear,No,6,10.09
+Lalbagh Fort,Friday,17:26,Monsoon,Rainy,Yes,1,5.12
+Liberation War Museum,Monday,14:43,Winter,Rainy,No,3,6.47
+National Zoo,Saturday,09:05,Summer,Clear,Yes,10,15.33
+National Zoo,Tuesday,14:49,Winter,Rainy,No,39,51.37
+Lalbagh Fort,Saturday,16:41,Monsoon,Clear,Yes,17,28.44
+Ahsan Manzil,Thursday,11:33,Summer,Clear,No,33,30.62
+National Museum,Tuesday,13:17,Monsoon,Clear,No,47,54.87
+National Zoo,Thursday,17:05,Summer,Clear,No,31,31.5
+National Museum,Monday,18:10,Winter,Rainy,No,29,33.57
+Ahsan Manzil,Wednesday,09:47,Monsoon,Clear,No,16,16.45
+Ahsan Manzil,Tuesday,14:26,Summer,Rainy,No,14,18.83
+National Zoo,Friday,09:05,Monsoon,Rainy,Yes,9,15.75
+Liberation War Museum,Wednesday,09:31,Summer,Clear,No,7,7.42
+National Zoo,Friday,17:42,Winter,Rainy,Yes,47,116.53
+Liberation War Museum,Tuesday,18:51,Winter,Clear,No,39,47.92
+National Museum,Saturday,14:38,Monsoon,Clear,Yes,43,81.15
+Ahsan Manzil,Sunday,10:21,Winter,Clear,No,28,28.81
+Liberation War Museum,Friday,12:30,Winter,Clear,Yes,12,17.71
+Lalbagh Fort,Friday,14:59,Summer,Rainy,Yes,16,29.58
+National Zoo,Saturday,10:45,Summer,Rainy,Yes,36,56.35
+Liberation War Museum,Thursday,14:34,Monsoon,Clear,No,37,46.68
+Liberation War Museum,Tuesday,13:42,Summer,Rainy,No,21,30.37
+Liberation War Museum,Friday,12:59,Winter,Clear,Yes,19,30.69
+National Museum,Wednesday,08:51,Summer,Clear,No,25,34.81
+Liberation War Museum,Friday,09:26,Summer,Clear,Yes,15,24.5
+Ahsan Manzil,Tuesday,12:43,Winter,Clear,No,17,21.79
+Ahsan Manzil,Sunday,14:23,Summer,Clear,No,10,12.63
+National Zoo,Sunday,09:45,Winter,Rainy,No,8,13.05
+Lalbagh Fort,Saturday,15:53,Winter,Clear,Yes,42,58.39
+National Zoo,Monday,10:32,Monsoon,Clear,No,16,19.37
+National Zoo,Thursday,18:05,Summer,Clear,No,36,43.12
+Liberation War Museum,Thursday,12:28,Summer,Rainy,No,22,23.99
+Liberation War Museum,Saturday,08:36,Summer,Rainy,Yes,13,22.81
+Lalbagh Fort,Sunday,10:19,Summer,Clear,No,12,12.16
+Ahsan Manzil,Tuesday,18:09,Summer,Clear,No,35,34.58
+National Zoo,Tuesday,09:27,Monsoon,Rainy,No,38,43.99
+Ahsan Manzil,Monday,15:36,Winter,Clear,No,29,26.65
+Ahsan Manzil,Wednesday,17:12,Monsoon,Rainy,No,7,10.75
+Lalbagh Fort,Sunday,18:43,Summer,Clear,No,1,1.19
+Ahsan Manzil,Tuesday,10:43,Monsoon,Clear,No,44,49.22
+Ahsan Manzil,Thursday,14:37,Winter,Clear,No,20,17.67
+National Zoo,Tuesday,08:04,Summer,Clear,No,43,38.8
+Liberation War Museum,Monday,16:16,Monsoon,Clear,No,10,14.88
+Liberation War Museum,Monday,17:46,Monsoon,Clear,No,13,16.04
+Lalbagh Fort,Saturday,12:16,Winter,Clear,Yes,16,30.53
+Liberation War Museum,Sunday,11:45,Summer,Rainy,No,13,16.72
+Lalbagh Fort,Wednesday,09:00,Summer,Clear,No,21,20.29
+Liberation War Museum,Wednesday,12:21,Winter,Clear,No,33,39.38
+Lalbagh Fort,Thursday,13:59,Winter,Clear,No,36,35.62
+National Zoo,Monday,08:14,Summer,Rainy,No,10,8.56
+Liberation War Museum,Wednesday,09:13,Summer,Clear,No,21,28.29
+National Zoo,Wednesday,10:11,Monsoon,Clear,No,40,54.12
+Lalbagh Fort,Sunday,14:06,Monsoon,Rainy,No,26,24.15
+Lalbagh Fort,Thursday,12:17,Winter,Clear,No,2,2.18
+Lalbagh Fort,Wednesday,16:53,Winter,Rainy,No,39,52.52
+Ahsan Manzil,Saturday,15:45,Winter,Clear,Yes,34,54.72
+Liberation War Museum,Friday,18:43,Winter,Clear,Yes,34,76.98
+Lalbagh Fort,Sunday,16:44,Winter,Clear,No,38,43.52
+Ahsan Manzil,Saturday,18:51,Monsoon,Clear,Yes,50,124.93
+Liberation War Museum,Tuesday,12:04,Summer,Rainy,No,33,35.29
+Ahsan Manzil,Wednesday,18:29,Winter,Rainy,No,7,10.47
+Ahsan Manzil,Sunday,17:34,Summer,Clear,No,25,28.2
+National Zoo,Monday,16:13,Summer,Clear,No,15,22.14
+National Zoo,Thursday,12:07,Summer,Clear,No,14,16.31
+Ahsan Manzil,Saturday,18:51,Monsoon,Clear,Yes,49,80.0
+Liberation War Museum,Thursday,14:08,Summer,Clear,No,47,43.51
+Liberation War Museum,Friday,12:45,Summer,Clear,Yes,25,49.29
+Ahsan Manzil,Thursday,14:36,Monsoon,Clear,No,41,36.15
+Ahsan Manzil,Tuesday,12:19,Winter,Clear,No,40,50.9
+Ahsan Manzil,Sunday,17:34,Summer,Clear,No,44,48.92
+Lalbagh Fort,Saturday,14:44,Summer,Rainy,Yes,45,85.77
+National Museum,Wednesday,18:09,Summer,Clear,No,49,58.5
+Liberation War Museum,Thursday,17:10,Monsoon,Clear,No,20,17.1
+National Museum,Monday,10:22,Monsoon,Clear,No,36,44.64
+National Museum,Tuesday,11:47,Monsoon,Clear,No,32,39.45
+Liberation War Museum,Monday,17:50,Monsoon,Clear,No,17,20.07
+National Museum,Monday,14:21,Monsoon,Clear,No,15,21.48
+Lalbagh Fort,Sunday,15:56,Winter,Rainy,No,18,21.94
+Ahsan Manzil,Monday,13:36,Summer,Clear,No,27,33.55
+National Zoo,Wednesday,18:23,Summer,Clear,No,27,25.27
+National Zoo,Sunday,17:43,Monsoon,Clear,No,0,2.99
+National Zoo,Saturday,11:08,Monsoon,Clear,Yes,14,18.92
+Ahsan Manzil,Sunday,10:33,Winter,Clear,No,18,26.7
+National Zoo,Wednesday,18:00,Monsoon,Clear,No,27,25.78
+Ahsan Manzil,Sunday,08:21,Monsoon,Clear,No,12,14.34
+Lalbagh Fort,Friday,10:54,Winter,Clear,Yes,16,22.92
+Ahsan Manzil,Friday,11:25,Winter,Rainy,Yes,12,19.6
+Liberation War Museum,Monday,09:57,Winter,Rainy,No,17,21.24
+National Museum,Saturday,14:16,Monsoon,Clear,Yes,47,78.15
+National Museum,Wednesday,11:02,Summer,Rainy,No,19,18.92
+National Zoo,Thursday,10:26,Monsoon,Rainy,No,16,16.42
+National Zoo,Saturday,10:00,Monsoon,Clear,Yes,28,42.47
+Liberation War Museum,Friday,08:01,Winter,Clear,Yes,11,16.83
+Ahsan Manzil,Wednesday,14:40,Summer,Rainy,No,32,39.72
+Liberation War Museum,Thursday,15:47,Summer,Clear,No,23,28.91
+National Zoo,Tuesday,16:07,Monsoon,Clear,No,36,50.79
+Lalbagh Fort,Monday,14:01,Summer,Clear,No,1,1.49
+Liberation War Museum,Friday,13:08,Summer,Clear,Yes,13,19.61
+National Zoo,Friday,14:29,Winter,Rainy,Yes,49,90.01
+Ahsan Manzil,Tuesday,16:02,Summer,Clear,No,17,20.35
+National Museum,Wednesday,16:55,Monsoon,Clear,No,44,45.44
+National Zoo,Tuesday,11:59,Monsoon,Clear,No,2,2.81
+Liberation War Museum,Wednesday,12:59,Winter,Clear,No,27,36.63
+National Zoo,Thursday,17:39,Winter,Clear,No,21,22.38
+National Zoo,Thursday,11:03,Monsoon,Clear,No,26,26.43
+National Museum,Monday,09:41,Summer,Clear,No,10,10.6
+National Museum,Thursday,09:10,Summer,Clear,No,43,37.96
+National Zoo,Thursday,08:30,Monsoon,Clear,No,29,32.25
+Liberation War Museum,Wednesday,08:13,Summer,Rainy,No,37,40.29
+Liberation War Museum,Tuesday,12:54,Summer,Rainy,No,10,11.47
+Lalbagh Fort,Sunday,15:41,Winter,Clear,No,13,16.24
+National Zoo,Sunday,16:45,Winter,Clear,No,21,19.17
+Ahsan Manzil,Tuesday,08:17,Monsoon,Clear,No,18,21.41
+Liberation War Museum,Thursday,11:34,Monsoon,Clear,No,10,11.35
+National Museum,Tuesday,16:04,Summer,Clear,No,14,18.44
+Lalbagh Fort,Sunday,11:32,Winter,Rainy,No,16,20.23
+Lalbagh Fort,Wednesday,17:28,Monsoon,Clear,No,16,18.59
+Liberation War Museum,Monday,09:01,Summer,Clear,No,17,22.48
+Lalbagh Fort,Tuesday,12:37,Winter,Rainy,No,14,13.86
+National Zoo,Sunday,10:58,Summer,Clear,No,40,35.34
+Lalbagh Fort,Friday,10:36,Monsoon,Rainy,Yes,31,56.65
+National Museum,Sunday,15:05,Monsoon,Clear,No,15,21.26
+National Zoo,Thursday,15:30,Winter,Clear,No,15,23.02
+Lalbagh Fort,Sunday,09:10,Monsoon,Rainy,No,33,40.93
+Lalbagh Fort,Monday,15:44,Winter,Clear,No,36,34.06
+Lalbagh Fort,Thursday,10:02,Winter,Clear,No,48,56.1
+Ahsan Manzil,Thursday,14:22,Summer,Rainy,No,36,50.06
+National Zoo,Friday,13:52,Winter,Clear,Yes,29,54.82
+Ahsan Manzil,Friday,18:26,Winter,Clear,Yes,19,47.97
+Lalbagh Fort,Sunday,18:41,Monsoon,Clear,No,11,15.21
+Lalbagh Fort,Thursday,08:28,Winter,Rainy,No,24,23.81
+National Zoo,Thursday,14:55,Monsoon,Rainy,No,25,29.54
+Lalbagh Fort,Wednesday,15:18,Summer,Clear,No,21,23.98
+National Museum,Friday,11:36,Summer,Clear,Yes,27,50.74
+Ahsan Manzil,Wednesday,18:53,Winter,Clear,No,5,9.29
+Lalbagh Fort,Sunday,09:38,Summer,Clear,No,10,14.27
+National Museum,Monday,16:48,Monsoon,Rainy,No,24,26.68
+National Zoo,Wednesday,08:20,Summer,Rainy,No,37,51.39
+Ahsan Manzil,Thursday,09:36,Winter,Rainy,No,18,16.98
+Lalbagh Fort,Monday,12:00,Winter,Clear,No,8,8.4
+National Museum,Saturday,13:48,Winter,Clear,Yes,5,9.78
+National Museum,Saturday,15:11,Monsoon,Clear,Yes,6,12.04
+National Zoo,Friday,11:29,Winter,Clear,Yes,49,89.47
+Lalbagh Fort,Wednesday,08:07,Winter,Rainy,No,11,12.55
+National Zoo,Wednesday,09:29,Summer,Clear,No,25,23.97
+National Zoo,Sunday,08:24,Winter,Rainy,No,29,32.19
+Lalbagh Fort,Wednesday,16:08,Winter,Rainy,No,28,35.72
+National Zoo,Sunday,09:23,Summer,Rainy,No,6,9.8
+National Museum,Saturday,08:28,Summer,Clear,Yes,37,53.85
+Liberation War Museum,Saturday,12:52,Monsoon,Rainy,Yes,43,66.36
+National Museum,Friday,16:47,Monsoon,Clear,Yes,18,44.71
+Ahsan Manzil,Tuesday,09:25,Summer,Clear,No,48,59.3
+National Museum,Saturday,17:34,Monsoon,Clear,Yes,37,86.91
+Lalbagh Fort,Sunday,13:15,Monsoon,Rainy,No,24,24.53
+Ahsan Manzil,Sunday,09:22,Winter,Rainy,No,18,25.39
+Ahsan Manzil,Friday,12:18,Summer,Rainy,Yes,28,43.74
+National Zoo,Tuesday,10:18,Summer,Clear,No,27,32.01
+Ahsan Manzil,Tuesday,12:44,Winter,Rainy,No,17,23.64
+Liberation War Museum,Saturday,11:28,Summer,Clear,Yes,23,42.91
+Lalbagh Fort,Thursday,17:28,Monsoon,Rainy,No,13,18.57
+Liberation War Museum,Sunday,09:46,Winter,Clear,No,50,49.32
+Lalbagh Fort,Thursday,09:33,Summer,Clear,No,17,23.36
+Liberation War Museum,Saturday,11:00,Summer,Clear,Yes,19,24.59
+Liberation War Museum,Sunday,12:04,Winter,Clear,No,15,15.64
+National Museum,Monday,08:24,Summer,Clear,No,13,13.53
+National Museum,Tuesday,17:03,Winter,Clear,No,22,31.5
+Liberation War Museum,Monday,09:32,Summer,Clear,No,35,45.1
+National Museum,Tuesday,17:14,Monsoon,Clear,No,11,16.09
+Lalbagh Fort,Monday,17:50,Summer,Clear,No,14,14.6
+National Zoo,Tuesday,12:29,Winter,Rainy,No,45,52.16
+Lalbagh Fort,Tuesday,10:56,Winter,Rainy,No,1,2.41
+National Museum,Sunday,17:40,Winter,Clear,No,5,5.61
+National Museum,Saturday,12:08,Summer,Rainy,Yes,45,84.44
+National Museum,Wednesday,18:32,Summer,Rainy,No,10,10.06
+Liberation War Museum,Tuesday,11:13,Winter,Clear,No,50,60.63
+Lalbagh Fort,Tuesday,08:55,Winter,Clear,No,23,25.25
+Liberation War Museum,Monday,10:59,Monsoon,Clear,No,0,3.73
+Liberation War Museum,Thursday,18:24,Summer,Clear,No,1,3.96
+Lalbagh Fort,Monday,16:08,Monsoon,Rainy,No,8,11.32
+National Zoo,Monday,08:55,Summer,Rainy,No,9,14.45
+Ahsan Manzil,Wednesday,17:54,Monsoon,Clear,No,23,33.07
+Liberation War Museum,Monday,10:22,Winter,Rainy,No,34,40.27
+National Museum,Friday,09:50,Summer,Rainy,Yes,13,20.61
+Liberation War Museum,Monday,10:05,Monsoon,Clear,No,42,47.64
+Ahsan Manzil,Sunday,17:36,Summer,Clear,No,23,27.65
+Lalbagh Fort,Wednesday,11:21,Winter,Clear,No,11,14.33
+National Museum,Sunday,11:16,Summer,Rainy,No,43,51.31
+National Museum,Sunday,18:00,Summer,Rainy,No,1,1.98
+National Zoo,Monday,11:04,Winter,Clear,No,8,12.34
+National Zoo,Tuesday,13:55,Winter,Clear,No,21,22.51
+Liberation War Museum,Saturday,12:12,Summer,Rainy,Yes,5,8.88
+National Zoo,Thursday,14:52,Monsoon,Clear,No,18,18.26
+National Zoo,Tuesday,11:06,Summer,Rainy,No,15,16.13
+National Museum,Saturday,11:27,Monsoon,Clear,Yes,2,7.52
+Ahsan Manzil,Thursday,14:48,Winter,Rainy,No,44,51.1
+National Museum,Thursday,17:10,Summer,Clear,No,38,44.72
+Ahsan Manzil,Sunday,11:24,Summer,Clear,No,50,44.31
+Lalbagh Fort,Saturday,16:06,Winter,Rainy,Yes,26,59.63
+Liberation War Museum,Saturday,08:23,Summer,Clear,Yes,42,56.08
+National Zoo,Saturday,13:24,Summer,Rainy,Yes,49,93.0
+National Museum,Monday,11:38,Winter,Clear,No,17,22.28
+National Zoo,Tuesday,13:24,Summer,Clear,No,11,14.28
+National Museum,Wednesday,10:06,Winter,Clear,No,4,4.7
+Liberation War Museum,Saturday,14:14,Monsoon,Rainy,Yes,22,32.24
+National Zoo,Friday,11:02,Winter,Rainy,Yes,2,4.0
+Liberation War Museum,Monday,15:51,Winter,Clear,No,4,6.38
+Lalbagh Fort,Thursday,11:24,Winter,Rainy,No,19,27.91
+Lalbagh Fort,Sunday,12:47,Summer,Clear,No,0,0.82
+National Zoo,Tuesday,11:16,Summer,Clear,No,8,10.02
+Lalbagh Fort,Tuesday,09:12,Winter,Rainy,No,2,6.24
+Ahsan Manzil,Wednesday,16:40,Monsoon,Clear,No,33,31.74
+National Zoo,Thursday,15:53,Monsoon,Clear,No,24,28.66
+Liberation War Museum,Sunday,15:13,Winter,Rainy,No,27,33.08
+National Zoo,Monday,12:43,Winter,Clear,No,13,15.37
+Lalbagh Fort,Thursday,11:18,Summer,Rainy,No,8,11.41
+Liberation War Museum,Saturday,16:34,Summer,Rainy,Yes,5,10.13
+National Museum,Monday,18:46,Summer,Clear,No,2,3.5
+National Museum,Monday,09:59,Summer,Clear,No,33,31.4
+Ahsan Manzil,Monday,17:57,Monsoon,Rainy,No,46,53.34
+National Museum,Friday,14:38,Monsoon,Rainy,Yes,16,28.33
+National Museum,Wednesday,14:45,Summer,Clear,No,1,3.09
+Lalbagh Fort,Monday,14:25,Monsoon,Rainy,No,36,36.54
+Lalbagh Fort,Tuesday,09:11,Monsoon,Clear,No,7,7.85
+National Museum,Tuesday,09:45,Winter,Clear,No,43,37.51
+Lalbagh Fort,Friday,13:52,Summer,Rainy,Yes,20,35.16
+Lalbagh Fort,Saturday,09:29,Summer,Rainy,Yes,46,71.02
+Liberation War Museum,Monday,15:29,Winter,Rainy,No,27,36.37
+Lalbagh Fort,Monday,17:52,Winter,Clear,No,25,36.18
+Lalbagh Fort,Tuesday,13:14,Monsoon,Clear,No,23,27.21
+National Zoo,Thursday,08:23,Summer,Rainy,No,42,47.39
+Ahsan Manzil,Sunday,11:16,Summer,Clear,No,10,14.93
+National Museum,Wednesday,16:18,Summer,Rainy,No,18,23.94
+National Museum,Monday,17:19,Monsoon,Clear,No,36,47.3
+Ahsan Manzil,Saturday,17:09,Winter,Clear,Yes,20,42.92
+National Museum,Tuesday,11:41,Winter,Clear,No,46,63.47
+National Museum,Tuesday,09:54,Monsoon,Rainy,No,3,4.25
+Liberation War Museum,Friday,13:52,Monsoon,Clear,Yes,28,43.46
+Lalbagh Fort,Monday,12:55,Winter,Rainy,No,14,12.66
+Ahsan Manzil,Sunday,09:15,Summer,Clear,No,32,34.19
+National Museum,Monday,09:43,Winter,Clear,No,12,18.92
+Ahsan Manzil,Thursday,10:27,Winter,Clear,No,30,34.01
+National Museum,Sunday,18:54,Summer,Clear,No,21,25.54
+Ahsan Manzil,Thursday,09:08,Summer,Clear,No,13,19.4
+Liberation War Museum,Tuesday,13:51,Summer,Clear,No,20,25.24
+National Museum,Sunday,08:42,Winter,Clear,No,23,24.62
+National Zoo,Sunday,13:21,Winter,Clear,No,23,24.78
+National Museum,Sunday,18:47,Monsoon,Rainy,No,39,35.7
+Ahsan Manzil,Sunday,08:09,Winter,Clear,No,6,7.87
+Ahsan Manzil,Saturday,08:43,Monsoon,Rainy,Yes,33,58.45
+Liberation War Museum,Wednesday,14:28,Monsoon,Clear,No,24,30.1
+Lalbagh Fort,Wednesday,13:51,Monsoon,Clear,No,27,27.92
+National Museum,Tuesday,17:21,Summer,Clear,No,19,27.03
+Lalbagh Fort,Thursday,10:21,Summer,Clear,No,4,4.3
+Liberation War Museum,Saturday,08:48,Summer,Clear,Yes,23,29.31
+Ahsan Manzil,Tuesday,11:47,Monsoon,Rainy,No,5,6.19
+National Zoo,Sunday,08:53,Winter,Rainy,No,4,8.11
+Ahsan Manzil,Saturday,08:25,Monsoon,Clear,Yes,41,78.58
+Liberation War Museum,Friday,16:52,Monsoon,Clear,Yes,38,89.97
+National Museum,Saturday,15:08,Winter,Clear,Yes,30,56.13
+Ahsan Manzil,Monday,15:58,Monsoon,Clear,No,49,64.63
+National Zoo,Thursday,13:25,Summer,Clear,No,27,34.99
+Lalbagh Fort,Saturday,10:07,Summer,Clear,Yes,41,58.57
+Ahsan Manzil,Sunday,16:21,Summer,Clear,No,40,41.41
+Ahsan Manzil,Thursday,09:26,Winter,Clear,No,39,39.5
+National Zoo,Tuesday,10:22,Monsoon,Rainy,No,5,7.92
+Ahsan Manzil,Monday,17:55,Winter,Clear,No,12,14.94
+National Museum,Friday,16:52,Winter,Clear,Yes,18,36.41
+National Museum,Sunday,13:32,Winter,Clear,No,33,41.51
+National Zoo,Monday,09:14,Summer,Clear,No,45,44.38
+National Museum,Monday,12:41,Monsoon,Rainy,No,17,23.65
+Ahsan Manzil,Saturday,14:59,Summer,Clear,Yes,4,7.99
+National Zoo,Wednesday,13:39,Summer,Rainy,No,41,47.15
+Lalbagh Fort,Wednesday,10:43,Monsoon,Rainy,No,8,8.91
+Lalbagh Fort,Sunday,11:55,Monsoon,Rainy,No,36,35.66
+Ahsan Manzil,Sunday,16:56,Monsoon,Clear,No,42,53.3
+Lalbagh Fort,Thursday,11:34,Winter,Clear,No,49,57.07
+National Museum,Saturday,14:59,Summer,Rainy,Yes,21,42.0
+National Zoo,Sunday,15:23,Summer,Clear,No,32,38.95
+Liberation War Museum,Monday,10:21,Winter,Clear,No,4,8.23
+Lalbagh Fort,Sunday,14:48,Winter,Rainy,No,8,13.82
+Liberation War Museum,Wednesday,14:25,Summer,Clear,No,27,38.55
+National Museum,Friday,17:03,Monsoon,Clear,Yes,2,8.58
+National Museum,Monday,13:56,Summer,Rainy,No,50,59.65
+Liberation War Museum,Wednesday,16:02,Summer,Clear,No,39,47.74
