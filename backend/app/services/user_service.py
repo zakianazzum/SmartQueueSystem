@@ -1,6 +1,5 @@
-from pydantic import UUID4
+from fastapi import Depends
 from sqlalchemy.orm import Session
-from fastapi import Depends, Request
 
 from app.models import User
 from app.db.crud import CRUDBase
