@@ -1,0 +1,11 @@
+services:
+  api:
+    container_name: smartqueue-api
+    restart: on-failure
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:5000"
