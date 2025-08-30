@@ -9,20 +9,12 @@ from app.db.session import get_db
 user_crud = CRUDBase(model=User)
 
 
-def get_active_user(request: Request, db: Session = Depends(get_db)) -> User:
-    email = request.app.state.user
-    user = user_crud.get_by_field(db=db, field="email", value=email)
-    if not user:
-        raise
-    return user
-
-
 class UserService:
     def __init__(self):
         pass
 
-    def get_user_by_id(self, db: Session, user_id: UUID4) -> User:
-        user = user_crud.get(db=db, id=user_id)
+    def get_by_email(self, db: Session, email: str) -> User:
+        user = user_crud.get_by_field(db=db, field="Email", value=email)
 
         if not user:
             raise Exception("User not found")

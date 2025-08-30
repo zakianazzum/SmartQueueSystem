@@ -11,7 +11,7 @@ from app.schemas.user_schema import (
     UserResponse,
 )
 
-from app.services.user_service import get_active_user, user_service
+from app.services.user_service import user_service
 
 user_router = APIRouter()
 
@@ -41,14 +41,22 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         )
 
 
-@user_router.get("/user/me", response_model=UserResponse, tags=["users"])
-def get_current_user(current_user: User = Depends(get_active_user)):
+@user_router.post("/me", response_model=UserResponse, tags=["user"])
+def get_user(email: str, db: Session = Depends(get_db)):
     try:
-        return JSONResponse(
-            content=jsonable_encoder(UserResponse(**jsonable_encoder(current_user))),
-            status_code=status.HTTP_200_OK,
-        )
-    except Exception as e:
+        user = user_service.get_by_email(db=db, email=email)
+        if user:
+            return JSONResponse(
+                content=jsonable_encoder(user),
+                status_code=status.HTTP_200_OK,
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP404_NOT_FOUND, detail="User not found"
+            )
+    except HTTPException:
+        raise
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
