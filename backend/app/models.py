@@ -27,7 +27,6 @@ class Visitor(Base):
 
     user = relationship("User", back_populates="visitor")
     favorites = relationship("FavoriteInstitution", back_populates="visitor")
-    logs = relationship("VisitorLog", back_populates="visitor")
     alert_preferences = relationship("AlertPreference", back_populates="visitor")
     wait_predictions = relationship("WaitTimePrediction", back_populates="visitor")
 
@@ -112,13 +111,12 @@ class VisitorLog(Base):
     __tablename__ = "visitor_logs"
 
     VisitorLogId = Column(String, primary_key=True)
-    VisitorId = Column(String, ForeignKey("visitors.UserId"))
+    VisitorName = Column(String)
     BranchId = Column(String, ForeignKey("branches.BranchId"))
     CheckInTime = Column(DateTime)
     ServiceStartTime = Column(DateTime)
     WaitTimeInMinutes = Column(Integer)
 
-    visitor = relationship("Visitor", back_populates="logs")
     branch = relationship("Branch", back_populates="logs")
 
 

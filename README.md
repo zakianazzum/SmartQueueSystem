@@ -10,7 +10,7 @@ All SQLAlchemy models live in `app/models/`, with a shared `Base` in `app/db/bas
 Install dependencies:
 
 ```bash
-pip install alembic sqlalchemy
+pip install alembic sqlalchemy psycopg2-binary
 ```
 
 ```bash

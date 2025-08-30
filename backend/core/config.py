@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URI: Optional[str] = os.environ["SQLALCHEMY_DATABASE_URI"]
 
     # openai
-    # OPENAI_API_KEY: Optional[str] = os.environ["OPENAI_API_KEY"]
+    OPENAI_API_KEY: Optional[str] = os.environ["OPENAI_API_KEY"]
 
 
 settings = Settings()
