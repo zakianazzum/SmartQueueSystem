@@ -12,7 +12,7 @@ export interface User {
   visitorId?: string
 }
 
-function convertApiUser(apiUser: ApiUser): User {
+function convertApiUser(apiUser: ApiUser, visitorId?: string): User {
   return {
     userId: apiUser.userId,
     name: apiUser.name,
@@ -20,6 +20,7 @@ function convertApiUser(apiUser: ApiUser): User {
     role: apiUser.role as UserRole,
     createdAt: apiUser.createdAt,
     updatedAt: apiUser.updatedAt,
+    visitorId: visitorId,
   }
 }
 
@@ -27,7 +28,7 @@ export async function signIn(email: string, password: string): Promise<{ user: U
   try {
     const response = await userApi.login({ email, password })
     return {
-      user: convertApiUser(response.user),
+      user: convertApiUser(response.user, response.visitorId),
       visitorId: response.visitorId
     }
   } catch (error) {

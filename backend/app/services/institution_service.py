@@ -1,6 +1,5 @@
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import func
 from typing import List, Optional, Dict, Any
 import uuid
 
@@ -163,12 +162,13 @@ class InstitutionService:
         # Calculate total crowd count for each branch
         for institution in institutions:
             for branch in institution.branches:
-                total_crowd_count = (
-                    db.query(func.sum(CrowdData.CurrentCrowdCount))
+                latest_crowd_data = (
+                    db.query(CrowdData.CurrentCrowdCount)
                     .filter(CrowdData.BranchId == branch.BranchId)
-                    .scalar()
+                    .order_by(CrowdData.Timestamp.desc())
+                    .first()
                 )
-                branch.total_crowd_count = total_crowd_count or 0
+                branch.total_crowd_count = latest_crowd_data.CurrentCrowdCount if latest_crowd_data else 0
 
         return [self._transform_institution(institution) for institution in institutions]
 
@@ -188,12 +188,13 @@ class InstitutionService:
         if institution:
             # Calculate total crowd count for each branch
             for branch in institution.branches:
-                total_crowd_count = (
-                    db.query(func.sum(CrowdData.CurrentCrowdCount))
+                latest_crowd_data = (
+                    db.query(CrowdData.CurrentCrowdCount)
                     .filter(CrowdData.BranchId == branch.BranchId)
-                    .scalar()
+                    .order_by(CrowdData.Timestamp.desc())
+                    .first()
                 )
-                branch.total_crowd_count = total_crowd_count or 0
+                branch.total_crowd_count = latest_crowd_data.CurrentCrowdCount if latest_crowd_data else 0
 
             return self._transform_institution(institution)
         return None
@@ -251,12 +252,13 @@ class InstitutionService:
         
         result = []
         for branch in branches:
-            total_crowd_count = (
-                db.query(func.sum(CrowdData.CurrentCrowdCount))
+            latest_crowd_data = (
+                db.query(CrowdData.CurrentCrowdCount)
                 .filter(CrowdData.BranchId == branch.BranchId)
-                .scalar()
+                .order_by(CrowdData.Timestamp.desc())
+                .first()
             )
-            result.append(self._transform_branch(branch, total_crowd_count or 0))
+            result.append(self._transform_branch(branch, latest_crowd_data.CurrentCrowdCount if latest_crowd_data else 0))
         
         return result
 
@@ -266,12 +268,13 @@ class InstitutionService:
         
         result = []
         for branch in branches:
-            total_crowd_count = (
-                db.query(func.sum(CrowdData.CurrentCrowdCount))
+            latest_crowd_data = (
+                db.query(CrowdData.CurrentCrowdCount)
                 .filter(CrowdData.BranchId == branch.BranchId)
-                .scalar()
+                .order_by(CrowdData.Timestamp.desc())
+                .first()
             )
-            result.append(self._transform_branch(branch, total_crowd_count or 0))
+            result.append(self._transform_branch(branch, latest_crowd_data.CurrentCrowdCount if latest_crowd_data else 0))
         
         return result
 
@@ -280,12 +283,13 @@ class InstitutionService:
         branch = db.query(Branch).filter(Branch.BranchId == branch_id).first()
         
         if branch:
-            total_crowd_count = (
-                db.query(func.sum(CrowdData.CurrentCrowdCount))
+            latest_crowd_data = (
+                db.query(CrowdData.CurrentCrowdCount)
                 .filter(CrowdData.BranchId == branch.BranchId)
-                .scalar()
+                .order_by(CrowdData.Timestamp.desc())
+                .first()
             )
-            return self._transform_branch(branch, total_crowd_count or 0)
+            return self._transform_branch(branch, latest_crowd_data.CurrentCrowdCount if latest_crowd_data else 0)
         return None
 
     def create_branch(self, db: Session, branch_data: BranchCreate) -> BranchResponse:
