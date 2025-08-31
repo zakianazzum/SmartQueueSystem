@@ -165,3 +165,4 @@ cockroach-data/
 **/._.DS_Store
 
 scripts/test.sh
+fix-deployment-pipeline.sh

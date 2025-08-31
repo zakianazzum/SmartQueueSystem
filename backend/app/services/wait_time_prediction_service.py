@@ -72,27 +72,27 @@ class WaitTimePredictionService:
     ) -> dict:
         """Call OpenAI API to get wait time prediction"""
         prompt = f"""
-You are a clever predictive model that can predict the wait time for a user to receive service at an institution like a bank, restaurant, park, corporate office or similar places. You will be given the following information to analyze and come up with a meaningful possible wait time based on historical visit logs collected from the institutions.
+						You are a clever predictive model that can predict the wait time for a user to receive service at an institution like a bank, restaurant, park, corporate office or similar places. You will be given the following information to analyze and come up with a meaningful possible wait time based on historical visit logs collected from the institutions.
 
-Here is the information you have about the branch the user is trying to predict the wait time for:
+						Here is the information you have about the branch the user is trying to predict the wait time for:
 
-The branch name is {branch_name}, and it can hold a NORMAL capacity of {branch_capacity} people before one can consider the place crowded(Note that NORMAL capacity means ALL or SOME of the service centers in the institution can be occupied at a given time).
+						The branch name is {branch_name}, and it can hold a NORMAL capacity of {branch_capacity} people before one can consider the place crowded(Note that NORMAL capacity means ALL or SOME of the service centers in the institution can be occupied at a given time).
 
-You are also given a record of the crowd data in the last 30 days of that branch, in the following manner:
-{crowd_data_str}
+						You are also given a record of the crowd data in the last 30 days of that branch, in the following manner:
+						{crowd_data_str}
 
-Finally, you are given a record of all the VisitorLog data in the last 30 days, in the following manner:
-{visitor_logs_str}
+						Finally, you are given a record of all the VisitorLog data in the last 30 days, in the following manner:
+						{visitor_logs_str}
 
-Based on these data, you will give me thoughtful answer about the waiting time for the visitor which we are calling PredictedWaitTime in our WaitTimePredictionTable. You will provide me the data in the following JSON format:
+						Based on these data, you will give me thoughtful answer about the waiting time for the visitor which we are calling PredictedWaitTime in our WaitTimePredictionTable. You will provide me the data in the following JSON format:
 
-{{
-    "predictedWaitTime": int,
-    "actualWaitTime": int,
-    "accuracy": float
-}}
+						{{
+							"predictedWaitTime": int,
+							"actualWaitTime": int,
+							"accuracy": float
+						}}
 
-Analyze the predicted time based on your own data/knowledge and provided data. If provided data is low, use your majority knowledge to come up with a logical time. DO NOT MAKE ANYTHING UP AND ABSOLUTELY DO NOT GIVE ME A TIME THAT'S WAY OFF THE AVERAGE WAIT TIME.
+						Analyze the predicted time based on your own data/knowledge and provided data. If provided data is low, use your majority knowledge to come up with a logical time. DO NOT MAKE ANYTHING UP AND ABSOLUTELY DO NOT GIVE ME A TIME THAT'S WAY OFF THE AVERAGE WAIT TIME.
 """
 
         try:
