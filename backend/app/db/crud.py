@@ -56,9 +56,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
     def update(
-        self, db: Session, *, obj_in: Union[UpdateSchemaType, Dict[str, Any]]
+        self, db: Session, *, id: str, obj_in: Union[UpdateSchemaType, Dict[str, Any]]
     ) -> ModelType:
-        db_obj = db.get(self.model, obj_in.id)
+        db_obj = db.get(self.model, id)
+        if db_obj is None:
+            raise ValueError(f"Object with id {id} not found")
+        
         if hasattr(obj_in, "updated_at"):
             obj_in.updated_at = datetime.now()
 
@@ -75,10 +78,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, id: int) -> ModelType:
+    def remove(self, db: Session, *, id: str) -> ModelType:
         obj = db.get(self.model, id)
         if obj is None:
-            raise CustomException(ResourceNotFound)
+            raise ValueError(f"Object with id {id} not found")
         db.delete(obj)
         db.commit()
         return obj
