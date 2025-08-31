@@ -11,10 +11,10 @@ import { AddToFavoritesModal } from "@/components/add-to-favorites-modal"
 import { SetAlertModal } from "@/components/set-alert-modal"
 import { useInstitutions } from "@/hooks/use-institutions"
 import { Institution } from "@/lib/api"
-import { Building2, MapPin, Clock, Users, Heart, Bell, AlertCircle, RefreshCw } from "lucide-react"
+import { Building2, MapPin, Clock, Users, Heart, Bell, AlertCircle, RefreshCw, Eye } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
-export default function InstitutionsPage() {
+export default function VisitorPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState("all")
   const [selectedInstitution, setSelectedInstitution] = useState<Institution | null>(null)
@@ -145,9 +145,9 @@ export default function InstitutionsPage() {
       <DashboardLayout>
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Institutions</h1>
+            <h1 className="text-3xl font-bold text-foreground">Welcome, Visitor!</h1>
             <p className="text-muted-foreground mt-2">
-              View real-time crowd levels at various institutions and plan your visits
+              Browse institutions and plan your visits with real-time crowd data
             </p>
           </div>
           
@@ -167,9 +167,9 @@ export default function InstitutionsPage() {
       <DashboardLayout>
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Institutions</h1>
+            <h1 className="text-3xl font-bold text-foreground">Welcome, Visitor!</h1>
             <p className="text-muted-foreground mt-2">
-              View real-time crowd levels at various institutions and plan your visits
+              Browse institutions and plan your visits with real-time crowd data
             </p>
           </div>
           
@@ -194,15 +194,62 @@ export default function InstitutionsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Institutions</h1>
+            <h1 className="text-3xl font-bold text-foreground">Welcome, Visitor!</h1>
             <p className="text-muted-foreground mt-2">
-              View real-time crowd levels at various institutions and plan your visits
+              Browse institutions and plan your visits with real-time crowd data
             </p>
           </div>
           <Button onClick={handleRefresh} variant="outline" size="sm">
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <Building2 className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Total Institutions</p>
+                  <p className="text-2xl font-bold">{institutions.length}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <MapPin className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Total Branches</p>
+                  <p className="text-2xl font-bold">
+                    {institutions.reduce((sum, inst) => sum + inst.branches.length, 0)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <Users className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Total Crowd</p>
+                  <p className="text-2xl font-bold">
+                    {institutions.reduce((sum, inst) => 
+                      sum + inst.branches.reduce((branchSum, branch) => 
+                        branchSum + (branch.totalCrowdCount || 0), 0
+                      ), 0
+                    )}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Filters */}
@@ -226,7 +273,7 @@ export default function InstitutionsPage() {
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
                   {institutionTypes.map((type) => (
-                    <SelectItem key={type} value={type.toLowerCase()}>
+                    <SelectItem key={type} value={type?.toLowerCase() || ''}>
                       {type}
                     </SelectItem>
                   ))}
@@ -260,6 +307,7 @@ export default function InstitutionsPage() {
                         variant="ghost"
                         className="h-8 w-8 p-0 cursor-pointer"
                         onClick={() => handleAddToFavorites(institution.institutionId)}
+                        title="Add to Favorites"
                       >
                         <Heart className="h-4 w-4" />
                       </Button>
@@ -268,6 +316,7 @@ export default function InstitutionsPage() {
                         variant="ghost"
                         className="h-8 w-8 p-0 cursor-pointer"
                         onClick={() => handleSetAlert(institution.institutionId)}
+                        title="Set Alert"
                       >
                         <Bell className="h-4 w-4" />
                       </Button>
@@ -324,6 +373,7 @@ export default function InstitutionsPage() {
                     size="sm" 
                     onClick={() => handleViewDetails(institution)}
                   >
+                    <Eye className="h-4 w-4 mr-2" />
                     View Details
                   </Button>
                 </CardContent>

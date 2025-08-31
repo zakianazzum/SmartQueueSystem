@@ -5,18 +5,33 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Building2, MapPin, Clock, Users, Phone, Globe, Heart, Bell } from "lucide-react"
 
-interface Institution {
-  id: string
+interface InstitutionType {
+  institutionTypeId: string
+  institutionType: string
+}
+
+interface Branch {
+  branchId: string
+  institutionId: string
   name: string
-  type: string
-  address: string
-  currentCrowdLevel: string
-  currentCrowdCount: number
-  averageWaitTime: number
-  serviceHours: string
-  services: string[]
-  phone?: string
-  website?: string
+  branchDescription?: string
+  address?: string
+  serviceHours?: string
+  serviceDescription?: string
+  latitude?: number
+  longitude?: number
+  capacity?: number
+  totalCrowdCount?: number
+}
+
+interface Institution {
+  institutionId: string
+  institutionTypeId?: string
+  administratorId?: string
+  name: string
+  institutionDescription?: string
+  institutionType?: InstitutionType
+  branches: Branch[]
 }
 
 interface InstitutionDetailsModalProps {
@@ -79,71 +94,79 @@ export function InstitutionDetailsModal({
             <CardContent className="p-4 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <div className={`w-3 h-3 rounded-full ${getCrowdColor(institution.currentCrowdLevel)}`}></div>
-                  <Badge variant={getCrowdBadgeVariant(institution.currentCrowdLevel)}>
-                    {institution.currentCrowdLevel} Crowd Level
-                  </Badge>
+                  <Building2 className="h-4 w-4 text-muted-foreground" />
+                  <span className="font-medium">{institution.institutionType?.institutionType || "Unknown Type"}</span>
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Users className="h-4 w-4 mr-1" />
-                  {institution.currentCrowdCount} people currently
+                  {institution.branches.reduce((sum, branch) => sum + (branch.totalCrowdCount || 0), 0)} people total
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center text-sm">
-                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{institution.averageWaitTime} min average wait</span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <Building2 className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{institution.type}</span>
-                </div>
-              </div>
-
-              <div className="flex items-start text-sm">
-                <MapPin className="h-4 w-4 mr-2 text-muted-foreground mt-0.5" />
-                <span>{institution.address}</span>
-              </div>
-
-              <div className="text-sm">
-                <span className="font-medium">Service Hours: </span>
-                <span className="text-muted-foreground">{institution.serviceHours}</span>
-              </div>
-
-              {institution.phone && (
-                <div className="flex items-center text-sm">
-                  <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{institution.phone}</span>
+              {institution.institutionDescription && (
+                <div className="text-sm text-muted-foreground">
+                  <p>{institution.institutionDescription}</p>
                 </div>
               )}
 
-              {institution.website && (
-                <div className="flex items-center text-sm">
-                  <Globe className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <a
-                    href={institution.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline cursor-pointer"
-                  >
-                    Visit Website
-                  </a>
-                </div>
-              )}
+              <div className="flex items-center text-sm">
+                <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                <span>{institution.branches.length} branch{institution.branches.length !== 1 ? 'es' : ''}</span>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Services */}
+          {/* Branches */}
           <Card>
             <CardContent className="p-4">
-              <h3 className="font-semibold mb-3">Available Services</h3>
-              <div className="flex flex-wrap gap-2">
-                {institution.services.map((service, index) => (
-                  <Badge key={index} variant="outline">
-                    {service}
-                  </Badge>
-                ))}
+              <h3 className="font-semibold mb-3">Branches</h3>
+              <div className="space-y-3">
+                {institution.branches.map((branch) => {
+                  const crowdCount = branch.totalCrowdCount || 0
+                  const crowdLevel = crowdCount === 0 ? "Low" : 
+                    crowdCount < 20 ? "Low" : 
+                    crowdCount < 50 ? "Medium" : "High"
+                  
+                  return (
+                    <div key={branch.branchId} className="border rounded-lg p-3 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium">{branch.name}</h4>
+                        <div className="flex items-center space-x-2">
+                          <div className={`w-2 h-2 rounded-full ${getCrowdColor(crowdLevel)}`}></div>
+                          <Badge variant={getCrowdBadgeVariant(crowdLevel)} className="text-xs">
+                            {crowdLevel}
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      {branch.address && (
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <MapPin className="h-3 w-3 mr-1" />
+                          <span>{branch.address}</span>
+                        </div>
+                      )}
+                      
+                      {branch.serviceHours && (
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <Clock className="h-3 w-3 mr-1" />
+                          <span>{branch.serviceHours}</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Users className="h-3 w-3 mr-1" />
+                        <span>{branch.totalCrowdCount || 0} people</span>
+                        {branch.capacity && (
+                          <span className="ml-2">(Capacity: {branch.capacity})</span>
+                        )}
+                      </div>
+                      
+                      {branch.branchDescription && (
+                        <p className="text-sm text-muted-foreground">{branch.branchDescription}</p>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -151,14 +174,14 @@ export function InstitutionDetailsModal({
           {/* Actions */}
           <div className="flex gap-3">
             <Button
-              onClick={() => onAddToFavorites(institution.id)}
+              onClick={() => onAddToFavorites(institution.institutionId)}
               variant="outline"
               className="flex-1 cursor-pointer"
             >
               <Heart className="h-4 w-4 mr-2" />
               Add to Favorites
             </Button>
-            <Button onClick={() => onSetAlert(institution.id)} variant="outline" className="flex-1 cursor-pointer">
+            <Button onClick={() => onSetAlert(institution.institutionId)} variant="outline" className="flex-1 cursor-pointer">
               <Bell className="h-4 w-4 mr-2" />
               Set Alert
             </Button>

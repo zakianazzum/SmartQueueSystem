@@ -385,9 +385,9 @@ def update_alert_preference(alert_id: str, preference_data: AlertPreferenceUpdat
         preference = user_service.update_alert_preference(db=db, alert_id=alert_id, preference_data=preference_data)
         if not preference:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Alert preference not found"
-            )
+					status_code=status.HTTP_404_NOT_FOUND,
+					detail="Alert preference not found"
+			)
         return preference
     except HTTPException:
         raise
@@ -430,7 +430,7 @@ def get_all_administrators(db: Session = Depends(get_db)):
         administrators = user_service.get_all_administrators(db=db)
         return administrators
     except Exception as e:
-        raise HTTPException(
+            raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal server error: {str(e)}"
         )
