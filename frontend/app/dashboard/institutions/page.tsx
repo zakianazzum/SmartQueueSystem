@@ -118,11 +118,9 @@ export default function InstitutionsPage() {
     }
   }
 
-  const handleFavoritesConfirm = (notes: string) => {
-    toast({
-      title: "Added to Favorites",
-      description: `${selectedInstitution?.name} has been added to your favorites.`,
-    })
+  const handleFavoritesConfirm = () => {
+    // The modal now handles the API call internally
+    // This function is called after successful addition
   }
 
   const handleAlertConfirm = (alertSettings: any) => {
@@ -359,6 +357,7 @@ export default function InstitutionsPage() {
 
       <AddToFavoritesModal
         institutionName={selectedInstitution?.name || ""}
+        branches={selectedInstitution?.branches || []}
         isOpen={showFavoritesModal}
         onClose={() => setShowFavoritesModal(false)}
         onConfirm={handleFavoritesConfirm}

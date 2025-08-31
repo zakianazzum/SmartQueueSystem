@@ -19,7 +19,7 @@ import { Label } from "@/components/ui/label"
 import { DatePicker } from "@/components/date-picker"
 import { useInstitutions } from "@/hooks/use-institutions"
 import { useBranches } from "@/hooks/use-branches"
-import { useCreateWaitTimePrediction } from "@/hooks/use-wait-time-predictions"
+import { useCreateWaitTimePrediction, useWaitTimePredictionsByVisitor } from "@/hooks/use-wait-time-predictions"
 import { WaitTimePrediction } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
@@ -38,6 +38,9 @@ export default function WaitTimePage() {
   const { createPrediction, loading: isCreating, error: createError } = useCreateWaitTimePrediction()
   const { user } = useAuth()
   const { toast } = useToast()
+  
+  // Fetch user's historical predictions
+  const { predictions: userPredictions, loading: predictionsLoading, refetch: refetchPredictions } = useWaitTimePredictionsByVisitor(user?.visitorId || "")
 
   const generatePrediction = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -76,7 +79,9 @@ export default function WaitTimePage() {
 
     if (result) {
       setPrediction(result)
-      setPredictionDialogOpen(true)
+      setPredictionDialogOpen(false)
+      // Refetch user's predictions to update the recent predictions list
+      refetchPredictions()
     }
   }
 
@@ -321,28 +326,46 @@ export default function WaitTimePage() {
               <CardDescription>Your recent wait time predictions</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {prediction ? (
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
-                      <span className="text-sm font-medium">
-                        {new Date(prediction.visitDate).toLocaleDateString()} at {new Date(prediction.visitDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                      </span>
-                      <div className="text-xs text-muted-foreground">
-                        {prediction.predictedWaitTime} min wait • {prediction.accuracy}% accuracy
+              {!user?.visitorId ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>Please log in to view your predictions</p>
+                </div>
+              ) : predictionsLoading ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-2"></div>
+                  <p className="text-sm text-muted-foreground">Loading predictions...</p>
+                </div>
+              ) : userPredictions.length > 0 ? (
+                <div className="space-y-3">
+                  {userPredictions.slice(0, 5).map((prediction) => (
+                    <div key={prediction.waitTimePredictionId} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <span className="text-sm font-medium">
+                          {new Date(prediction.visitDate).toLocaleDateString()} at {new Date(prediction.visitDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        </span>
+                        <div className="text-xs text-muted-foreground">
+                          {prediction.predictedWaitTime} min wait • {prediction.accuracy}% accuracy
+                        </div>
                       </div>
+                      <Badge variant={prediction.predictedWaitTime > 30 ? "destructive" : prediction.predictedWaitTime > 15 ? "secondary" : "default"}>
+                        {getCrowdLevel(prediction.predictedWaitTime)}
+                      </Badge>
                     </div>
-                    <Badge variant={prediction.predictedWaitTime > 30 ? "destructive" : prediction.predictedWaitTime > 15 ? "secondary" : "default"}>
-                      {getCrowdLevel(prediction.predictedWaitTime)}
-                    </Badge>
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p>No predictions yet</p>
-                    <p className="text-sm">Generate your first prediction to see it here</p>
-                  </div>
-                )}
-              </div>
+                  ))}
+                  {userPredictions.length > 5 && (
+                    <div className="text-center py-2">
+                      <p className="text-xs text-muted-foreground">
+                        Showing 5 of {userPredictions.length} predictions
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>No predictions yet</p>
+                  <p className="text-sm">Generate your first prediction to see it here</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -9,6 +9,7 @@ export interface User {
   role: UserRole
   createdAt: string
   updatedAt: string
+  visitorId?: string
 }
 
 function convertApiUser(apiUser: ApiUser): User {
