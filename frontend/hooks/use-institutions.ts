@@ -5,7 +5,35 @@ interface UseInstitutionsReturn {
   institutions: Institution[]
   loading: boolean
   error: string | null
-  refetch: () => Promise<void>
+  refetch: () => void
+}
+
+interface UseCreateInstitutionReturn {
+  createInstitution: (data: {
+    institutionTypeId?: string
+    administratorId?: string
+    name: string
+    institutionDescription?: string
+  }) => Promise<Institution | null>
+  loading: boolean
+  error: string | null
+}
+
+interface UseUpdateInstitutionReturn {
+  updateInstitution: (id: string, data: {
+    institutionTypeId?: string
+    administratorId?: string
+    name?: string
+    institutionDescription?: string
+  }) => Promise<Institution | null>
+  loading: boolean
+  error: string | null
+}
+
+interface UseDeleteInstitutionReturn {
+  deleteInstitution: (id: string) => Promise<boolean>
+  loading: boolean
+  error: string | null
 }
 
 export function useInstitutions(): UseInstitutionsReturn {
@@ -20,12 +48,8 @@ export function useInstitutions(): UseInstitutionsReturn {
       const data = await institutionApi.getAll()
       setInstitutions(data)
     } catch (err) {
-      console.error('Error fetching institutions:', err)
-      if (err instanceof ApiError) {
-        setError(err.message)
-      } else {
-        setError('Failed to fetch institutions')
-      }
+      const apiError = err as ApiError
+      setError(apiError.message || 'Failed to fetch institutions')
     } finally {
       setLoading(false)
     }
@@ -43,46 +67,90 @@ export function useInstitutions(): UseInstitutionsReturn {
   }
 }
 
-interface UseInstitutionReturn {
-  institution: Institution | null
-  loading: boolean
-  error: string | null
-  refetch: () => Promise<void>
-}
-
-export function useInstitution(id: string): UseInstitutionReturn {
-  const [institution, setInstitution] = useState<Institution | null>(null)
-  const [loading, setLoading] = useState(true)
+export function useCreateInstitution(): UseCreateInstitutionReturn {
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchInstitution = async () => {
+  const createInstitution = async (data: {
+    institutionTypeId?: string
+    administratorId?: string
+    name: string
+    institutionDescription?: string
+  }): Promise<Institution | null> => {
     try {
       setLoading(true)
       setError(null)
-      const data = await institutionApi.getById(id)
-      setInstitution(data)
+      const result = await institutionApi.create(data)
+      return result
     } catch (err) {
-      console.error('Error fetching institution:', err)
-      if (err instanceof ApiError) {
-        setError(err.message)
-      } else {
-        setError('Failed to fetch institution')
-      }
+      const apiError = err as ApiError
+      setError(apiError.message || 'Failed to create institution')
+      return null
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => {
-    if (id) {
-      fetchInstitution()
-    }
-  }, [id])
-
   return {
-    institution,
+    createInstitution,
     loading,
     error,
-    refetch: fetchInstitution,
+  }
+}
+
+export function useUpdateInstitution(): UseUpdateInstitutionReturn {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const updateInstitution = async (id: string, data: {
+    institutionTypeId?: string
+    administratorId?: string
+    name?: string
+    institutionDescription?: string
+  }): Promise<Institution | null> => {
+    try {
+      setLoading(true)
+      setError(null)
+      const result = await institutionApi.update(id, data)
+      return result
+    } catch (err) {
+      const apiError = err as ApiError
+      setError(apiError.message || 'Failed to update institution')
+      return null
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return {
+    updateInstitution,
+    loading,
+    error,
+  }
+}
+
+export function useDeleteInstitution(): UseDeleteInstitutionReturn {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const deleteInstitution = async (id: string): Promise<boolean> => {
+    try {
+      setLoading(true)
+      setError(null)
+      await institutionApi.delete(id)
+      return true
+    } catch (err) {
+      const apiError = err as ApiError
+      setError(apiError.message || 'Failed to delete institution')
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return {
+    deleteInstitution,
+    loading,
+    error,
   }
 }

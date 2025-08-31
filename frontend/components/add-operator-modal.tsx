@@ -2,18 +2,23 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { UserPlus, Check } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { Institution, Branch } from "@/lib/api"
+import { useInstitutions } from "@/hooks/use-institutions"
+import { useBranches } from "@/hooks/use-branches"
+import { useCreateOperator } from "@/hooks/use-operators"
 
 interface AddOperatorModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onConfirm: (operatorData: OperatorData) => void
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onConfirm: (operatorData: any) => void
 }
 
 interface OperatorData {
@@ -25,76 +30,94 @@ interface OperatorData {
   branchId: string
 }
 
-export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModalProps) {
+export function AddOperatorModal({ open, onOpenChange, onConfirm }: AddOperatorModalProps) {
   const [formData, setFormData] = useState<OperatorData>({
     name: "",
     email: "",
-    role: "",
+    role: "operator",
     password: "",
     institutionId: "",
     branchId: "",
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
+  
+  // Use custom hooks
+  const { institutions, loading: institutionsLoading } = useInstitutions()
+  const { branches, loading: branchesLoading } = useBranches()
+  const { createOperator, loading: creatingOperator } = useCreateOperator()
 
-  const institutions = [
-    {
-      id: "inst1",
-      name: "First National Bank",
-      branches: [
-        { id: "branch1", name: "Downtown Branch" },
-        { id: "branch2", name: "Uptown Branch" },
-      ],
-    },
-    {
-      id: "inst2",
-      name: "City Hall",
-      branches: [
-        { id: "branch3", name: "Main Office" },
-        { id: "branch4", name: "Annex Building" },
-      ],
-    },
-    {
-      id: "inst3",
-      name: "Central Park",
-      branches: [
-        { id: "branch5", name: "North Entrance" },
-        { id: "branch6", name: "South Entrance" },
-      ],
-    },
-    {
-      id: "inst4",
-      name: "DMV Office",
-      branches: [
-        { id: "branch7", name: "West Side Branch" },
-        { id: "branch8", name: "East Side Branch" },
-      ],
-    },
-  ]
-
-  const availableBranches = institutions.find((inst) => inst.id === formData.institutionId)?.branches || []
+  // Get branches for selected institution
+  const availableBranches = branches.filter(branch => branch.institutionId === formData.institutionId)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name || !formData.email || !formData.role || !formData.password) return
+    
+    if (!formData.name.trim()) {
+      toast({
+        title: "Error",
+        description: "Operator name is required.",
+        variant: "destructive",
+      })
+      return
+    }
 
-    setIsSubmitting(true)
+    if (!formData.email.trim()) {
+      toast({
+        title: "Error",
+        description: "Email is required.",
+        variant: "destructive",
+      })
+      return
+    }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    if (!formData.password.trim()) {
+      toast({
+        title: "Error",
+        description: "Password is required.",
+        variant: "destructive",
+      })
+      return
+    }
 
-    onConfirm(formData)
+    try {
+      const operatorData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        role: formData.role,
+        branchId: formData.branchId || undefined,
+      }
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      role: "",
-      password: "",
-      institutionId: "",
-      branchId: "",
-    })
-    setIsSubmitting(false)
-    onClose()
+      const newOperator = await createOperator(operatorData)
+
+      if (newOperator) {
+        onConfirm(newOperator)
+
+        toast({
+          title: "Operator Added",
+          description: `${formData.name} has been successfully added as an operator.`,
+        })
+
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          role: "operator",
+          password: "",
+          institutionId: "",
+          branchId: "",
+        })
+
+        onOpenChange(false)
+      }
+    } catch (error) {
+      console.error("Error adding operator:", error)
+      toast({
+        title: "Error",
+        description: "Failed to add operator. Please try again.",
+        variant: "destructive",
+      })
+    }
   }
 
   const handleInputChange = (field: keyof OperatorData, value: string) => {
@@ -107,7 +130,7 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -168,14 +191,18 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="institution">Institution *</Label>
-            <Select value={formData.institutionId} onValueChange={(value) => handleInputChange("institutionId", value)}>
+            <Label htmlFor="institution">Institution</Label>
+            <Select 
+              value={formData.institutionId} 
+              onValueChange={(value) => handleInputChange("institutionId", value)}
+              disabled={institutionsLoading}
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Select institution" />
+                <SelectValue placeholder={institutionsLoading ? "Loading institutions..." : "Select institution (optional)"} />
               </SelectTrigger>
               <SelectContent>
                 {institutions.map((institution) => (
-                  <SelectItem key={institution.id} value={institution.id}>
+                  <SelectItem key={institution.institutionId} value={institution.institutionId}>
                     {institution.name}
                   </SelectItem>
                 ))}
@@ -184,18 +211,24 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="branch">Branch *</Label>
+            <Label htmlFor="branch">Branch Assignment</Label>
             <Select
               value={formData.branchId}
               onValueChange={(value) => handleInputChange("branchId", value)}
-              disabled={!formData.institutionId}
+              disabled={!formData.institutionId || branchesLoading}
             >
               <SelectTrigger>
-                <SelectValue placeholder={formData.institutionId ? "Select branch" : "Select institution first"} />
+                <SelectValue placeholder={
+                  !formData.institutionId 
+                    ? "Select institution first" 
+                    : branchesLoading 
+                      ? "Loading branches..." 
+                      : "Select branch (optional)"
+                } />
               </SelectTrigger>
               <SelectContent>
                 {availableBranches.map((branch) => (
-                  <SelectItem key={branch.id} value={branch.id}>
+                  <SelectItem key={branch.branchId} value={branch.branchId}>
                     {branch.name}
                   </SelectItem>
                 ))}
@@ -207,18 +240,18 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
             <Button
               type="button"
               variant="outline"
-              onClick={onClose}
+              onClick={() => onOpenChange(false)}
               className="flex-1 cursor-pointer bg-transparent"
-              disabled={isSubmitting}
+              disabled={creatingOperator}
             >
               Cancel
             </Button>
             <Button
               type="submit"
               className="flex-1 cursor-pointer"
-              disabled={isSubmitting || !formData.name || !formData.email || !formData.role || !formData.password}
+              disabled={creatingOperator || !formData.name || !formData.email || !formData.password}
             >
-              {isSubmitting ? (
+              {creatingOperator ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Creating...

@@ -598,4 +598,65 @@ export const crowdDataApi = {
     }),
 }
 
+// Visitor Log interfaces
+export interface VisitorLog {
+  visitorLogId: string
+  visitorName: string
+  branchId: string
+  checkInTime: string
+  serviceStartTime: string
+  waitTimeInMinutes: number
+}
+
+export interface VisitorLogRequest {
+  visitorName: string
+  branchId: string
+  checkInTime: string
+  serviceStartTime?: string
+  waitTimeInMinutes?: number
+}
+
+// Visitor Log APIs
+export const visitorLogApi = {
+  // Get all visitor logs
+  getAll: (): Promise<VisitorLog[]> => 
+    apiRequest<VisitorLog[]>('/visitor-logs'),
+
+  // Get visitor log by ID
+  getById: (id: string): Promise<VisitorLog> => 
+    apiRequest<VisitorLog>(`/visitor-logs/${id}`),
+
+  // Create visitor log
+  create: (data: VisitorLogRequest): Promise<VisitorLog> => 
+    apiRequest<VisitorLog>('/visitor-logs', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  // Get visitor logs by branch
+  getByBranch: (branchId: string): Promise<VisitorLog[]> => 
+    apiRequest<VisitorLog[]>(`/visitor-logs/branch/${branchId}`),
+
+  // Get visitor logs by branch for last 30 days
+  getByBranchLast30Days: (branchId: string): Promise<VisitorLog[]> => 
+    apiRequest<VisitorLog[]>(`/visitor-logs/branch/${branchId}/last-30-days`),
+
+  // Get average wait time by branch
+  getAverageWaitTimeByBranch: (branchId: string): Promise<{ branchId: string; averageWaitTime: number }> => 
+    apiRequest<{ branchId: string; averageWaitTime: number }>(`/visitor-logs/branch/${branchId}/average-wait-time`),
+
+  // Update visitor log
+  update: (id: string, data: Partial<VisitorLogRequest>): Promise<VisitorLog> => 
+    apiRequest<VisitorLog>(`/visitor-logs/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  // Delete visitor log
+  delete: (id: string): Promise<void> => 
+    apiRequest<void>(`/visitor-logs/${id}`, {
+      method: 'DELETE',
+    }),
+}
+
 export { ApiError }

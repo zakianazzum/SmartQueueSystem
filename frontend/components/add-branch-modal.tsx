@@ -16,80 +16,109 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { MapPin } from "lucide-react"
+import { Institution, Branch } from "@/lib/api"
+import { useCreateBranch } from "@/hooks/use-branches"
 
 interface AddBranchModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  institution: any
-  onAdd: (institutionId: string, branch: any) => void
+  institution: Institution | null
+  onAdd: (institutionId: string, branch: Branch) => void
 }
 
 export function AddBranchModal({ open, onOpenChange, institution, onAdd }: AddBranchModalProps) {
-  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
+    branchDescription: "",
     address: "",
     serviceHours: "",
+    serviceDescription: "",
     capacity: "",
-    services: "",
+    latitude: "",
+    longitude: "",
   })
   const { toast } = useToast()
+  const { createBranch, loading } = useCreateBranch()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+
+    if (!institution) {
+      toast({
+        title: "Error",
+        description: "No institution selected.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!formData.name.trim()) {
+      toast({
+        title: "Error",
+        description: "Branch name is required.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!formData.address.trim()) {
+      toast({
+        title: "Error",
+        description: "Branch address is required.",
+        variant: "destructive",
+      })
+      return
+    }
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      const newBranch = {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        name: formData.name,
-        description: formData.description,
-        address: formData.address,
-        serviceHours: formData.serviceHours,
-        capacity: Number.parseInt(formData.capacity),
-        currentCrowdCount: Math.floor(Math.random() * Number.parseInt(formData.capacity)),
-        currentCrowdLevel: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)],
-        services: formData.services
-          .split(",")
-          .map((s) => s.trim())
-          .filter((s) => s.length > 0),
-        operatorId: null,
-        operatorName: null,
-        latitude: 23.7501726 + (Math.random() - 0.5) * 0.1,
-        longitude: 90.3854392 + (Math.random() - 0.5) * 0.1,
+      const branchData = {
+        institutionId: institution.institutionId,
+        name: formData.name.trim(),
+        branchDescription: formData.branchDescription.trim() || undefined,
+        address: formData.address.trim(),
+        serviceHours: formData.serviceHours.trim() || undefined,
+        serviceDescription: formData.serviceDescription.trim() || undefined,
+        capacity: formData.capacity ? parseInt(formData.capacity) : undefined,
+        latitude: formData.latitude ? parseFloat(formData.latitude) : undefined,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : undefined,
       }
 
-      onAdd(institution.id, newBranch)
+      const newBranch = await createBranch(branchData)
 
-      toast({
-        title: "Branch Added",
-        description: `${formData.name} has been successfully added to ${institution.name}.`,
-      })
+      if (newBranch) {
+        onAdd(institution.institutionId, newBranch)
 
-      // Reset form
-      setFormData({
-        name: "",
-        description: "",
-        address: "",
-        serviceHours: "",
-        capacity: "",
-        services: "",
-      })
+        toast({
+          title: "Branch Added",
+          description: `${formData.name} has been successfully added to ${institution.name}.`,
+        })
 
-      onOpenChange(false)
+        // Reset form
+        setFormData({
+          name: "",
+          branchDescription: "",
+          address: "",
+          serviceHours: "",
+          serviceDescription: "",
+          capacity: "",
+          latitude: "",
+          longitude: "",
+        })
+
+        onOpenChange(false)
+      }
     } catch (error) {
+      console.error("Error adding branch:", error)
       toast({
         title: "Error",
         description: "Failed to add branch. Please try again.",
         variant: "destructive",
       })
-    } finally {
-      setLoading(false)
     }
+  }
+
+  if (!institution) {
+    return null
   }
 
   return (
@@ -98,7 +127,7 @@ export function AddBranchModal({ open, onOpenChange, institution, onAdd }: AddBr
         <DialogHeader>
           <DialogTitle className="flex items-center">
             <MapPin className="h-5 w-5 mr-2" />
-            Add Branch to {institution?.name}
+            Add Branch to {institution.name}
           </DialogTitle>
           <DialogDescription>Add a new branch location for this institution.</DialogDescription>
         </DialogHeader>
@@ -119,8 +148,8 @@ export function AddBranchModal({ open, onOpenChange, institution, onAdd }: AddBr
             <Label htmlFor="branchDescription">Branch Description</Label>
             <Textarea
               id="branchDescription"
-              value={formData.description}
-              onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
+              value={formData.branchDescription}
+              onChange={(e) => setFormData((prev) => ({ ...prev, branchDescription: e.target.value }))}
               placeholder="Brief description of this branch"
               rows={2}
             />
@@ -145,7 +174,6 @@ export function AddBranchModal({ open, onOpenChange, institution, onAdd }: AddBr
                 value={formData.serviceHours}
                 onChange={(e) => setFormData((prev) => ({ ...prev, serviceHours: e.target.value }))}
                 placeholder="e.g., 9:00 AM - 5:00 PM"
-                required
               />
             </div>
             <div className="space-y-2">
@@ -156,21 +184,45 @@ export function AddBranchModal({ open, onOpenChange, institution, onAdd }: AddBr
                 value={formData.capacity}
                 onChange={(e) => setFormData((prev) => ({ ...prev, capacity: e.target.value }))}
                 placeholder="e.g., 50"
-                required
                 min="1"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="services">Services (comma-separated)</Label>
-            <Input
-              id="services"
-              value={formData.services}
-              onChange={(e) => setFormData((prev) => ({ ...prev, services: e.target.value }))}
-              placeholder="e.g., Banking, ATM, Loans, Customer Service"
-              required
+            <Label htmlFor="serviceDescription">Service Description</Label>
+            <Textarea
+              id="serviceDescription"
+              value={formData.serviceDescription}
+              onChange={(e) => setFormData((prev) => ({ ...prev, serviceDescription: e.target.value }))}
+              placeholder="e.g., Banking services, ATM, Customer support"
+              rows={2}
             />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="latitude">Latitude</Label>
+              <Input
+                id="latitude"
+                type="number"
+                step="any"
+                value={formData.latitude}
+                onChange={(e) => setFormData((prev) => ({ ...prev, latitude: e.target.value }))}
+                placeholder="e.g., 23.7501726"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="longitude">Longitude</Label>
+              <Input
+                id="longitude"
+                type="number"
+                step="any"
+                value={formData.longitude}
+                onChange={(e) => setFormData((prev) => ({ ...prev, longitude: e.target.value }))}
+                placeholder="e.g., 90.3854392"
+              />
+            </div>
           </div>
 
           <DialogFooter>

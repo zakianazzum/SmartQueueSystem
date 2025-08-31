@@ -9,22 +9,73 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AddOperatorModal } from "@/components/add-operator-modal"
 import { EditOperatorModal } from "@/components/edit-operator-modal"
 import { DeleteConfirmationModal } from "@/components/delete-confirmation-modal"
-import { mockAdminOperators } from "@/lib/admin-data"
-import { Users, Plus, Edit, Trash2, UserCheck, UserX, Clock, Mail } from "lucide-react"
+import { Users, Plus, Edit, Trash2, UserCheck, UserX, Clock, Mail, Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { Operator } from "@/lib/api"
+import { useOperators, useCreateOperator, useUpdateOperator, useDeleteOperator } from "@/hooks/use-operators"
+import { useBranches } from "@/hooks/use-branches"
+
+interface ExtendedOperator extends Operator {
+  name: string
+  email: string
+  branchName?: string
+  institutionName?: string
+  isActive: boolean
+  lastActive: string
+  totalUpdates: number
+  averageResponseTime: number
+  performance: "Excellent" | "Good" | "Average" | "Needs Improvement"
+}
 
 export default function OperatorsPage() {
-  const [operators, setOperators] = useState(mockAdminOperators)
   const [searchTerm, setSearchTerm] = useState("")
   const [filterStatus, setFilterStatus] = useState("all")
   const [filterPerformance, setFilterPerformance] = useState("all")
   const [showAddModal, setShowAddModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [selectedOperator, setSelectedOperator] = useState<any>(null)
+  const [selectedOperator, setSelectedOperator] = useState<ExtendedOperator | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null)
+  
   const { toast } = useToast()
 
-  const filteredOperators = operators.filter((operator) => {
+  // Use custom hooks
+  const { operators, loading: operatorsLoading, refetch: refetchOperators } = useOperators()
+  const { branches, loading: branchesLoading } = useBranches()
+  const { createOperator, loading: creatingOperator } = useCreateOperator()
+  const { updateOperator, loading: updatingOperator } = useUpdateOperator()
+  const { deleteOperator, loading: deletingOperator } = useDeleteOperator()
+
+  // Process operators with extended data
+  const processedOperators: ExtendedOperator[] = operators.map(operator => {
+    // Use the nested user information from the Operator interface
+    const name = operator.user?.name || 'Unknown'
+    const email = operator.user?.email || 'No email'
+    
+    // Use the branch information - it's a dictionary, not an object
+    const branchName = operator.branch?.name
+    const branchId = operator.branchId
+    
+    // Find the institution name by looking up the branch in the branches array
+    const assignedBranch = branches.find(branch => branch.branchId === branchId)
+    const institutionName = assignedBranch ? 
+      branches.find(b => b.branchId === assignedBranch.institutionId)?.name : undefined
+    
+    return {
+      ...operator,
+      name: name,
+      email: email,
+      branchName: branchName,
+      institutionName: institutionName,
+      isActive: true, // Default to active - would be fetched from user status
+      lastActive: new Date().toISOString(), // Default - would be fetched from activity logs
+      totalUpdates: 0, // Default - would be fetched from crowd data updates
+      averageResponseTime: 5, // Default - would be calculated from activity logs
+      performance: "Good" as const, // Default - would be calculated from metrics
+    }
+  })
+
+  const filteredOperators = processedOperators.filter((operator) => {
     const matchesSearch =
       operator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       operator.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -65,61 +116,118 @@ export default function OperatorsPage() {
     }
   }
 
-  const toggleOperatorStatus = (operatorId: string) => {
-    setOperators(operators.map((op) => (op.id === operatorId ? { ...op, isActive: !op.isActive } : op)))
-    const operator = operators.find((op) => op.id === operatorId)
-    toast({
-      title: operator?.isActive ? "Operator Deactivated" : "Operator Activated",
-      description: `${operator?.name} has been ${operator?.isActive ? "deactivated" : "activated"}.`,
-    })
-  }
+  const toggleOperatorStatus = async (operatorId: string) => {
+    try {
+      const operator = processedOperators.find((op) => op.userId === operatorId)
+      if (!operator) return
 
-  const handleAddOperator = (operatorData: any) => {
-    const newOperator = {
-      id: `op${operators.length + 1}`,
-      ...operatorData,
-      isActive: true,
-      performance: "Good",
-      totalUpdates: 0,
-      averageResponseTime: 5,
-      lastActive: new Date().toISOString(),
-      branchName: "Downtown Branch", // Mock assignment
-      institutionName: "First National Bank", // Mock assignment
-    }
-    setOperators([...operators, newOperator])
-    toast({
-      title: "Operator Added",
-      description: `${operatorData.name} has been successfully added as an operator.`,
-    })
-  }
-
-  const handleEditOperator = (updatedOperator: any) => {
-    setOperators(operators.map((op) => (op.id === updatedOperator.id ? updatedOperator : op)))
-    toast({
-      title: "Operator Updated",
-      description: `${updatedOperator.name}'s information has been updated.`,
-    })
-  }
-
-  const handleDeleteOperator = () => {
-    if (selectedOperator) {
-      setOperators(operators.filter((op) => op.id !== selectedOperator.id))
+      // For now, just show a toast since we don't have a status field
       toast({
-        title: "Operator Removed",
-        description: `${selectedOperator.name} has been removed from the system.`,
+        title: "Status Update",
+        description: `Operator status would be updated here.`,
+      })
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update operator status.",
         variant: "destructive",
       })
     }
   }
 
-  const openEditModal = (operator: any) => {
+  const handleAddOperator = async (operatorData: any) => {
+    try {
+      // The operatorData should contain userId and branchId
+      const success = await createOperator({
+        userId: operatorData.userId,
+        branchId: operatorData.branchId
+      })
+      
+      if (success) {
+        await refetchOperators()
+        toast({
+          title: "Success",
+          description: "Operator added successfully!",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add operator.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleEditOperator = async (updatedOperator: any) => {
+    try {
+      const success = await updateOperator(
+        updatedOperator.userId, 
+        updatedOperator.branchId, 
+        { branchId: updatedOperator.newBranchId }
+      )
+      
+      if (success) {
+        await refetchOperators()
+        toast({
+          title: "Success",
+          description: "Operator updated successfully!",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update operator.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleDeleteOperator = async () => {
+    if (!deleteTarget) return
+
+    try {
+      const operator = processedOperators.find((op) => op.userId === deleteTarget.id)
+      if (!operator) return
+
+      const success = await deleteOperator(operator.userId, operator.branchId)
+      if (success) {
+        await refetchOperators()
+        toast({
+          title: "Success",
+          description: "Operator deleted successfully!",
+        })
+        setShowDeleteModal(false)
+        setDeleteTarget(null)
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete operator. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const openEditModal = (operator: ExtendedOperator) => {
     setSelectedOperator(operator)
     setShowEditModal(true)
   }
 
-  const openDeleteModal = (operator: any) => {
-    setSelectedOperator(operator)
+  const openDeleteModal = (operator: ExtendedOperator) => {
+    setDeleteTarget({ id: operator.userId, name: operator.name })
     setShowDeleteModal(true)
+  }
+
+  if (operatorsLoading || branchesLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Loading operators...</span>
+        </div>
+      </DashboardLayout>
+    )
   }
 
   return (
@@ -140,26 +248,26 @@ export default function OperatorsPage() {
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardContent className="p-6">
-              <div className="text-2xl font-bold text-primary">{operators.length}</div>
+              <div className="text-2xl font-bold text-primary">{processedOperators.length}</div>
               <div className="text-sm text-muted-foreground">Total Operators</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6">
-              <div className="text-2xl font-bold text-accent">{operators.filter((op) => op.isActive).length}</div>
+              <div className="text-2xl font-bold text-accent">{processedOperators.filter((op) => op.isActive).length}</div>
               <div className="text-sm text-muted-foreground">Active Operators</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6">
-              <div className="text-2xl font-bold text-primary">{operators.filter((op) => op.branchId).length}</div>
+              <div className="text-2xl font-bold text-primary">{processedOperators.filter((op) => op.branchId).length}</div>
               <div className="text-sm text-muted-foreground">Assigned to Branches</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6">
               <div className="text-2xl font-bold text-accent">
-                {operators.filter((op) => op.performance === "Excellent").length}
+                {processedOperators.filter((op) => op.performance === "Excellent").length}
               </div>
               <div className="text-sm text-muted-foreground">Excellent Performance</div>
             </CardContent>
@@ -208,167 +316,171 @@ export default function OperatorsPage() {
 
         {/* Operators List */}
         <div className="space-y-4">
-          {filteredOperators.map((operator) => (
-            <Card key={operator.id}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-lg font-semibold text-primary">
-                        {operator.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="font-semibold text-lg">{operator.name}</h3>
-                        <Badge variant={operator.isActive ? "default" : "secondary"}>
-                          {operator.isActive ? "Active" : "Inactive"}
-                        </Badge>
-                        <Badge variant={getPerformanceBadgeVariant(operator.performance)}>{operator.performance}</Badge>
-                      </div>
-                      <div className="flex items-center text-sm text-muted-foreground space-x-4">
-                        <span className="flex items-center">
-                          <Mail className="h-4 w-4 mr-1" />
-                          {operator.email}
-                        </span>
-                        <span className="flex items-center">
-                          <Clock className="h-4 w-4 mr-1" />
-                          Last active: {new Date(operator.lastActive).toLocaleString()}
-                        </span>
-                      </div>
-                      {operator.branchName ? (
-                        <div className="text-sm mt-1">
-                          <span className="text-muted-foreground">Assigned to: </span>
-                          <span className="font-medium">{operator.branchName}</span>
-                          {operator.institutionName && (
-                            <span className="text-muted-foreground"> ({operator.institutionName})</span>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="text-sm text-destructive mt-1">Not assigned to any branch</div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="text-right">
-                      <div className="text-sm font-medium">{operator.totalUpdates} updates</div>
-                      <div className="text-xs text-muted-foreground">
-                        {operator.averageResponseTime}min avg response
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => toggleOperatorStatus(operator.id)}
-                        className={`cursor-pointer ${
-                          operator.isActive
-                            ? "text-destructive hover:text-destructive"
-                            : "text-green-600 hover:text-green-600"
-                        }`}
-                      >
-                        {operator.isActive ? (
-                          <>
-                            <UserX className="h-4 w-4 mr-1" />
-                            Deactivate
-                          </>
-                        ) : (
-                          <>
-                            <UserCheck className="h-4 w-4 mr-1" />
-                            Activate
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="cursor-pointer bg-transparent"
-                        onClick={() => openEditModal(operator)}
-                      >
-                        <Edit className="h-4 w-4 mr-1" />
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-destructive hover:text-destructive bg-transparent cursor-pointer"
-                        onClick={() => openDeleteModal(operator)}
-                      >
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Performance Metrics */}
-                <div className="mt-4 pt-4 border-t">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-primary">{operator.totalUpdates}</div>
-                      <div className="text-xs text-muted-foreground">Total Updates</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-accent">{operator.averageResponseTime}m</div>
-                      <div className="text-xs text-muted-foreground">Avg Response</div>
-                    </div>
-                    <div className="text-center">
-                      <div className={`text-lg font-bold ${getPerformanceColor(operator.performance)}`}>
-                        {operator.performance === "Excellent"
-                          ? "A+"
-                          : operator.performance === "Good"
-                            ? "B+"
-                            : operator.performance === "Average"
-                              ? "C"
-                              : "D"}
-                      </div>
-                      <div className="text-xs text-muted-foreground">Performance Grade</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-primary">{operator.isActive ? "Online" : "Offline"}</div>
-                      <div className="text-xs text-muted-foreground">Current Status</div>
-                    </div>
-                  </div>
-                </div>
+          {filteredOperators.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-12">
+                <Users className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">No operators found</h3>
+                <p className="text-muted-foreground mb-6">
+                  {searchTerm || filterStatus !== "all" || filterPerformance !== "all"
+                    ? "Try adjusting your search terms or filters to find operators."
+                    : "Get started by adding your first operator."
+                  }
+                </p>
+                {!searchTerm && filterStatus === "all" && filterPerformance === "all" && (
+                  <Button onClick={() => setShowAddModal(true)} className="cursor-pointer">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add New Operator
+                  </Button>
+                )}
               </CardContent>
             </Card>
-          ))}
-        </div>
+          ) : (
+            filteredOperators.map((operator) => (
+              <Card key={operator.userId}>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-lg font-semibold text-primary">
+                          {operator.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h3 className="font-semibold text-lg">{operator.name}</h3>
+                          <Badge variant={operator.isActive ? "default" : "secondary"}>
+                            {operator.isActive ? "Active" : "Inactive"}
+                          </Badge>
+                          <Badge variant={getPerformanceBadgeVariant(operator.performance)}>{operator.performance}</Badge>
+                        </div>
+                        <div className="flex items-center text-sm text-muted-foreground space-x-4">
+                          <span className="flex items-center">
+                            <Mail className="h-4 w-4 mr-1" />
+                            {operator.email}
+                          </span>
+                          <span className="flex items-center">
+                            <Clock className="h-4 w-4 mr-1" />
+                            Last active: {new Date(operator.lastActive).toLocaleString()}
+                          </span>
+                        </div>
+                        {operator.branchName ? (
+                          <div className="text-sm mt-1">
+                            <span className="text-muted-foreground">Assigned to: </span>
+                            <span className="font-medium">{operator.branchName}</span>
+                            {operator.institutionName && (
+                              <span className="text-muted-foreground"> ({operator.institutionName})</span>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="text-sm text-destructive mt-1">Not assigned to any branch</div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <div className="text-right">
+                        <div className="text-sm font-medium">{operator.totalUpdates} updates</div>
+                        <div className="text-xs text-muted-foreground">
+                          {operator.averageResponseTime}min avg response
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => toggleOperatorStatus(operator.userId)}
+                          className={`cursor-pointer ${
+                            operator.isActive
+                              ? "text-destructive hover:text-destructive"
+                              : "text-green-600 hover:text-green-600"
+                          }`}
+                        >
+                          {operator.isActive ? (
+                            <>
+                              <UserX className="h-4 w-4 mr-1" />
+                              Deactivate
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck className="h-4 w-4 mr-1" />
+                              Activate
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="cursor-pointer bg-transparent"
+                          onClick={() => openEditModal(operator)}
+                        >
+                          <Edit className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-destructive hover:text-destructive bg-transparent cursor-pointer"
+                          onClick={() => openDeleteModal(operator)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
 
-        {filteredOperators.length === 0 && (
-          <Card>
-            <CardContent className="text-center py-12">
-              <Users className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No operators found</h3>
-              <p className="text-muted-foreground mb-6">
-                Try adjusting your search terms or filters to find operators.
-              </p>
-              <Button onClick={() => setShowAddModal(true)} className="cursor-pointer">
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Operator
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+                  {/* Performance Metrics */}
+                  <div className="mt-4 pt-4 border-t">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-primary">{operator.totalUpdates}</div>
+                        <div className="text-xs text-muted-foreground">Total Updates</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-accent">{operator.averageResponseTime}m</div>
+                        <div className="text-xs text-muted-foreground">Avg Response</div>
+                      </div>
+                      <div className="text-center">
+                        <div className={`text-lg font-bold ${getPerformanceColor(operator.performance)}`}>
+                          {operator.performance === "Excellent"
+                            ? "A+"
+                            : operator.performance === "Good"
+                              ? "B+"
+                              : operator.performance === "Average"
+                                ? "C"
+                                : "D"}
+                        </div>
+                        <div className="text-xs text-muted-foreground">Performance Grade</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-primary">{operator.isActive ? "Online" : "Offline"}</div>
+                        <div className="text-xs text-muted-foreground">Current Status</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
       </div>
 
       {/* Modals */}
-      <AddOperatorModal isOpen={showAddModal} onClose={() => setShowAddModal(false)} onConfirm={handleAddOperator} />
+      <AddOperatorModal open={showAddModal} onOpenChange={setShowAddModal} onConfirm={handleAddOperator} />
 
       <EditOperatorModal
         operator={selectedOperator}
-        isOpen={showEditModal}
-        onClose={() => setShowEditModal(false)}
+        open={showEditModal}
+        onOpenChange={setShowEditModal}
         onConfirm={handleEditOperator}
       />
 
       <DeleteConfirmationModal
-        isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
+        open={showDeleteModal}
+        onOpenChange={setShowDeleteModal}
         onConfirm={handleDeleteOperator}
         title="Remove Operator"
-        description="Are you sure you want to remove this operator? This will revoke their access and remove all associated data."
-        itemName={selectedOperator?.name || ""}
+        description={`Are you sure you want to remove ${deleteTarget?.name}? This will revoke their access and remove all associated data.`}
       />
     </DashboardLayout>
   )

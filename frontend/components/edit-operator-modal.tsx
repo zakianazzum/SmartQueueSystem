@@ -9,33 +9,20 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Edit, Check } from "lucide-react"
-
-const mockInstitutions = [
-  { id: "inst1", name: "First National Bank", type: "Bank" },
-  { id: "inst2", name: "City Hall", type: "Government" },
-  { id: "inst3", name: "Central Park", type: "Recreation" },
-  { id: "inst4", name: "DMV Office", type: "Government" },
-]
-
-const mockBranches = [
-  { id: "branch1", name: "Downtown Branch", institutionId: "inst1" },
-  { id: "branch2", name: "Uptown Branch", institutionId: "inst1" },
-  { id: "branch3", name: "Main Office", institutionId: "inst2" },
-  { id: "branch4", name: "North Office", institutionId: "inst2" },
-  { id: "branch5", name: "Recreation Center", institutionId: "inst3" },
-  { id: "branch6", name: "Sports Complex", institutionId: "inst3" },
-  { id: "branch7", name: "License Division", institutionId: "inst4" },
-  { id: "branch8", name: "Registration Division", institutionId: "inst4" },
-]
+import { useToast } from "@/hooks/use-toast"
+import { Operator, Institution, Branch } from "@/lib/api"
+import { useInstitutions } from "@/hooks/use-institutions"
+import { useBranches } from "@/hooks/use-branches"
+import { useUpdateOperator } from "@/hooks/use-operators"
 
 interface EditOperatorModalProps {
-  operator: any
-  isOpen: boolean
-  onClose: () => void
-  onConfirm: (operatorData: any) => void
+  operator: Operator | null
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onConfirm: (operatorData: Operator) => void
 }
 
-export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: EditOperatorModalProps) {
+export function EditOperatorModal({ operator, open, onOpenChange, onConfirm }: EditOperatorModalProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,43 +31,107 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
     branchId: "",
     institutionId: "",
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
+  
+  // Use custom hooks
+  const { institutions, loading: institutionsLoading } = useInstitutions()
+  const { branches, loading: branchesLoading } = useBranches()
+  const { updateOperator, loading: updatingOperator } = useUpdateOperator()
 
   useEffect(() => {
     if (operator) {
       setFormData({
         name: operator.name || "",
         email: operator.email || "",
-        role: operator.role || "",
+        role: operator.role || "operator",
         password: "", // Don't pre-fill password for security
         branchId: operator.branchId || "",
-        institutionId: operator.institutionId || "",
+        institutionId: operator.branch?.branchId ? 
+          branches.find(b => b.branchId === operator.branchId)?.institutionId || "" : "",
       })
     }
-  }, [operator])
+  }, [operator, branches])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name || !formData.email || !formData.role) return
+    
+    if (!operator) return
 
-    setIsSubmitting(true)
+    if (!formData.name.trim()) {
+      toast({
+        title: "Error",
+        description: "Operator name is required.",
+        variant: "destructive",
+      })
+      return
+    }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    if (!formData.email.trim()) {
+      toast({
+        title: "Error",
+        description: "Email is required.",
+        variant: "destructive",
+      })
+      return
+    }
 
-    onConfirm({ ...operator, ...formData })
-    setIsSubmitting(false)
-    onClose()
+    try {
+      const updateData: any = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        role: formData.role,
+      }
+
+      // Only include password if it's provided
+      if (formData.password.trim()) {
+        updateData.password = formData.password
+      }
+
+      // Only include branchId if it's provided
+      if (formData.branchId) {
+        updateData.branchId = formData.branchId
+      }
+
+      const updatedOperator = await updateOperator(operator.userId, updateData)
+
+      if (updatedOperator) {
+        onConfirm(updatedOperator)
+
+        toast({
+          title: "Operator Updated",
+          description: `${formData.name}'s information has been updated.`,
+        })
+
+        onOpenChange(false)
+      }
+    } catch (error) {
+      console.error("Error updating operator:", error)
+      toast({
+        title: "Error",
+        description: "Failed to update operator. Please try again.",
+        variant: "destructive",
+      })
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => {
+      if (field === "institutionId") {
+        return { ...prev, [field]: value, branchId: "" }
+      }
+      return { ...prev, [field]: value }
+    })
   }
 
-  const filteredBranches = mockBranches.filter((branch) => branch.institutionId === formData.institutionId)
+  // Get branches for selected institution
+  const availableBranches = branches.filter(branch => branch.institutionId === formData.institutionId)
+
+  if (!operator) {
+    return null
+  }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -140,20 +191,21 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="edit-institution">Institution *</Label>
+            <Label htmlFor="edit-institution">Institution</Label>
             <Select
               value={formData.institutionId}
               onValueChange={(value) => {
                 handleInputChange("institutionId", value)
                 handleInputChange("branchId", "")
               }}
+              disabled={institutionsLoading}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select institution" />
+                <SelectValue placeholder={institutionsLoading ? "Loading institutions..." : "Select institution (optional)"} />
               </SelectTrigger>
               <SelectContent>
-                {mockInstitutions.map((institution) => (
-                  <SelectItem key={institution.id} value={institution.id}>
+                {institutions.map((institution) => (
+                  <SelectItem key={institution.institutionId} value={institution.institutionId}>
                     {institution.name}
                   </SelectItem>
                 ))}
@@ -162,18 +214,24 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="edit-branch">Branch Assignment *</Label>
+            <Label htmlFor="edit-branch">Branch Assignment</Label>
             <Select
               value={formData.branchId}
               onValueChange={(value) => handleInputChange("branchId", value)}
-              disabled={!formData.institutionId}
+              disabled={!formData.institutionId || branchesLoading}
             >
               <SelectTrigger>
-                <SelectValue placeholder={!formData.institutionId ? "Select institution first" : "Select branch"} />
+                <SelectValue placeholder={
+                  !formData.institutionId 
+                    ? "Select institution first" 
+                    : branchesLoading 
+                      ? "Loading branches..." 
+                      : "Select branch (optional)"
+                } />
               </SelectTrigger>
               <SelectContent>
-                {filteredBranches.map((branch) => (
-                  <SelectItem key={branch.id} value={branch.id}>
+                {availableBranches.map((branch) => (
+                  <SelectItem key={branch.branchId} value={branch.branchId}>
                     {branch.name}
                   </SelectItem>
                 ))}
@@ -185,18 +243,18 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
             <Button
               type="button"
               variant="outline"
-              onClick={onClose}
+              onClick={() => onOpenChange(false)}
               className="flex-1 cursor-pointer bg-transparent"
-              disabled={isSubmitting}
+              disabled={updatingOperator}
             >
               Cancel
             </Button>
             <Button
               type="submit"
               className="flex-1 cursor-pointer"
-              disabled={isSubmitting || !formData.name || !formData.email || !formData.role}
+              disabled={updatingOperator || !formData.name || !formData.email}
             >
-              {isSubmitting ? (
+              {updatingOperator ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Updating...
