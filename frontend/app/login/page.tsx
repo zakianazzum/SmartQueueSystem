@@ -82,9 +82,9 @@ export default function LoginPage() {
             </p>
             <div className="mt-4 p-3 bg-muted rounded-md">
               <p className="text-xs text-muted-foreground">Demo accounts:</p>
-              <p className="text-xs">visitor@test.com / password</p>
-              <p className="text-xs">operator@test.com / password</p>
-              <p className="text-xs">admin@test.com / password</p>
+              <p className="text-xs">visitor@gmail.com / password</p>
+              <p className="text-xs">operator@ebl.com.bd / password</p>
+              <p className="text-xs">admin@ebl.com.bd / password</p>
             </div>
           </div>
         </CardContent>
