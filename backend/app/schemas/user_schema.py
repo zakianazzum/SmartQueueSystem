@@ -103,6 +103,18 @@ class AdministratorCreate(BaseModel):
     userId: str
 
 
+# Login Schemas
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class LoginResponse(BaseModel):
+    user: UserResponse
+    visitorId: Optional[str] = None
+    message: str
+
+
 # Branch Info for nested responses
 class BranchInfo(BaseModel):
     branchId: str

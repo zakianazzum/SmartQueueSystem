@@ -16,76 +16,80 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { mockInstitutions, mockCrowdHistory } from "@/lib/mock-data"
+import { DatePicker } from "@/components/date-picker"
+import { useInstitutions } from "@/hooks/use-institutions"
+import { useBranches } from "@/hooks/use-branches"
+import { useCreateWaitTimePrediction } from "@/hooks/use-wait-time-predictions"
+import { WaitTimePrediction } from "@/lib/api"
+import { useAuth } from "@/contexts/auth-context"
+import { useToast } from "@/hooks/use-toast"
 import { Clock, TrendingUp, Calendar, Users, BarChart3 } from "lucide-react"
 
 export default function WaitTimePage() {
   const [selectedInstitution, setSelectedInstitution] = useState("")
-  const [selectedDate, setSelectedDate] = useState("")
+  const [selectedBranch, setSelectedBranch] = useState("")
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState("")
-  const [prediction, setPrediction] = useState<{
-    waitTime: number
-    confidence: number
-    crowdLevel: string
-    recommendation: string
-  } | null>(null)
+  const [prediction, setPrediction] = useState<WaitTimePrediction | null>(null)
   const [predictionDialogOpen, setPredictionDialogOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  
+  const { institutions, loading: institutionsLoading } = useInstitutions()
+  const { branches, loading: branchesLoading } = useBranches()
+  const { createPrediction, loading: isCreating, error: createError } = useCreateWaitTimePrediction()
+  const { user } = useAuth()
+  const { toast } = useToast()
 
   const generatePrediction = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (selectedInstitution && selectedDate && selectedTime) {
-      setIsLoading(true)
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Mock prediction logic
-      const institution = mockInstitutions.find((inst) => inst.id === selectedInstitution)
-      const timeHour = Number.parseInt(selectedTime.split(":")[0])
-
-      let waitTime = 15
-      let crowdLevel = "Medium"
-      let confidence = 85
-
-      // Simulate different wait times based on time of day
-      if (timeHour >= 12 && timeHour <= 14) {
-        waitTime = 35
-        crowdLevel = "High"
-        confidence = 92
-      } else if (timeHour >= 9 && timeHour <= 11) {
-        waitTime = 25
-        crowdLevel = "Medium"
-        confidence = 88
-      } else {
-        waitTime = 10
-        crowdLevel = "Low"
-        confidence = 78
-      }
-
-      const recommendation =
-        waitTime > 30
-          ? "Consider visiting at a different time for shorter wait"
-          : waitTime > 15
-            ? "Moderate wait time expected"
-            : "Great time to visit!"
-
-      setPrediction({
-        waitTime,
-        confidence,
-        crowdLevel,
-        recommendation,
+    
+    if (!selectedInstitution || !selectedBranch || !selectedDate || !selectedTime) {
+      toast({
+        title: "Missing information",
+        description: "Please select institution, branch, date, and time.",
+        variant: "destructive",
       })
+      return
+    }
 
-      setIsLoading(false)
-      setPredictionDialogOpen(false)
+    // Get visitor ID from auth context
+    const visitorId = user?.visitorId || user?.userId
+
+    if (!visitorId) {
+      toast({
+        title: "Authentication error",
+        description: "Please log in again to use this feature.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Create a combined date and time
+    const combinedDate = new Date(selectedDate)
+    const [hours, minutes] = selectedTime.split(":").map(Number)
+    combinedDate.setHours(hours, minutes, 0, 0)
+
+    const result = await createPrediction({
+      visitorId: visitorId,
+      branchId: selectedBranch,
+      visitDate: combinedDate.toISOString(),
+    })
+
+    if (result) {
+      setPrediction(result)
+      setPredictionDialogOpen(true)
     }
   }
 
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 90) return "text-green-500"
-    if (confidence >= 80) return "text-yellow-500"
+  const getConfidenceColor = (accuracy: number) => {
+    if (accuracy >= 90) return "text-green-500"
+    if (accuracy >= 80) return "text-yellow-500"
     return "text-red-500"
+  }
+
+  const getCrowdLevel = (waitTime: number) => {
+    if (waitTime <= 10) return "Low"
+    if (waitTime <= 25) return "Medium"
+    return "High"
   }
 
   const getCrowdColor = (level: string) => {
@@ -100,6 +104,21 @@ export default function WaitTimePage() {
         return "text-gray-500"
     }
   }
+
+  const getRecommendation = (waitTime: number) => {
+    if (waitTime > 30) {
+      return "Consider visiting at a different time for shorter wait"
+    } else if (waitTime > 15) {
+      return "Moderate wait time expected"
+    } else {
+      return "Great time to visit!"
+    }
+  }
+
+  // Filter branches based on selected institution
+  const filteredBranches = branches.filter(
+    (branch) => !selectedInstitution || branch.institutionId === selectedInstitution
+  )
 
   return (
     <DashboardLayout>
@@ -128,14 +147,46 @@ export default function WaitTimePage() {
               <form onSubmit={generatePrediction} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="institution">Institution</Label>
-                  <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
+                  <Select 
+                    value={selectedInstitution} 
+                    onValueChange={(value) => {
+                      setSelectedInstitution(value)
+                      setSelectedBranch("") // Reset branch selection when institution changes
+                    }}
+                    disabled={institutionsLoading}
+                  >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select institution" />
+                      <SelectValue placeholder={institutionsLoading ? "Loading..." : "Select institution"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {mockInstitutions.map((institution) => (
-                        <SelectItem key={institution.id} value={institution.id}>
+                      {institutions.map((institution) => (
+                        <SelectItem key={institution.institutionId} value={institution.institutionId}>
                           {institution.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="branch">Branch</Label>
+                  <Select 
+                    value={selectedBranch} 
+                    onValueChange={setSelectedBranch}
+                    disabled={!selectedInstitution || branchesLoading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={
+                        !selectedInstitution 
+                          ? "Please select an institution first" 
+                          : branchesLoading 
+                            ? "Loading..." 
+                            : "Select branch"
+                      } />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {filteredBranches.map((branch) => (
+                        <SelectItem key={branch.branchId} value={branch.branchId}>
+                          {branch.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -144,16 +195,11 @@ export default function WaitTimePage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="date">Date</Label>
-                    <Select value={selectedDate} onValueChange={setSelectedDate}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select date" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="today">Today</SelectItem>
-                        <SelectItem value="tomorrow">Tomorrow</SelectItem>
-                        <SelectItem value="day-after">Day After Tomorrow</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <DatePicker
+                      date={selectedDate}
+                      onDateChange={setSelectedDate}
+                      placeholder="Select visit date"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="time">Time</Label>
@@ -185,10 +231,10 @@ export default function WaitTimePage() {
                   </Button>
                   <Button
                     type="submit"
-                    disabled={!selectedInstitution || !selectedDate || !selectedTime || isLoading}
+                    disabled={!selectedBranch || !selectedDate || !selectedTime || isCreating}
                     className="cursor-pointer"
                   >
-                    {isLoading ? (
+                    {isCreating ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         Generating...
@@ -219,29 +265,29 @@ export default function WaitTimePage() {
             <CardContent>
               <div className="grid md:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">{prediction.waitTime} min</div>
+                  <div className="text-3xl font-bold text-primary mb-2">{prediction.predictedWaitTime} min</div>
                   <div className="text-sm text-muted-foreground">Predicted Wait Time</div>
                 </div>
                 <div className="text-center">
-                  <div className={`text-3xl font-bold mb-2 ${getConfidenceColor(prediction.confidence)}`}>
-                    {prediction.confidence}%
+                  <div className={`text-3xl font-bold mb-2 ${getConfidenceColor(prediction.accuracy)}`}>
+                    {prediction.accuracy}%
                   </div>
-                  <div className="text-sm text-muted-foreground">Confidence Level</div>
+                  <div className="text-sm text-muted-foreground">Accuracy Level</div>
                 </div>
                 <div className="text-center">
-                  <div className={`text-3xl font-bold mb-2 ${getCrowdColor(prediction.crowdLevel)}`}>
-                    {prediction.crowdLevel}
+                  <div className={`text-3xl font-bold mb-2 ${getCrowdColor(getCrowdLevel(prediction.predictedWaitTime))}`}>
+                    {getCrowdLevel(prediction.predictedWaitTime)}
                   </div>
                   <div className="text-sm text-muted-foreground">Expected Crowd</div>
                 </div>
                 <div className="text-center">
                   <Badge
                     variant={
-                      prediction.waitTime > 30 ? "destructive" : prediction.waitTime > 15 ? "secondary" : "default"
+                      prediction.predictedWaitTime > 30 ? "destructive" : prediction.predictedWaitTime > 15 ? "secondary" : "default"
                     }
                     className="text-sm"
                   >
-                    {prediction.waitTime > 30 ? "Busy" : prediction.waitTime > 15 ? "Moderate" : "Optimal"}
+                    {prediction.predictedWaitTime > 30 ? "Busy" : prediction.predictedWaitTime > 15 ? "Moderate" : "Optimal"}
                   </Badge>
                   <div className="text-sm text-muted-foreground mt-2">Visit Rating</div>
                 </div>
@@ -249,7 +295,19 @@ export default function WaitTimePage() {
 
               <div className="mt-6 p-4 bg-muted rounded-lg">
                 <h4 className="font-semibold mb-2">Recommendation</h4>
-                <p className="text-sm text-muted-foreground">{prediction.recommendation}</p>
+                <p className="text-sm text-muted-foreground">{getRecommendation(prediction.predictedWaitTime)}</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Error Display */}
+        {createError && (
+          <Card className="border-destructive">
+            <CardContent className="pt-6">
+              <div className="text-center text-destructive">
+                <p className="font-semibold">Error generating prediction</p>
+                <p className="text-sm">{createError}</p>
               </div>
             </CardContent>
           </Card>
@@ -259,31 +317,31 @@ export default function WaitTimePage() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Busiest Hours Today</CardTitle>
-              <CardDescription>Average crowd levels throughout the day</CardDescription>
+              <CardTitle>Recent Predictions</CardTitle>
+              <CardDescription>Your recent wait time predictions</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {mockCrowdHistory["1"]?.map((data, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm">{data.timestamp}</span>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-20 bg-muted rounded-full h-2">
-                        <div
-                          className={`h-2 rounded-full ${
-                            data.crowdLevel === "High"
-                              ? "bg-red-500"
-                              : data.crowdLevel === "Medium"
-                                ? "bg-yellow-500"
-                                : "bg-green-500"
-                          }`}
-                          style={{ width: `${(data.crowdCount / 30) * 100}%` }}
-                        ></div>
+                {prediction ? (
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <span className="text-sm font-medium">
+                        {new Date(prediction.visitDate).toLocaleDateString()} at {new Date(prediction.visitDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                      </span>
+                      <div className="text-xs text-muted-foreground">
+                        {prediction.predictedWaitTime} min wait • {prediction.accuracy}% accuracy
                       </div>
-                      <span className="text-sm text-muted-foreground w-12">{data.crowdCount}</span>
                     </div>
+                    <Badge variant={prediction.predictedWaitTime > 30 ? "destructive" : prediction.predictedWaitTime > 15 ? "secondary" : "default"}>
+                      {getCrowdLevel(prediction.predictedWaitTime)}
+                    </Badge>
                   </div>
-                ))}
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <p>No predictions yet</p>
+                    <p className="text-sm">Generate your first prediction to see it here</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

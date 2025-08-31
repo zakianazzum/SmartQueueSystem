@@ -23,6 +23,8 @@ from app.schemas.user_schema import (
     AlertPreferenceUpdate,
     AdministratorResponse,
     AdministratorCreate,
+    LoginRequest,
+    LoginResponse,
 )
 from app.services.user_service import user_service
 
@@ -444,6 +446,23 @@ def create_administrator(admin_data: AdministratorCreate, db: Session = Depends(
     try:
         administrator = user_service.create_administrator(db=db, admin_data=admin_data)
         return administrator
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal server error: {str(e)}"
+        )
+
+
+@user_router.post(
+    "/users/login", response_model=LoginResponse, tags=["user"]
+)
+def login_user(login_data: LoginRequest, db: Session = Depends(get_db)):
+    """Login user with email and password"""
+    try:
+        login_result = user_service.login_user(db=db, login_data=login_data)
+        return login_result
     except HTTPException:
         raise
     except Exception as e:

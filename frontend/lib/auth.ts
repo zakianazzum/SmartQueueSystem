@@ -1,9 +1,9 @@
-import { userApi, type User as ApiUser, type UserCreate } from "./api"
+import { userApi, type User as ApiUser } from "./api"
 
 export type UserRole = "visitor" | "operator" | "administrator"
 
 export interface User {
-  id: number
+  userId: string
   name: string
   email: string
   role: UserRole
@@ -13,26 +13,22 @@ export interface User {
 
 function convertApiUser(apiUser: ApiUser): User {
   return {
-    id: apiUser.id,
+    userId: apiUser.userId,
     name: apiUser.name,
     email: apiUser.email,
-    role: apiUser.role === "administrator" ? "administrator" : apiUser.role,
+    role: apiUser.role as UserRole,
     createdAt: apiUser.createdAt,
     updatedAt: apiUser.updatedAt,
   }
 }
 
-export async function signIn(email: string, password: string): Promise<User | null> {
+export async function signIn(email: string, password: string): Promise<{ user: User; visitorId?: string } | null> {
   try {
-    // For now, we'll get all users and find matching email/password
-    const users = await userApi.getAll()
-    const user = users.find((u) => u.email === email)
-
-    if (user) {
-      // In a real app, password verification would be done on the server
-      return convertApiUser(user)
+    const response = await userApi.login({ email, password })
+    return {
+      user: convertApiUser(response.user),
+      visitorId: response.visitorId
     }
-    return null
   } catch (error) {
     console.error("Sign in error:", error)
     return null
@@ -41,7 +37,7 @@ export async function signIn(email: string, password: string): Promise<User | nu
 
 export async function signUp(name: string, email: string, password: string): Promise<User | null> {
   try {
-    const newUserData: UserCreate = {
+    const newUserData = {
       name,
       email,
       password,
@@ -56,7 +52,7 @@ export async function signUp(name: string, email: string, password: string): Pro
   }
 }
 
-export async function getUserById(id: number): Promise<User | null> {
+export async function getUserById(id: string): Promise<User | null> {
   try {
     const user = await userApi.getById(id)
     return convertApiUser(user)

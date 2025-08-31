@@ -280,6 +280,24 @@ export const userApi = {
   getById: (id: string): Promise<User> => 
     apiRequest<User>(`/users/${id}`),
 
+  // Login user
+  login: (data: {
+    email: string
+    password: string
+  }): Promise<{
+    user: User
+    visitorId?: string
+    message: string
+  }> => 
+    apiRequest<{
+      user: User
+      visitorId?: string
+      message: string
+    }>('/users/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
   // Create user
   create: (data: {
     name: string
@@ -422,6 +440,70 @@ export const alertPreferenceApi = {
   // Delete alert preference
   delete: (alertId: string): Promise<void> => 
     apiRequest<void>(`/alert-preferences/${alertId}`, {
+      method: 'DELETE',
+    }),
+}
+
+// Wait Time Prediction interfaces
+export interface WaitTimePrediction {
+  waitTimePredictionId: string
+  visitorId: string
+  branchId: string
+  visitDate: string
+  predictedWaitTime: number
+  actualWaitTime: number
+  accuracy: number
+  predictedAt: string
+}
+
+export interface WaitTimePredictionRequest {
+  visitorId: string
+  branchId: string
+  visitDate: string
+}
+
+// Wait Time Prediction APIs
+export const waitTimePredictionApi = {
+  // Get all wait time predictions
+  getAll: (): Promise<WaitTimePrediction[]> => 
+    apiRequest<WaitTimePrediction[]>('/wait-time-predictions'),
+
+  // Get wait time prediction by ID
+  getById: (id: string): Promise<WaitTimePrediction> => 
+    apiRequest<WaitTimePrediction>(`/wait-time-predictions/${id}`),
+
+  // Create wait time prediction
+  create: (data: WaitTimePredictionRequest): Promise<WaitTimePrediction> => 
+    apiRequest<WaitTimePrediction>('/wait-time-predictions', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  // Get predictions by visitor
+  getByVisitor: (visitorId: string): Promise<WaitTimePrediction[]> => 
+    apiRequest<WaitTimePrediction[]>(`/wait-time-predictions/visitor/${visitorId}`),
+
+  // Get predictions by branch
+  getByBranch: (branchId: string): Promise<WaitTimePrediction[]> => 
+    apiRequest<WaitTimePrediction[]>(`/wait-time-predictions/branch/${branchId}`),
+
+  // Update wait time prediction
+  update: (id: string, data: {
+    visitorId?: string
+    branchId?: string
+    visitDate?: string
+    predictedWaitTime?: number
+    actualWaitTime?: number
+    accuracy?: number
+  }): Promise<WaitTimePrediction> => 
+    apiRequest<WaitTimePrediction>(`/wait-time-predictions/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  // Delete wait time prediction
+  delete: (id: string): Promise<void> => 
+    apiRequest<void>(`/wait-time-predictions/${id}`, {
       method: 'DELETE',
     }),
 }

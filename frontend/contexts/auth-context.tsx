@@ -26,9 +26,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const parsedUser = JSON.parse(storedUser)
           // Validate the stored user with the API
-          const validUser = await getUserById(parsedUser.id)
+          const validUser = await getUserById(parsedUser.userId)
           if (validUser) {
-            setUser(validUser)
+            // Preserve the visitor ID from stored data
+            const userData = {
+              ...validUser,
+              visitorId: parsedUser.visitorId
+            }
+            setUser(userData)
           } else {
             // Remove invalid stored user
             localStorage.removeItem("smartqueue_user")
@@ -47,9 +52,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true)
     try {
-      const userData = await signIn(email, password)
-      if (userData) {
-        setUser(userData)
+      const loginResult = await signIn(email, password)
+      if (loginResult) {
+        setUser(loginResult.user)
+        // Store user data and visitor ID in localStorage
+        const userData = {
+          ...loginResult.user,
+          visitorId: loginResult.visitorId
+        }
         localStorage.setItem("smartqueue_user", JSON.stringify(userData))
         return true
       }

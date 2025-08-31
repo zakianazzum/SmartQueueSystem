@@ -33,6 +33,8 @@ from app.schemas.user_schema import (
     AdministratorCreate,
     AdministratorResponse,
     BranchInfo,
+    LoginRequest,
+    LoginResponse,
 )
 
 user_crud = CRUDBase(model=User)
@@ -97,6 +99,37 @@ class UserService:
         db.commit()
         db.refresh(db_user)
         return self._transform_user(db_user)
+
+    def login_user(self, db: Session, login_data: LoginRequest) -> LoginResponse:
+        """Login user with email and password"""
+        # Find user by email
+        user = db.query(User).filter(User.Email == login_data.email).first()
+        
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+        
+        # Check password (in production, use proper password hashing)
+        if user.Password != login_data.password:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+        
+        # Get visitor ID if user is a visitor
+        visitor_id = None
+        if user.Role == "visitor":
+            visitor = db.query(Visitor).filter(Visitor.UserId == user.UserId).first()
+            if visitor:
+                visitor_id = visitor.UserId
+        
+        return LoginResponse(
+            user=self._transform_user(user),
+            visitorId=visitor_id,
+            message="Login successful"
+        )
 
     def update_user(self, db: Session, user_id: str, user_data: UserUpdate) -> Optional[UserResponse]:
         """Update user"""
