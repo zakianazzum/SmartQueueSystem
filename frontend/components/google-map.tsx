@@ -1,27 +1,29 @@
 "use client"
 import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react"
-import { mockInstitutions } from "@/lib/mock-data"
+import { Branch } from "@/lib/api"
 
 interface GoogleMapProps {
   apiKey: string
   className?: string
+  branches?: Branch[]
 }
 
 export interface GoogleMapRef {
-  addPinAndZoom: (institution: any) => void
+  addPinAndZoom: (branch: Branch) => void
   centerOnUserLocation: (lat: number, lng: number) => void
 }
 
-export const GoogleMap = forwardRef<GoogleMapRef, GoogleMapProps>(({ apiKey, className = "" }, ref) => {
+export const GoogleMap = forwardRef<GoogleMapRef, GoogleMapProps>(({ apiKey, className = "", branches = [] }, ref) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<any | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const searchMarkersRef = useRef<any[]>([])
+  const branchMarkersRef = useRef<any[]>([])
 
   useImperativeHandle(ref, () => ({
-    addPinAndZoom: (institution: any) => {
-      if (map && institution) {
-        console.log("[v0] Adding pin for institution:", institution.name)
+    addPinAndZoom: (branch: Branch) => {
+      if (map && branch && branch.latitude && branch.longitude) {
+        console.log("[v0] Adding pin for branch:", branch.name)
 
         searchMarkersRef.current.forEach((marker) => marker.setMap(null))
         searchMarkersRef.current = []
@@ -39,14 +41,23 @@ export const GoogleMap = forwardRef<GoogleMapRef, GoogleMapProps>(({ apiKey, cla
           }
         }
 
+        const getCrowdLevel = (crowdCount: number | undefined) => {
+          if (!crowdCount) return "Unknown"
+          if (crowdCount <= 10) return "Low"
+          if (crowdCount <= 25) return "Medium"
+          return "High"
+        }
+
+        const crowdLevel = getCrowdLevel(branch.totalCrowdCount)
+
         const searchMarker = new window.google.maps.Marker({
-          position: { lat: institution.latitude, lng: institution.longitude },
+          position: { lat: branch.latitude, lng: branch.longitude },
           map: map,
-          title: institution.name,
+          title: branch.name,
           icon: {
             path: window.google.maps.SymbolPath.CIRCLE,
             scale: 12,
-            fillColor: getCrowdColor(institution.currentCrowdLevel),
+            fillColor: getCrowdColor(crowdLevel),
             fillOpacity: 1,
             strokeColor: "#ffffff",
             strokeWeight: 3,
@@ -63,15 +74,15 @@ export const GoogleMap = forwardRef<GoogleMapRef, GoogleMapProps>(({ apiKey, cla
         const infoWindow = new window.google.maps.InfoWindow({
           content: `
             <div style="color: #000; padding: 12px; min-width: 200px;">
-              <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${institution.name}</h3>
-              <p style="margin: 0 0 8px 0; font-size: 13px; color: #666;">${institution.address}</p>
-              <p style="margin: 0 0 8px 0; font-size: 13px; color: #666;">${institution.type}</p>
+              <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${branch.name}</h3>
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #666;">${branch.address || "No address"}</p>
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #666;">Branch ID: ${branch.branchId}</p>
               <div style="display: flex; align-items: center; margin: 8px 0;">
-                <div style="width: 10px; height: 10px; border-radius: 50%; background-color: ${getCrowdColor(institution.currentCrowdLevel)}; margin-right: 6px;"></div>
-                <span style="font-size: 13px; font-weight: 500;">${institution.currentCrowdLevel} Crowd - ${institution.currentCrowdCount} people</span>
+                <div style="width: 10px; height: 10px; border-radius: 50%; background-color: ${getCrowdColor(crowdLevel)}; margin-right: 6px;"></div>
+                <span style="font-size: 13px; font-weight: 500;">${crowdLevel} Crowd - ${branch.totalCrowdCount || 0} people</span>
               </div>
-              <p style="margin: 8px 0 0 0; font-size: 13px; color: #666;">Average wait time: ${institution.averageWaitTime} minutes</p>
-              <p style="margin: 4px 0 0 0; font-size: 12px; color: #888;">Hours: ${institution.serviceHours}</p>
+              <p style="margin: 8px 0 0 0; font-size: 13px; color: #666;">Phone: ${branch.phoneNumber || "N/A"}</p>
+              <p style="margin: 4px 0 0 0; font-size: 12px; color: #888;">Email: ${branch.email || "N/A"}</p>
             </div>
           `,
         })
@@ -80,7 +91,7 @@ export const GoogleMap = forwardRef<GoogleMapRef, GoogleMapProps>(({ apiKey, cla
           infoWindow.open(map, searchMarker)
         })
 
-        map.setCenter({ lat: institution.latitude, lng: institution.longitude })
+        map.setCenter({ lat: branch.latitude, lng: branch.longitude })
         map.setZoom(16)
 
         infoWindow.open(map, searchMarker)
@@ -135,59 +146,77 @@ export const GoogleMap = forwardRef<GoogleMapRef, GoogleMapProps>(({ apiKey, cla
       })
 
       setMap(mapInstance)
-
-      // Add markers for institutions
-      mockInstitutions.forEach((institution, index) => {
-        const lat = institution.latitude
-        const lng = institution.longitude
-
-        const getCrowdColor = (level: string) => {
-          switch (level) {
-            case "Low":
-              return "#22c55e"
-            case "Medium":
-              return "#eab308"
-            case "High":
-              return "#ef4444"
-            default:
-              return "#6b7280"
-          }
-        }
-
-        const marker = new window.google.maps.Marker({
-          position: { lat, lng },
-          map: mapInstance,
-          title: institution.name,
-          icon: {
-            path: window.google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: getCrowdColor(institution.currentCrowdLevel),
-            fillOpacity: 1,
-            strokeColor: "#ffffff",
-            strokeWeight: 2,
-          },
-        })
-
-        const infoWindow = new window.google.maps.InfoWindow({
-          content: `
-            <div style="color: #000; padding: 8px;">
-              <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: bold;">${institution.name}</h3>
-              <p style="margin: 0 0 4px 0; font-size: 12px; color: #666;">${institution.type}</p>
-              <div style="display: flex; align-items: center; margin: 4px 0;">
-                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${getCrowdColor(institution.currentCrowdLevel)}; margin-right: 4px;"></div>
-                <span style="font-size: 12px;">${institution.currentCrowdLevel} - ${institution.currentCrowdCount} people</span>
-              </div>
-              <p style="margin: 4px 0 0 0; font-size: 12px; color: #666;">Wait time: ${institution.averageWaitTime}m</p>
-            </div>
-          `,
-        })
-
-        marker.addListener("click", () => {
-          infoWindow.open(mapInstance, marker)
-        })
-      })
     }
   }, [isLoaded, map])
+
+  // Add markers for branches when branches prop changes
+  useEffect(() => {
+    if (map && branches.length > 0) {
+      // Clear existing branch markers
+      branchMarkersRef.current.forEach((marker) => marker.setMap(null))
+      branchMarkersRef.current = []
+
+      branches.forEach((branch) => {
+        if (branch.latitude && branch.longitude) {
+          const getCrowdColor = (level: string) => {
+            switch (level) {
+              case "Low":
+                return "#22c55e"
+              case "Medium":
+                return "#eab308"
+              case "High":
+                return "#ef4444"
+              default:
+                return "#6b7280"
+            }
+          }
+
+          const getCrowdLevel = (crowdCount: number | undefined) => {
+            if (!crowdCount) return "Unknown"
+            if (crowdCount <= 10) return "Low"
+            if (crowdCount <= 25) return "Medium"
+            return "High"
+          }
+
+          const crowdLevel = getCrowdLevel(branch.totalCrowdCount)
+
+          const marker = new window.google.maps.Marker({
+            position: { lat: branch.latitude, lng: branch.longitude },
+            map: map,
+            title: branch.name,
+            icon: {
+              path: window.google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              fillColor: getCrowdColor(crowdLevel),
+              fillOpacity: 1,
+              strokeColor: "#ffffff",
+              strokeWeight: 2,
+            },
+          })
+
+          const infoWindow = new window.google.maps.InfoWindow({
+            content: `
+              <div style="color: #000; padding: 8px;">
+                <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: bold;">${branch.name}</h3>
+                <p style="margin: 0 0 4px 0; font-size: 12px; color: #666;">${branch.address || "No address"}</p>
+                <div style="display: flex; align-items: center; margin: 4px 0;">
+                  <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${getCrowdColor(crowdLevel)}; margin-right: 4px;"></div>
+                  <span style="font-size: 12px;">${crowdLevel} - ${branch.totalCrowdCount || 0} people</span>
+                </div>
+                <p style="margin: 4px 0 0 0; font-size: 12px; color: #666;">Phone: ${branch.phoneNumber || "N/A"}</p>
+              </div>
+            `,
+          })
+
+          marker.addListener("click", () => {
+            infoWindow.open(map, marker)
+          })
+
+          branchMarkersRef.current.push(marker)
+        }
+      })
+    }
+  }, [map, branches])
 
   if (!isLoaded) {
     return (
