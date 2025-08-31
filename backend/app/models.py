@@ -68,6 +68,7 @@ class Institution(Base):
     )
     AdministratorId = Column(String, ForeignKey("administrators.UserId"))
     Name = Column(String, nullable=False)
+    InstitutionDescription = Column(String)
 
     institution_type = relationship("InstitutionType", back_populates="institutions")
     administrator = relationship("Administrator", back_populates="institutions")
@@ -80,11 +81,14 @@ class Branch(Base):
     BranchId = Column(String, primary_key=True)
     InstitutionId = Column(String, ForeignKey("institutions.InstitutionId"))
     Name = Column(String, nullable=False)
+    BranchDescription = Column(String)
     Address = Column(String)
     ServiceHours = Column(String)
     ServiceDescription = Column(String)
     Latitude = Column(Float)
     Longitude = Column(Float)
+    Capacity = Column(Integer)
+    
 
     institution = relationship("Institution", back_populates="branches")
     operators = relationship("Operator", back_populates="branch")
