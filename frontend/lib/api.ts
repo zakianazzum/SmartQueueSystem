@@ -97,6 +97,12 @@ export interface AlertPreference {
   }
 }
 
+export interface AlertPreferenceRequest {
+  visitorId: string
+  branchId: string
+  crowdThreshold: number
+}
+
 // Generic API error handler
 class ApiError extends Error {
   constructor(public status: number, message: string) {
