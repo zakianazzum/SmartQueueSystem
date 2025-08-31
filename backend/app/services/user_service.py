@@ -66,7 +66,8 @@ class UserService:
             branchId=branch.BranchId,
             name=branch.Name,
             address=branch.Address,
-            serviceHours=branch.ServiceHours
+            serviceHours=branch.ServiceHours,
+            capacity=branch.Capacity
         )
 
     # User Methods

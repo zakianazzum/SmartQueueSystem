@@ -121,3 +121,4 @@ class BranchInfo(BaseModel):
     name: str
     address: Optional[str] = None
     serviceHours: Optional[str] = None
+    capacity: Optional[int] = None

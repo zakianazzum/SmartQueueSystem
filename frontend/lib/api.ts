@@ -276,14 +276,28 @@ export const branchApi = {
     }),
 }
 
+// Operator interfaces
+export interface Operator {
+  userId: string
+  branchId: string
+  user: User
+  branch?: {
+    branchId: string
+    name: string
+    address?: string
+    serviceHours?: string
+    capacity?: number
+  }
+}
+
 // User APIs
 export const userApi = {
   // Get all users
-  getAll: (): Promise<User[]> => 
+  getAll: (): Promise<User[]> =>
     apiRequest<User[]>('/users'),
 
   // Get user by ID
-  getById: (id: string): Promise<User> => 
+  getById: (id: string): Promise<User> =>
     apiRequest<User>(`/users/${id}`),
 
   // Login user
@@ -294,7 +308,7 @@ export const userApi = {
     user: User
     visitorId?: string
     message: string
-  }> => 
+  }> =>
     apiRequest<{
       user: User
       visitorId?: string
@@ -310,11 +324,15 @@ export const userApi = {
     email: string
     role: string
     password: string
-  }): Promise<User> => 
+  }): Promise<User> =>
     apiRequest<User>('/users', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+
+  // Get operator assignments by user ID
+  getOperatorAssignments: (userId: string): Promise<Operator[]> =>
+    apiRequest<Operator[]>(`/users/${userId}/operator-assignments`),
 
   // Update user
   update: (id: string, data: {
@@ -510,6 +528,72 @@ export const waitTimePredictionApi = {
   // Delete wait time prediction
   delete: (id: string): Promise<void> => 
     apiRequest<void>(`/wait-time-predictions/${id}`, {
+      method: 'DELETE',
+    }),
+}
+
+// Crowd Data interfaces
+export interface CrowdData {
+  crowdDataId: string
+  branchId: string
+  timestamp: string
+  currentCrowdCount: number
+  branch?: {
+    branchId: string
+    name: string
+    address?: string
+    serviceHours?: string
+    serviceDescription?: string
+    latitude?: number
+    longitude?: number
+  }
+}
+
+export interface CrowdDataRequest {
+  branchId: string
+  timestamp: string
+  currentCrowdCount: number
+}
+
+// Crowd Data APIs
+export const crowdDataApi = {
+  // Get all crowd data
+  getAll: (): Promise<CrowdData[]> => 
+    apiRequest<CrowdData[]>('/crowd-data'),
+
+  // Get crowd data by ID
+  getById: (id: string): Promise<CrowdData> => 
+    apiRequest<CrowdData>(`/crowd-data/${id}`),
+
+  // Create crowd data
+  create: (data: CrowdDataRequest): Promise<CrowdData> => 
+    apiRequest<CrowdData>('/crowd-data', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  // Get crowd data by branch
+  getByBranch: (branchId: string): Promise<CrowdData[]> => 
+    apiRequest<CrowdData[]>(`/crowd-data/branch/${branchId}`),
+
+  // Get latest crowd data by branch
+  getLatestByBranch: (branchId: string): Promise<CrowdData> => 
+    apiRequest<CrowdData>(`/crowd-data/branch/${branchId}/latest`),
+
+  // Get crowd data by date range
+  getByDateRange: (branchId: string, startDate: string, endDate: string): Promise<CrowdData[]> => 
+    apiRequest<CrowdData[]>(`/crowd-data/branch/${branchId}/date-range?start_date=${startDate}&end_date=${endDate}`),
+
+  // Update crowd data
+  update: (id: string, data: Partial<CrowdDataRequest>): Promise<CrowdData> => 
+    apiRequest<CrowdData>(`/crowd-data/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  // Delete crowd data
+  delete: (id: string): Promise<void> => 
+    apiRequest<void>(`/crowd-data/${id}`, {
       method: 'DELETE',
     }),
 }
