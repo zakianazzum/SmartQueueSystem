@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -7,19 +7,153 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { mockAdminInstitutions } from "@/lib/admin-data"
-import { Building2, MapPin, Users, Clock, Plus, Edit, Trash2, Eye } from "lucide-react"
+import { institutionApi, crowdDataApi, type Institution, type Branch } from "@/lib/api"
+import { Building2, MapPin, Users, Clock, Plus, Edit, Trash2, Eye, Loader2 } from "lucide-react"
+import { AddInstitutionModal } from "@/components/add-institution-modal"
+import { AddBranchModal } from "@/components/add-branch-modal"
+import { ViewInstitutionModal } from "@/components/view-institution-modal"
+import { EditInstitutionModal } from "@/components/edit-institution-modal"
+import { DeleteConfirmationModal } from "@/components/delete-confirmation-modal"
+import { useToast } from "@/hooks/use-toast"
+
+interface ExtendedInstitution extends Institution {
+  branches: ExtendedBranch[]
+}
+
+interface ExtendedBranch extends Branch {
+  currentCrowdLevel: string
+  currentCrowdCount: number
+  operatorName?: string
+  services: string[]
+}
 
 export default function InstitutionsAdminPage() {
-  const [institutions, setInstitutions] = useState(mockAdminInstitutions)
+  const [institutions, setInstitutions] = useState<ExtendedInstitution[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState("all")
 
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [showAddBranchModal, setShowAddBranchModal] = useState(false)
+  const [showViewModal, setShowViewModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [selectedInstitution, setSelectedInstitution] = useState<ExtendedInstitution | null>(null)
+
+  const { toast } = useToast()
+
+  const loadInstitutions = async () => {
+    try {
+      setLoading(true)
+      const institutionsData = await institutionApi.getAll()
+
+      const enhancedInstitutions = await Promise.all(
+        institutionsData.map(async (institution) => {
+          try {
+            const branches = await institutionApi.getBranches(institution.id)
+
+            const enhancedBranches = await Promise.all(
+              branches.map(async (branch) => {
+                try {
+                  const latestCrowdData = await crowdDataApi.getLatestByBranch(branch.id)
+                  const currentCount = latestCrowdData?.currentCrowdCount || 0
+                  const crowdLevel = getCrowdLevel(currentCount, branch.capacity)
+
+                  return {
+                    ...branch,
+                    currentCrowdLevel: crowdLevel,
+                    currentCrowdCount: currentCount,
+                    services: ["General Service", "Priority Service"],
+                  }
+                } catch (error) {
+                  return {
+                    ...branch,
+                    currentCrowdLevel: "Low",
+                    currentCrowdCount: 0,
+                    services: ["General Service"],
+                  }
+                }
+              }),
+            )
+
+            return {
+              ...institution,
+              branches: enhancedBranches,
+            }
+          } catch (error) {
+            console.error(`Error loading branches for institution ${institution.id}:`, error)
+            return {
+              ...institution,
+              branches: [],
+            }
+          }
+        }),
+      )
+
+      setInstitutions(enhancedInstitutions)
+    } catch (error) {
+      console.error("Error loading institutions:", error)
+      toast({
+        title: "Error",
+        description: "Failed to load institutions. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadInstitutions()
+  }, [])
+
+  const getCrowdLevel = (currentCount: number, capacity: number): string => {
+    const percentage = (currentCount / capacity) * 100
+    if (percentage >= 80) return "High"
+    if (percentage >= 50) return "Medium"
+    return "Low"
+  }
+
   const filteredInstitutions = institutions.filter((institution) => {
     const matchesSearch = institution.name.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesType = filterType === "all" || institution.type.toLowerCase() === filterType.toLowerCase()
+    const matchesType =
+      filterType === "all" || institution.institutionDescription?.toLowerCase().includes(filterType.toLowerCase())
     return matchesSearch && matchesType
   })
+
+  const handleAddInstitution = async (newInstitution: ExtendedInstitution) => {
+    await loadInstitutions()
+  }
+
+  const handleAddBranch = async (institutionId: number, newBranch: ExtendedBranch) => {
+    await loadInstitutions()
+  }
+
+  const handleViewInstitution = (institution: ExtendedInstitution) => {
+    setSelectedInstitution(institution)
+    setShowViewModal(true)
+  }
+
+  const handleEditInstitution = async (institutionId: number, updatedData: any) => {
+    await loadInstitutions()
+  }
+
+  const handleDeleteInstitution = async (institutionId: number) => {
+    try {
+      await institutionApi.delete(institutionId)
+      await loadInstitutions()
+      toast({
+        title: "Institution Deleted",
+        description: "The institution has been successfully deleted.",
+      })
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete institution. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
 
   const getCrowdColor = (level: string) => {
     switch (level) {
@@ -52,12 +186,23 @@ export default function InstitutionsAdminPage() {
       institution.branches.map((branch) => ({
         ...branch,
         institutionName: institution.name,
-        institutionType: institution.type,
+        institutionType: institution.institutionDescription || "Unknown",
       })),
     )
   }
 
   const allBranches = getAllBranches()
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Loading institutions...</span>
+        </div>
+      </DashboardLayout>
+    )
+  }
 
   return (
     <DashboardLayout>
@@ -67,7 +212,7 @@ export default function InstitutionsAdminPage() {
             <h1 className="text-3xl font-bold text-foreground">Institution Management</h1>
             <p className="text-muted-foreground mt-2">Manage institutions, branches, and their configurations</p>
           </div>
-          <Button>
+          <Button onClick={() => setShowAddModal(true)} className="cursor-pointer">
             <Plus className="h-4 w-4 mr-2" />
             Add Institution
           </Button>
@@ -81,7 +226,6 @@ export default function InstitutionsAdminPage() {
           </TabsList>
 
           <TabsContent value="institutions" className="space-y-6">
-            {/* Search and Filter */}
             <Card>
               <CardHeader>
                 <CardTitle>Search & Filter</CardTitle>
@@ -110,7 +254,6 @@ export default function InstitutionsAdminPage() {
               </CardContent>
             </Card>
 
-            {/* Institutions List */}
             <div className="space-y-4">
               {filteredInstitutions.map((institution) => (
                 <Card key={institution.id}>
@@ -123,24 +266,53 @@ export default function InstitutionsAdminPage() {
                         </CardTitle>
                         <CardDescription className="mt-1">
                           <Badge variant="outline" className="mr-2">
-                            {institution.type}
+                            Institution ID: {institution.id}
                           </Badge>
                           {institution.branches.length} branches
                         </CardDescription>
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="default"
+                          onClick={() => {
+                            setSelectedInstitution(institution)
+                            setShowAddBranchModal(true)
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Add Branch
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleViewInstitution(institution)}
+                          className="cursor-pointer"
+                        >
                           <Eye className="h-4 w-4 mr-1" />
                           View
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedInstitution(institution)
+                            setShowEditModal(true)
+                          }}
+                          className="cursor-pointer"
+                        >
                           <Edit className="h-4 w-4 mr-1" />
                           Edit
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-destructive hover:text-destructive bg-transparent"
+                          onClick={() => {
+                            setSelectedInstitution(institution)
+                            setShowDeleteModal(true)
+                          }}
+                          className="text-destructive hover:text-destructive bg-transparent cursor-pointer"
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
                           Delete
@@ -149,49 +321,63 @@ export default function InstitutionsAdminPage() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">{institution.description}</p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {institution.institutionDescription || "No description available"}
+                    </p>
 
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm">Branches:</h4>
-                      {institution.branches.map((branch) => (
-                        <div key={branch.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-2 mb-1">
-                              <h5 className="font-medium text-sm">{branch.name}</h5>
-                              <div className={`w-2 h-2 rounded-full ${getCrowdColor(branch.currentCrowdLevel)}`}></div>
-                              <Badge variant={getCrowdBadgeVariant(branch.currentCrowdLevel)} className="text-xs">
-                                {branch.currentCrowdLevel}
-                              </Badge>
+                    {institution.branches.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                        <p>No branches added yet</p>
+                        <p className="text-sm">Click "Add Branch" to create the first branch for this institution</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-sm">Branches:</h4>
+                        {institution.branches.map((branch) => (
+                          <div key={branch.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <h5 className="font-medium text-sm">{branch.name}</h5>
+                                <div
+                                  className={`w-2 h-2 rounded-full ${getCrowdColor(branch.currentCrowdLevel)}`}
+                                ></div>
+                                <Badge variant={getCrowdBadgeVariant(branch.currentCrowdLevel)} className="text-xs">
+                                  {branch.currentCrowdLevel}
+                                </Badge>
+                              </div>
+                              <div className="flex items-center text-xs text-muted-foreground space-x-4">
+                                <span className="flex items-center">
+                                  <MapPin className="h-3 w-3 mr-1" />
+                                  {branch.address}
+                                </span>
+                                <span className="flex items-center">
+                                  <Users className="h-3 w-3 mr-1" />
+                                  {branch.currentCrowdCount}/{branch.capacity}
+                                </span>
+                                <span className="flex items-center">
+                                  <Clock className="h-3 w-3 mr-1" />
+                                  {branch.serviceHours}
+                                </span>
+                              </div>
+                              {branch.operatorName && (
+                                <div className="text-xs text-muted-foreground mt-1">
+                                  Operator: {branch.operatorName}
+                                </div>
+                              )}
                             </div>
-                            <div className="flex items-center text-xs text-muted-foreground space-x-4">
-                              <span className="flex items-center">
-                                <MapPin className="h-3 w-3 mr-1" />
-                                {branch.address}
-                              </span>
-                              <span className="flex items-center">
-                                <Users className="h-3 w-3 mr-1" />
-                                {branch.currentCrowdCount}/{branch.capacity}
-                              </span>
-                              <span className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1" />
-                                {branch.serviceHours}
-                              </span>
+                            <div className="flex space-x-1">
+                              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
+                                <Edit className="h-3 w-3" />
+                              </Button>
+                              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-destructive cursor-pointer">
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
                             </div>
-                            {branch.operatorName && (
-                              <div className="text-xs text-muted-foreground mt-1">Operator: {branch.operatorName}</div>
-                            )}
                           </div>
-                          <div className="flex space-x-1">
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
-                              <Edit className="h-3 w-3" />
-                            </Button>
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-destructive">
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}
@@ -212,7 +398,7 @@ export default function InstitutionsAdminPage() {
                         </CardDescription>
                       </div>
                       <div className="flex space-x-1">
-                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
                           <Edit className="h-4 w-4" />
                         </Button>
                       </div>
@@ -286,7 +472,7 @@ export default function InstitutionsAdminPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="text-2xl font-bold text-primary">
-                    {allBranches.filter((branch) => branch.operatorId).length}
+                    {allBranches.filter((branch) => branch.operatorName).length}
                   </div>
                   <div className="text-sm text-muted-foreground">Branches with Operators</div>
                 </CardContent>
@@ -329,6 +515,38 @@ export default function InstitutionsAdminPage() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <AddInstitutionModal open={showAddModal} onOpenChange={setShowAddModal} onAdd={handleAddInstitution} />
+
+        <AddBranchModal
+          open={showAddBranchModal}
+          onOpenChange={setShowAddBranchModal}
+          institution={selectedInstitution}
+          onAdd={handleAddBranch}
+        />
+
+        <ViewInstitutionModal open={showViewModal} onOpenChange={setShowViewModal} institution={selectedInstitution} />
+
+        <EditInstitutionModal
+          open={showEditModal}
+          onOpenChange={setShowEditModal}
+          institution={selectedInstitution}
+          onEdit={handleEditInstitution}
+        />
+
+        <DeleteConfirmationModal
+          open={showDeleteModal}
+          onOpenChange={setShowDeleteModal}
+          title="Delete Institution"
+          description={`Are you sure you want to delete "${selectedInstitution?.name}"? This action cannot be undone and will remove all associated branches.`}
+          onConfirm={() => {
+            if (selectedInstitution) {
+              handleDeleteInstitution(selectedInstitution.id)
+              setShowDeleteModal(false)
+              setSelectedInstitution(null)
+            }
+          }}
+        />
       </div>
     </DashboardLayout>
   )

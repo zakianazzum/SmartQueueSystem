@@ -1,19 +1,31 @@
 "use client"
 import { useState } from "react"
 import { DashboardLayout } from "@/components/dashboard-layout"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { mockAlerts, mockInstitutions } from "@/lib/mock-data"
 import { Bell, BellOff, Plus, Trash2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 export default function AlertsPage() {
   const [alerts, setAlerts] = useState(mockAlerts)
-  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [createAlertDialogOpen, setCreateAlertDialogOpen] = useState(false)
   const [selectedInstitution, setSelectedInstitution] = useState("")
-  const [selectedThreshold, setSelectedThreshold] = useState("")
+  const [selectedThreshold, setSelectedThreshold] = useState<number | "">("")
+  const { toast } = useToast()
 
   const toggleAlert = (alertId: string) => {
     setAlerts(alerts.map((alert) => (alert.id === alertId ? { ...alert, isActive: !alert.isActive } : alert)))
@@ -24,21 +36,25 @@ export default function AlertsPage() {
   }
 
   const createAlert = () => {
-    if (selectedInstitution && selectedThreshold) {
+    if (selectedInstitution && selectedThreshold !== "") {
       const institution = mockInstitutions.find((inst) => inst.id === selectedInstitution)
       if (institution) {
         const newAlert = {
           id: Date.now().toString(),
           institutionId: selectedInstitution,
           institutionName: institution.name,
-          threshold: selectedThreshold as "Low" | "Medium",
+          threshold: selectedThreshold as number,
           isActive: true,
           createdAt: new Date().toISOString().split("T")[0],
         }
         setAlerts([...alerts, newAlert])
         setSelectedInstitution("")
         setSelectedThreshold("")
-        setShowCreateForm(false)
+        setCreateAlertDialogOpen(false)
+        toast({
+          title: "Alert Created",
+          description: `You'll be notified when ${institution.name} has ${selectedThreshold} people or fewer.`,
+        })
       }
     }
   }
@@ -53,23 +69,23 @@ export default function AlertsPage() {
               Get notified when crowd levels drop below your preferred threshold
             </p>
           </div>
-          <Button onClick={() => setShowCreateForm(!showCreateForm)}>
-            <Plus className="h-4 w-4 mr-2" />
-            New Alert
-          </Button>
-        </div>
-
-        {/* Create Alert Form */}
-        {showCreateForm && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Create New Alert</CardTitle>
-              <CardDescription>Set up notifications for when crowd levels drop below your threshold</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Institution</label>
+          <Dialog open={createAlertDialogOpen} onOpenChange={setCreateAlertDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="cursor-pointer">
+                <Plus className="h-4 w-4 mr-2" />
+                New Alert
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Create New Alert</DialogTitle>
+                <DialogDescription>
+                  Set up notifications for when crowd levels drop below your threshold.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="institution">Institution</Label>
                   <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select an institution" />
@@ -83,30 +99,40 @@ export default function AlertsPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Notify when crowd is</label>
-                  <Select value={selectedThreshold} onValueChange={setSelectedThreshold}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select threshold" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Low">Low or below</SelectItem>
-                      <SelectItem value="Medium">Medium or below</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-2">
+                  <Label htmlFor="threshold">Notify when crowd count is below</Label>
+                  <Input
+                    id="threshold"
+                    type="number"
+                    min="0"
+                    step="1"
+                    placeholder="Enter number of people"
+                    value={selectedThreshold}
+                    onChange={(e) => setSelectedThreshold(e.target.value ? Number.parseInt(e.target.value) : "")}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setCreateAlertDialogOpen(false)}
+                    className="cursor-pointer"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={createAlert}
+                    disabled={!selectedInstitution || selectedThreshold === ""}
+                    className="cursor-pointer"
+                  >
+                    Create Alert
+                  </Button>
                 </div>
               </div>
-              <div className="flex space-x-2">
-                <Button onClick={createAlert} disabled={!selectedInstitution || !selectedThreshold}>
-                  Create Alert
-                </Button>
-                <Button variant="outline" onClick={() => setShowCreateForm(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+            </DialogContent>
+          </Dialog>
+        </div>
 
         {/* Active Alerts */}
         {alerts.length > 0 ? (
@@ -132,7 +158,7 @@ export default function AlertsPage() {
                           </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">
-                          Notify when crowd level is <strong>{alert.threshold}</strong> or below
+                          Notify when crowd count is <strong>{alert.threshold}</strong> people or fewer
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
                           Created on {new Date(alert.createdAt).toLocaleDateString()}
@@ -147,7 +173,7 @@ export default function AlertsPage() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-destructive hover:text-destructive"
+                        className="text-destructive hover:text-destructive cursor-pointer"
                         onClick={() => removeAlert(alert.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -166,10 +192,69 @@ export default function AlertsPage() {
               <p className="text-muted-foreground mb-6">
                 Create alerts to get notified when crowd levels drop at your favorite institutions
               </p>
-              <Button onClick={() => setShowCreateForm(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Your First Alert
-              </Button>
+              <Dialog open={createAlertDialogOpen} onOpenChange={setCreateAlertDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="cursor-pointer">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Your First Alert
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Create New Alert</DialogTitle>
+                    <DialogDescription>
+                      Set up notifications for when crowd levels drop below your threshold.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="institution">Institution</Label>
+                      <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select an institution" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {mockInstitutions.map((institution) => (
+                            <SelectItem key={institution.id} value={institution.id}>
+                              {institution.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="threshold">Notify when crowd count is below</Label>
+                      <Input
+                        id="threshold"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="Enter number of people"
+                        value={selectedThreshold}
+                        onChange={(e) => setSelectedThreshold(e.target.value ? Number.parseInt(e.target.value) : "")}
+                        className="cursor-pointer"
+                      />
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setCreateAlertDialogOpen(false)}
+                        className="cursor-pointer"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={createAlert}
+                        disabled={!selectedInstitution || selectedThreshold === ""}
+                        className="cursor-pointer"
+                      >
+                        Create Alert
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
         )}
@@ -194,15 +279,17 @@ export default function AlertsPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">
-                    {alerts.filter((alert) => alert.threshold === "Low").length}
+                    {alerts.length > 0
+                      ? Math.round(alerts.reduce((sum, alert) => sum + (alert.threshold as number), 0) / alerts.length)
+                      : 0}
                   </div>
-                  <div className="text-sm text-muted-foreground">Low Threshold</div>
+                  <div className="text-sm text-muted-foreground">Avg Threshold</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-accent">
-                    {alerts.filter((alert) => alert.threshold === "Medium").length}
+                    {alerts.length > 0 ? Math.min(...alerts.map((alert) => alert.threshold as number)) : 0}
                   </div>
-                  <div className="text-sm text-muted-foreground">Medium Threshold</div>
+                  <div className="text-sm text-muted-foreground">Lowest Threshold</div>
                 </div>
               </div>
             </CardContent>

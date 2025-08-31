@@ -6,7 +6,19 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/auth-context"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Building2, Map, Heart, Bell, Clock, Users, BarChart3, Settings, LogOut } from "lucide-react"
+import {
+  LayoutDashboard,
+  Building2,
+  Map,
+  Heart,
+  Bell,
+  Clock,
+  Users,
+  BarChart3,
+  Settings,
+  LogOut,
+  UserCheck,
+} from "lucide-react"
 
 interface NavItem {
   title: string
@@ -62,6 +74,12 @@ const navItems: NavItem[] = [
     title: "Branch Info",
     href: "/dashboard/branch",
     icon: Building2,
+    roles: ["operator"],
+  },
+  {
+    title: "Visitor Log",
+    href: "/dashboard/visitor-log",
+    icon: UserCheck,
     roles: ["operator"],
   },
   {

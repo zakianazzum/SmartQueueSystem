@@ -19,24 +19,63 @@ interface AddOperatorModalProps {
 interface OperatorData {
   name: string
   email: string
-  phone: string
-  branchId: string
+  role: string
+  password: string
   institutionId: string
+  branchId: string
 }
 
 export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModalProps) {
   const [formData, setFormData] = useState<OperatorData>({
     name: "",
     email: "",
-    phone: "",
-    branchId: "",
+    role: "",
+    password: "",
     institutionId: "",
+    branchId: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const institutions = [
+    {
+      id: "inst1",
+      name: "First National Bank",
+      branches: [
+        { id: "branch1", name: "Downtown Branch" },
+        { id: "branch2", name: "Uptown Branch" },
+      ],
+    },
+    {
+      id: "inst2",
+      name: "City Hall",
+      branches: [
+        { id: "branch3", name: "Main Office" },
+        { id: "branch4", name: "Annex Building" },
+      ],
+    },
+    {
+      id: "inst3",
+      name: "Central Park",
+      branches: [
+        { id: "branch5", name: "North Entrance" },
+        { id: "branch6", name: "South Entrance" },
+      ],
+    },
+    {
+      id: "inst4",
+      name: "DMV Office",
+      branches: [
+        { id: "branch7", name: "West Side Branch" },
+        { id: "branch8", name: "East Side Branch" },
+      ],
+    },
+  ]
+
+  const availableBranches = institutions.find((inst) => inst.id === formData.institutionId)?.branches || []
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name || !formData.email) return
+    if (!formData.name || !formData.email || !formData.role || !formData.password) return
 
     setIsSubmitting(true)
 
@@ -49,16 +88,22 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
     setFormData({
       name: "",
       email: "",
-      phone: "",
-      branchId: "",
+      role: "",
+      password: "",
       institutionId: "",
+      branchId: "",
     })
     setIsSubmitting(false)
     onClose()
   }
 
   const handleInputChange = (field: keyof OperatorData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => {
+      if (field === "institutionId") {
+        return { ...prev, [field]: value, branchId: "" }
+      }
+      return { ...prev, [field]: value }
+    })
   }
 
   return (
@@ -74,7 +119,7 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name *</Label>
+            <Label htmlFor="name">Name *</Label>
             <Input
               id="name"
               placeholder="Enter operator's full name"
@@ -85,7 +130,7 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address *</Label>
+            <Label htmlFor="email">Email *</Label>
             <Input
               id="email"
               type="email"
@@ -97,42 +142,63 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="+1 (555) 123-4567"
-              value={formData.phone}
-              onChange={(e) => handleInputChange("phone", e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="institution">Institution</Label>
-            <Select value={formData.institutionId} onValueChange={(value) => handleInputChange("institutionId", value)}>
+            <Label htmlFor="role">Role *</Label>
+            <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select institution" />
+                <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="inst1">First National Bank</SelectItem>
-                <SelectItem value="inst2">City Hall</SelectItem>
-                <SelectItem value="inst3">Central Park</SelectItem>
-                <SelectItem value="inst4">DMV Office</SelectItem>
+                <SelectItem value="operator">Operator</SelectItem>
+                <SelectItem value="supervisor">Supervisor</SelectItem>
+                <SelectItem value="manager">Manager</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="branch">Branch Assignment</Label>
-            <Select value={formData.branchId} onValueChange={(value) => handleInputChange("branchId", value)}>
+            <Label htmlFor="password">Password *</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter temporary password"
+              value={formData.password}
+              onChange={(e) => handleInputChange("password", e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="institution">Institution *</Label>
+            <Select value={formData.institutionId} onValueChange={(value) => handleInputChange("institutionId", value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select branch" />
+                <SelectValue placeholder="Select institution" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="branch1">Downtown Branch</SelectItem>
-                <SelectItem value="branch2">Uptown Branch</SelectItem>
-                <SelectItem value="branch3">West Side Branch</SelectItem>
-                <SelectItem value="branch4">East Side Branch</SelectItem>
+                {institutions.map((institution) => (
+                  <SelectItem key={institution.id} value={institution.id}>
+                    {institution.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="branch">Branch *</Label>
+            <Select
+              value={formData.branchId}
+              onValueChange={(value) => handleInputChange("branchId", value)}
+              disabled={!formData.institutionId}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={formData.institutionId ? "Select branch" : "Select institution first"} />
+              </SelectTrigger>
+              <SelectContent>
+                {availableBranches.map((branch) => (
+                  <SelectItem key={branch.id} value={branch.id}>
+                    {branch.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -150,7 +216,7 @@ export function AddOperatorModal({ isOpen, onClose, onConfirm }: AddOperatorModa
             <Button
               type="submit"
               className="flex-1 cursor-pointer"
-              disabled={isSubmitting || !formData.name || !formData.email}
+              disabled={isSubmitting || !formData.name || !formData.email || !formData.role || !formData.password}
             >
               {isSubmitting ? (
                 <>

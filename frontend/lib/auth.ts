@@ -1,50 +1,67 @@
-export type UserRole = "visitor" | "operator" | "admin"
+import { userApi, type User as ApiUser, type UserCreate } from "./api"
+
+export type UserRole = "visitor" | "operator" | "administrator"
 
 export interface User {
-  id: string
+  id: number
   name: string
   email: string
   role: UserRole
+  createdAt: string
+  updatedAt: string
 }
 
-// Mock user data for demonstration
-const mockUsers: Record<string, { password: string; user: User }> = {
-  "visitor@test.com": {
-    password: "password",
-    user: { id: "1", name: "John Visitor", email: "visitor@test.com", role: "visitor" },
-  },
-  "operator@test.com": {
-    password: "password",
-    user: { id: "2", name: "Jane Operator", email: "operator@test.com", role: "operator" },
-  },
-  "admin@test.com": {
-    password: "password",
-    user: { id: "3", name: "Admin User", email: "admin@test.com", role: "admin" },
-  },
+function convertApiUser(apiUser: ApiUser): User {
+  return {
+    id: apiUser.id,
+    name: apiUser.name,
+    email: apiUser.email,
+    role: apiUser.role === "administrator" ? "administrator" : apiUser.role,
+    createdAt: apiUser.createdAt,
+    updatedAt: apiUser.updatedAt,
+  }
 }
 
 export async function signIn(email: string, password: string): Promise<User | null> {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  try {
+    // For now, we'll get all users and find matching email/password
+    const users = await userApi.getAll()
+    const user = users.find((u) => u.email === email)
 
-  const userData = mockUsers[email]
-  if (userData && userData.password === password) {
-    return userData.user
+    if (user) {
+      // In a real app, password verification would be done on the server
+      return convertApiUser(user)
+    }
+    return null
+  } catch (error) {
+    console.error("Sign in error:", error)
+    return null
   }
-  return null
 }
 
 export async function signUp(name: string, email: string, password: string): Promise<User | null> {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  try {
+    const newUserData: UserCreate = {
+      name,
+      email,
+      password,
+      role: "visitor", // Default role for new users
+    }
 
-  // In a real app, this would create a new user in the database
-  const newUser: User = {
-    id: Date.now().toString(),
-    name,
-    email,
-    role: "visitor", // Default role for new users
+    const createdUser = await userApi.create(newUserData)
+    return convertApiUser(createdUser)
+  } catch (error) {
+    console.error("Sign up error:", error)
+    return null
   }
+}
 
-  return newUser
+export async function getUserById(id: number): Promise<User | null> {
+  try {
+    const user = await userApi.getById(id)
+    return convertApiUser(user)
+  } catch (error) {
+    console.error("Get user error:", error)
+    return null
+  }
 }

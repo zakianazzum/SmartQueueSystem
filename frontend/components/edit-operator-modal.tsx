@@ -10,6 +10,24 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Edit, Check } from "lucide-react"
 
+const mockInstitutions = [
+  { id: "inst1", name: "First National Bank", type: "Bank" },
+  { id: "inst2", name: "City Hall", type: "Government" },
+  { id: "inst3", name: "Central Park", type: "Recreation" },
+  { id: "inst4", name: "DMV Office", type: "Government" },
+]
+
+const mockBranches = [
+  { id: "branch1", name: "Downtown Branch", institutionId: "inst1" },
+  { id: "branch2", name: "Uptown Branch", institutionId: "inst1" },
+  { id: "branch3", name: "Main Office", institutionId: "inst2" },
+  { id: "branch4", name: "North Office", institutionId: "inst2" },
+  { id: "branch5", name: "Recreation Center", institutionId: "inst3" },
+  { id: "branch6", name: "Sports Complex", institutionId: "inst3" },
+  { id: "branch7", name: "License Division", institutionId: "inst4" },
+  { id: "branch8", name: "Registration Division", institutionId: "inst4" },
+]
+
 interface EditOperatorModalProps {
   operator: any
   isOpen: boolean
@@ -21,7 +39,8 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    role: "",
+    password: "",
     branchId: "",
     institutionId: "",
   })
@@ -32,7 +51,8 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
       setFormData({
         name: operator.name || "",
         email: operator.email || "",
-        phone: operator.phone || "",
+        role: operator.role || "",
+        password: "", // Don't pre-fill password for security
         branchId: operator.branchId || "",
         institutionId: operator.institutionId || "",
       })
@@ -41,7 +61,7 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name || !formData.email) return
+    if (!formData.name || !formData.email || !formData.role) return
 
     setIsSubmitting(true)
 
@@ -56,6 +76,8 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
+
+  const filteredBranches = mockBranches.filter((branch) => branch.institutionId === formData.institutionId)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -93,42 +115,68 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="edit-phone">Phone Number</Label>
-            <Input
-              id="edit-phone"
-              type="tel"
-              placeholder="+1 (555) 123-4567"
-              value={formData.phone}
-              onChange={(e) => handleInputChange("phone", e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="edit-institution">Institution</Label>
-            <Select value={formData.institutionId} onValueChange={(value) => handleInputChange("institutionId", value)}>
+            <Label htmlFor="edit-role">Role *</Label>
+            <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select institution" />
+                <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="inst1">First National Bank</SelectItem>
-                <SelectItem value="inst2">City Hall</SelectItem>
-                <SelectItem value="inst3">Central Park</SelectItem>
-                <SelectItem value="inst4">DMV Office</SelectItem>
+                <SelectItem value="operator">Operator</SelectItem>
+                <SelectItem value="supervisor">Supervisor</SelectItem>
+                <SelectItem value="manager">Manager</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="edit-branch">Branch Assignment</Label>
-            <Select value={formData.branchId} onValueChange={(value) => handleInputChange("branchId", value)}>
+            <Label htmlFor="edit-password">New Password</Label>
+            <Input
+              id="edit-password"
+              type="password"
+              placeholder="Leave blank to keep current password"
+              value={formData.password}
+              onChange={(e) => handleInputChange("password", e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="edit-institution">Institution *</Label>
+            <Select
+              value={formData.institutionId}
+              onValueChange={(value) => {
+                handleInputChange("institutionId", value)
+                handleInputChange("branchId", "")
+              }}
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Select branch" />
+                <SelectValue placeholder="Select institution" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="branch1">Downtown Branch</SelectItem>
-                <SelectItem value="branch2">Uptown Branch</SelectItem>
-                <SelectItem value="branch3">West Side Branch</SelectItem>
-                <SelectItem value="branch4">East Side Branch</SelectItem>
+                {mockInstitutions.map((institution) => (
+                  <SelectItem key={institution.id} value={institution.id}>
+                    {institution.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="edit-branch">Branch Assignment *</Label>
+            <Select
+              value={formData.branchId}
+              onValueChange={(value) => handleInputChange("branchId", value)}
+              disabled={!formData.institutionId}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={!formData.institutionId ? "Select institution first" : "Select branch"} />
+              </SelectTrigger>
+              <SelectContent>
+                {filteredBranches.map((branch) => (
+                  <SelectItem key={branch.id} value={branch.id}>
+                    {branch.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -146,7 +194,7 @@ export function EditOperatorModal({ operator, isOpen, onClose, onConfirm }: Edit
             <Button
               type="submit"
               className="flex-1 cursor-pointer"
-              disabled={isSubmitting || !formData.name || !formData.email}
+              disabled={isSubmitting || !formData.name || !formData.email || !formData.role}
             >
               {isSubmitting ? (
                 <>

@@ -5,8 +5,16 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { mockInstitutions } from "@/lib/mock-data"
 import { MapPin, Navigation, Building2, Users, Clock } from "lucide-react"
+import { GoogleMap, type GoogleMapRef } from "@/components/google-map"
+import { SearchInstitutionDialog } from "@/components/search-institution-dialog"
+import { useToast } from "@/hooks/use-toast"
+import { useRef } from "react"
 
 export default function MapPage() {
+  const GOOGLE_MAPS_API_KEY = "AIzaSyBfl7DeQ3KQOnNpYixs6__bo3TNy-tDjYc"
+  const { toast } = useToast()
+  const mapRef = useRef<GoogleMapRef>(null)
+
   const getCrowdColor = (level: string) => {
     switch (level) {
       case "Low":
@@ -20,18 +28,63 @@ export default function MapPage() {
     }
   }
 
+  const handleEnableLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("[v0] User location:", position.coords.latitude, position.coords.longitude)
+          mapRef.current?.centerOnUserLocation(position.coords.latitude, position.coords.longitude)
+          toast({
+            title: "Location Enabled",
+            description: `Centered map on your location`,
+          })
+        },
+        (error) => {
+          console.log("[v0] Location error:", error)
+          toast({
+            title: "Location Permission Required",
+            description: "Please enable location services to center the map on your location.",
+            variant: "destructive",
+          })
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 60000,
+        },
+      )
+    } else {
+      toast({
+        title: "Not Supported",
+        description: "Geolocation is not supported by this browser.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleInstitutionSelect = (institution: any) => {
+    console.log("[v0] Selected institution:", institution)
+    mapRef.current?.addPinAndZoom(institution)
+    toast({
+      title: "Institution Found",
+      description: `Showing ${institution.name} on the map`,
+    })
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Interactive Map</h1>
-          <p className="text-muted-foreground mt-2">
-            Explore institutions on the map and view real-time crowd information
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Interactive Map</h1>
+            <p className="text-muted-foreground mt-2">
+              Explore institutions on the map and view real-time crowd information
+            </p>
+          </div>
+          <SearchInstitutionDialog onInstitutionSelect={handleInstitutionSelect} />
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Map Placeholder */}
           <div className="lg:col-span-2">
             <Card className="h-[600px]">
               <CardHeader>
@@ -39,48 +92,15 @@ export default function MapPage() {
                   <MapPin className="h-5 w-5 mr-2" />
                   Live Institution Map
                 </CardTitle>
-                <CardDescription>Interactive map showing all institutions with real-time crowd data</CardDescription>
+                <CardDescription>
+                  Interactive Google Maps showing all institutions with real-time crowd data
+                </CardDescription>
               </CardHeader>
-              <CardContent className="h-full">
-                <div className="w-full h-full bg-muted rounded-lg flex items-center justify-center relative overflow-hidden">
-                  {/* Map placeholder with mock pins */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-muted to-muted-foreground/10"></div>
-
-                  {/* Mock map pins */}
-                  {mockInstitutions.map((institution, index) => (
-                    <div
-                      key={institution.id}
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
-                      style={{
-                        left: `${20 + index * 15}%`,
-                        top: `${30 + index * 10}%`,
-                      }}
-                    >
-                      <div
-                        className={`w-4 h-4 rounded-full ${getCrowdColor(institution.currentCrowdLevel)} border-2 border-white shadow-lg group-hover:scale-125 transition-transform`}
-                      ></div>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="bg-card border rounded-lg p-2 shadow-lg min-w-48">
-                          <p className="font-semibold text-sm">{institution.name}</p>
-                          <p className="text-xs text-muted-foreground">{institution.type}</p>
-                          <div className="flex items-center mt-1">
-                            <div
-                              className={`w-2 h-2 rounded-full ${getCrowdColor(institution.currentCrowdLevel)} mr-1`}
-                            ></div>
-                            <span className="text-xs">
-                              {institution.currentCrowdLevel} - {institution.currentCrowdCount} people
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="text-center">
-                    <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">Interactive Map</h3>
-                    <p className="text-muted-foreground mb-4">Hover over the colored pins to see institution details</p>
-                    <Button variant="outline">
+              <CardContent className="h-full p-0">
+                <div className="relative h-full">
+                  <GoogleMap ref={mapRef} apiKey={GOOGLE_MAPS_API_KEY} className="w-full h-full rounded-b-lg" />
+                  <div className="absolute bottom-4 left-4">
+                    <Button variant="secondary" size="sm" onClick={handleEnableLocation} className="cursor-pointer">
                       <Navigation className="h-4 w-4 mr-2" />
                       Enable Location
                     </Button>
@@ -90,7 +110,6 @@ export default function MapPage() {
             </Card>
           </div>
 
-          {/* Institution List */}
           <div className="space-y-4">
             <Card>
               <CardHeader>

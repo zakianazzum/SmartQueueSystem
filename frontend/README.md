@@ -2,8 +2,8 @@
 
 *Automatically synced with your [v0.app](https://v0.app) deployments*
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/zakianazzums-projects/v0-custom-web-application)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/zIGD1Xyscav)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/asif10388s-projects/v0-smart-queue-frontend)
+[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/AuMCS2Viunr)
 
 ## Overview
 
@@ -14,13 +14,13 @@ Any changes you make to your deployed app will be automatically pushed to this r
 
 Your project is live at:
 
-**[https://vercel.com/zakianazzums-projects/v0-custom-web-application](https://vercel.com/zakianazzums-projects/v0-custom-web-application)**
+**[https://vercel.com/asif10388s-projects/v0-smart-queue-frontend](https://vercel.com/asif10388s-projects/v0-smart-queue-frontend)**
 
 ## Build your app
 
 Continue building your app on:
 
-**[https://v0.app/chat/projects/zIGD1Xyscav](https://v0.app/chat/projects/zIGD1Xyscav)**
+**[https://v0.app/chat/projects/AuMCS2Viunr](https://v0.app/chat/projects/AuMCS2Viunr)**
 
 ## How It Works
 

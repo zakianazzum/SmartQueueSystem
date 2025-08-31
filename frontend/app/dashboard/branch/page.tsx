@@ -1,24 +1,43 @@
 "use client"
 import { useState } from "react"
+import type React from "react"
+
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 import { mockBranchInfo, mockDailyStats, mockHourlyData } from "@/lib/operator-data"
-import { Building2, MapPin, Clock, Users, Edit, Save, X, BarChart3, TrendingUp } from "lucide-react"
+import { Building2, MapPin, Clock, Users, Edit, Save, BarChart3, TrendingUp } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 export default function BranchInfoPage() {
-  const [isEditing, setIsEditing] = useState(false)
   const [branchData, setBranchData] = useState(mockBranchInfo)
   const [editData, setEditData] = useState(mockBranchInfo)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 
-  const handleSave = () => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
     setBranchData(editData)
-    setIsEditing(false)
+    setEditDialogOpen(false)
+    setIsLoading(false)
     toast({
       title: "Branch information updated",
       description: "Your changes have been saved successfully",
@@ -27,7 +46,7 @@ export default function BranchInfoPage() {
 
   const handleCancel = () => {
     setEditData(branchData)
-    setIsEditing(false)
+    setEditDialogOpen(false)
   }
 
   return (
@@ -38,26 +57,106 @@ export default function BranchInfoPage() {
             <h1 className="text-3xl font-bold text-foreground">Branch Information</h1>
             <p className="text-muted-foreground mt-2">Manage your branch details and view performance metrics</p>
           </div>
-          {!isEditing ? (
-            <Button onClick={() => setIsEditing(true)}>
-              <Edit className="h-4 w-4 mr-2" />
-              Edit Info
-            </Button>
-          ) : (
-            <div className="flex space-x-2">
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
-                Save
+          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="cursor-pointer">
+                <Edit className="h-4 w-4 mr-2" />
+                Edit Info
               </Button>
-              <Button variant="outline" onClick={handleCancel}>
-                <X className="h-4 w-4 mr-2" />
-                Cancel
-              </Button>
-            </div>
-          )}
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Edit Branch Information</DialogTitle>
+                <DialogDescription>Update your branch details and configuration.</DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleSave} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="branch-name">Branch Name</Label>
+                    <Input
+                      id="branch-name"
+                      value={editData.name}
+                      onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="institution-name">Institution</Label>
+                    <Input
+                      id="institution-name"
+                      value={editData.institutionName}
+                      onChange={(e) => setEditData({ ...editData, institutionName: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Input
+                    id="address"
+                    value={editData.address}
+                    onChange={(e) => setEditData({ ...editData, address: e.target.value })}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="service-hours">Service Hours</Label>
+                    <Input
+                      id="service-hours"
+                      value={editData.serviceHours}
+                      onChange={(e) => setEditData({ ...editData, serviceHours: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="capacity">Capacity</Label>
+                    <Input
+                      id="capacity"
+                      type="number"
+                      value={editData.capacity}
+                      onChange={(e) => setEditData({ ...editData, capacity: Number.parseInt(e.target.value) || 0 })}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="services">Services Offered</Label>
+                  <Textarea
+                    id="services"
+                    value={editData.services.join(", ")}
+                    onChange={(e) => setEditData({ ...editData, services: e.target.value.split(", ") })}
+                    placeholder="Separate services with commas"
+                  />
+                </div>
+
+                <div className="flex justify-end space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancel}
+                    className="cursor-pointer bg-transparent"
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={isLoading} className="cursor-pointer">
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
-        {/* Branch Details */}
+        {/* Branch Details - now display only */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
@@ -70,89 +169,48 @@ export default function BranchInfoPage() {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">Branch Name</label>
-                {isEditing ? (
-                  <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-                ) : (
-                  <p className="text-sm p-2 bg-muted rounded">{branchData.name}</p>
-                )}
+                <p className="text-sm p-2 bg-muted rounded">{branchData.name}</p>
               </div>
               <div>
                 <label className="text-sm font-medium mb-2 block">Institution</label>
-                {isEditing ? (
-                  <Input
-                    value={editData.institutionName}
-                    onChange={(e) => setEditData({ ...editData, institutionName: e.target.value })}
-                  />
-                ) : (
-                  <p className="text-sm p-2 bg-muted rounded">{branchData.institutionName}</p>
-                )}
+                <p className="text-sm p-2 bg-muted rounded">{branchData.institutionName}</p>
               </div>
             </div>
 
             <div>
               <label className="text-sm font-medium mb-2 block">Address</label>
-              {isEditing ? (
-                <Input
-                  value={editData.address}
-                  onChange={(e) => setEditData({ ...editData, address: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm p-2 bg-muted rounded flex items-center">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {branchData.address}
-                </p>
-              )}
+              <p className="text-sm p-2 bg-muted rounded flex items-center">
+                <MapPin className="h-4 w-4 mr-2" />
+                {branchData.address}
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">Service Hours</label>
-                {isEditing ? (
-                  <Input
-                    value={editData.serviceHours}
-                    onChange={(e) => setEditData({ ...editData, serviceHours: e.target.value })}
-                  />
-                ) : (
-                  <p className="text-sm p-2 bg-muted rounded flex items-center">
-                    <Clock className="h-4 w-4 mr-2" />
-                    {branchData.serviceHours}
-                  </p>
-                )}
+                <p className="text-sm p-2 bg-muted rounded flex items-center">
+                  <Clock className="h-4 w-4 mr-2" />
+                  {branchData.serviceHours}
+                </p>
               </div>
               <div>
                 <label className="text-sm font-medium mb-2 block">Capacity</label>
-                {isEditing ? (
-                  <Input
-                    type="number"
-                    value={editData.capacity}
-                    onChange={(e) => setEditData({ ...editData, capacity: Number.parseInt(e.target.value) || 0 })}
-                  />
-                ) : (
-                  <p className="text-sm p-2 bg-muted rounded flex items-center">
-                    <Users className="h-4 w-4 mr-2" />
-                    {branchData.capacity} people
-                  </p>
-                )}
+                <p className="text-sm p-2 bg-muted rounded flex items-center">
+                  <Users className="h-4 w-4 mr-2" />
+                  {branchData.capacity} people
+                </p>
               </div>
             </div>
 
             <div>
               <label className="text-sm font-medium mb-2 block">Services Offered</label>
-              {isEditing ? (
-                <Textarea
-                  value={editData.services.join(", ")}
-                  onChange={(e) => setEditData({ ...editData, services: e.target.value.split(", ") })}
-                  placeholder="Separate services with commas"
-                />
-              ) : (
-                <div className="flex flex-wrap gap-2">
-                  {branchData.services.map((service, index) => (
-                    <Badge key={index} variant="outline">
-                      {service}
-                    </Badge>
-                  ))}
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2">
+                {branchData.services.map((service, index) => (
+                  <Badge key={index} variant="outline">
+                    {service}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>

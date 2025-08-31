@@ -3,12 +3,18 @@ import { DashboardLayout } from "@/components/dashboard-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { AnalyticsFilterDialog } from "@/components/analytics-filter-dialog"
 import { mockSystemStats, mockDailyAnalytics } from "@/lib/admin-data"
 import { BarChart3, TrendingUp, Users, Building2, Activity, Clock, AlertTriangle, CheckCircle } from "lucide-react"
 import { useState } from "react"
 
 export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState("7d")
+  const [filteredAnalytics, setFilteredAnalytics] = useState(mockDailyAnalytics)
+
+  const handleApplyFilters = (filteredData: any[]) => {
+    setFilteredAnalytics(filteredData)
+  }
 
   return (
     <DashboardLayout>
@@ -18,20 +24,22 @@ export default function AnalyticsPage() {
             <h1 className="text-3xl font-bold text-foreground">System Analytics</h1>
             <p className="text-muted-foreground mt-2">Monitor system performance and usage statistics</p>
           </div>
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select time range" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="24h">Last 24 Hours</SelectItem>
-              <SelectItem value="7d">Last 7 Days</SelectItem>
-              <SelectItem value="30d">Last 30 Days</SelectItem>
-              <SelectItem value="90d">Last 90 Days</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2">
+            <AnalyticsFilterDialog onApplyFilters={handleApplyFilters} />
+            <Select value={timeRange} onValueChange={setTimeRange}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Select time range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="24h">Last 24 Hours</SelectItem>
+                <SelectItem value="7d">Last 7 Days</SelectItem>
+                <SelectItem value="30d">Last 30 Days</SelectItem>
+                <SelectItem value="90d">Last 90 Days</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
-        {/* System Overview */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="p-6">
@@ -79,7 +87,6 @@ export default function AnalyticsPage() {
           </Card>
         </div>
 
-        {/* Performance Metrics */}
         <div className="grid gap-6 md:grid-cols-2">
           <Card>
             <CardHeader>
@@ -160,53 +167,66 @@ export default function AnalyticsPage() {
           </Card>
         </div>
 
-        {/* Daily Analytics Chart */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
               <BarChart3 className="h-5 w-5 mr-2" />
               Daily Analytics
+              {filteredAnalytics.length !== mockDailyAnalytics.length && (
+                <Badge variant="outline" className="ml-2">
+                  Filtered
+                </Badge>
+              )}
             </CardTitle>
-            <CardDescription>System usage and activity over the past week</CardDescription>
+            <CardDescription>
+              {filteredAnalytics.length === mockDailyAnalytics.length
+                ? "System usage and activity over the past week"
+                : `Filtered results: ${filteredAnalytics.length} entries`}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {mockDailyAnalytics.map((day, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <span className="font-medium w-16">{day.date}</span>
-                    <div className="flex items-center space-x-6 text-sm">
-                      <div className="flex items-center space-x-1">
-                        <Building2 className="h-4 w-4 text-primary" />
-                        <span>{day.institutions} institutions</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Users className="h-4 w-4 text-accent" />
-                        <span>{day.operators} operators</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Activity className="h-4 w-4 text-primary" />
-                        <span>{day.updates} updates</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <TrendingUp className="h-4 w-4 text-accent" />
-                        <span>{day.visitors} visitors</span>
+              {filteredAnalytics.length > 0 ? (
+                filteredAnalytics.map((day, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-4">
+                      <span className="font-medium w-16">{day.date}</span>
+                      <div className="flex items-center space-x-6 text-sm">
+                        <div className="flex items-center space-x-1">
+                          <Building2 className="h-4 w-4 text-primary" />
+                          <span>{day.institutions} institutions</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Users className="h-4 w-4 text-accent" />
+                          <span>{day.operators} operators</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Activity className="h-4 w-4 text-primary" />
+                          <span>{day.updates} updates</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <TrendingUp className="h-4 w-4 text-accent" />
+                          <span>{day.visitors} visitors</span>
+                        </div>
                       </div>
                     </div>
+                    <div className="w-32 bg-muted rounded-full h-2">
+                      <div
+                        className="h-2 rounded-full bg-primary"
+                        style={{ width: `${(day.updates / 200) * 100}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-32 bg-muted rounded-full h-2">
-                    <div
-                      className="h-2 rounded-full bg-primary"
-                      style={{ width: `${(day.updates / 200) * 100}%` }}
-                    ></div>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  No data matches the current filter criteria
                 </div>
-              ))}
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Usage Statistics */}
         <div className="grid gap-6 md:grid-cols-3">
           <Card>
             <CardHeader>

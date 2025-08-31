@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import { type User, signIn, signUp } from "@/lib/auth"
+import { type User, signIn, signUp, getUserById } from "@/lib/auth"
 
 interface AuthContextType {
   user: User | null
@@ -20,11 +20,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check for stored user session
-    const storedUser = localStorage.getItem("smartqueue_user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    const checkStoredUser = async () => {
+      const storedUser = localStorage.getItem("smartqueue_user")
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser)
+          // Validate the stored user with the API
+          const validUser = await getUserById(parsedUser.id)
+          if (validUser) {
+            setUser(validUser)
+          } else {
+            // Remove invalid stored user
+            localStorage.removeItem("smartqueue_user")
+          }
+        } catch (error) {
+          console.error("Error validating stored user:", error)
+          localStorage.removeItem("smartqueue_user")
+        }
+      }
+      setLoading(false)
     }
-    setLoading(false)
+
+    checkStoredUser()
   }, [])
 
   const login = async (email: string, password: string): Promise<boolean> => {
