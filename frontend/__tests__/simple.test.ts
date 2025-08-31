@@ -1,9 +1,13 @@
 describe('Simple Test', () => {
-  it('should pass', () => {
+  it('should work', () => {
     expect(1 + 1).toBe(2)
   })
 
-  it('should handle basic math', () => {
-    expect(2 * 3).toBe(6)
+  it('should have document', () => {
+    expect(document).toBeDefined()
+  })
+
+  it('should have documentElement', () => {
+    expect(document.documentElement).toBeDefined()
   })
 })
